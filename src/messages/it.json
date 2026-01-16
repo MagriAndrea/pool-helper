@@ -11,11 +11,13 @@
         "ChlorineComparison": {
             "title": "Confronto Ipocloriti",
             "description": "Scopri quale cloro conviene acquistare.",
+            "reset": "Pulisci Campi",
             "Labels": {
                 "calciumTitle": "Ipoclorito di Calcio",
                 "calciumSubtitle": "Solido / Granulare (Kg)",
                 "sodiumTitle": "Ipoclorito di Sodio",
                 "sodiumSubtitle": "Liquido (Litri o Kg)",
+                "volumeOrWeight": "Volume o Peso",
                 "weightPkg": "Peso Confezione (Kg)",
                 "totalPrice": "Prezzo Totale (€)",
                 "concentration": "Concentrazione (%)",

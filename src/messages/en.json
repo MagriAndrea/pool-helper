@@ -11,11 +11,13 @@
         "ChlorineComparison": {
             "title": "Chlorine Comparison",
             "description": "Find out which chlorine is better value.",
+            "reset": "Clear Fields",
             "Labels": {
                 "calciumTitle": "Calcium Hypochlorite",
                 "calciumSubtitle": "Solid / Granular (Kg)",
                 "sodiumTitle": "Sodium Hypochlorite",
                 "sodiumSubtitle": "Liquid (Liters or Kg)",
+                "volumeOrWeight": "Volume or Weight",
                 "weightPkg": "Package Weight (Kg)",
                 "totalPrice": "Total Price (€)",
                 "concentration": "Concentration (%)",
