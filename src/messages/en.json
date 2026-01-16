@@ -1,0 +1,52 @@
+{
+    "HomePage": {
+        "title": "Pool Helper",
+        "welcome": "Welcome to your Pool Helper"
+    },
+    "Navigation": {
+        "tools": "Tools",
+        "chlorineComparison": "Chlorine Comparison"
+    },
+    "Tools": {
+        "ChlorineComparison": {
+            "title": "Chlorine Comparison",
+            "description": "Find out which chlorine is better value.",
+            "Labels": {
+                "calciumTitle": "Calcium Hypochlorite",
+                "calciumSubtitle": "Solid / Granular (Kg)",
+                "sodiumTitle": "Sodium Hypochlorite",
+                "sodiumSubtitle": "Liquid (Liters or Kg)",
+                "weightPkg": "Package Weight (Kg)",
+                "totalPrice": "Total Price (€)",
+                "concentration": "Concentration (%)",
+                "liters": "Liters (L)",
+                "kilograms": "Kilograms (Kg)",
+                "density": "Density (Kg/L) - Default 1.2",
+                "activeChlorine": "Active Chlorine (Net)",
+                "realCost": "Real Cost"
+            },
+            "Placeholders": {
+                "weight": "Ex. 5, 10, 25",
+                "price": "Ex. 45.50",
+                "concentration": "Ex. 65",
+                "sodiumQty": "Ex. 20, 25",
+                "density": "Ex. 1.2"
+            },
+            "Verdict": {
+                "prompt": "Fill in both sides to see the verdict.",
+                "draw": "It's a Draw!",
+                "drawDesc": "Both products have the exact same cost per active ingredient.",
+                "winner": "Winner",
+                "savings": "You save",
+                "perActiveKg": "/ active kg",
+                "calciumReal": "Calcium (Real)",
+                "sodiumReal": "Sodium (Real)",
+                "calciumName": "Calcium Hypochlorite",
+                "sodiumName": "Sodium Hypochlorite"
+            },
+            "Footer": {
+                "disclaimer": "Calculations are based on the amount of active ingredient (chlorine) effectively available.\nEnsure you enter correct prices including VAT if applicable."
+            }
+        }
+    }
+}

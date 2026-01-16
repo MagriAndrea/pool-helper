@@ -1,0 +1,52 @@
+{
+    "HomePage": {
+        "title": "Pool Helper",
+        "welcome": "Benvenuto nel tuo assistente per la piscina"
+    },
+    "Navigation": {
+        "tools": "Strumenti",
+        "chlorineComparison": "Confronto Ipocloriti"
+    },
+    "Tools": {
+        "ChlorineComparison": {
+            "title": "Confronto Ipocloriti",
+            "description": "Scopri quale cloro conviene acquistare.",
+            "Labels": {
+                "calciumTitle": "Ipoclorito di Calcio",
+                "calciumSubtitle": "Solido / Granulare (Kg)",
+                "sodiumTitle": "Ipoclorito di Sodio",
+                "sodiumSubtitle": "Liquido (Litri o Kg)",
+                "weightPkg": "Peso Confezione (Kg)",
+                "totalPrice": "Prezzo Totale (€)",
+                "concentration": "Concentrazione (%)",
+                "liters": "Litri (L)",
+                "kilograms": "Chilogrammi (Kg)",
+                "density": "Densità (Kg/L) - Default 1.2",
+                "activeChlorine": "Cloro Attivo (Netto)",
+                "realCost": "Costo Reale"
+            },
+            "Placeholders": {
+                "weight": "Es. 5, 10, 25",
+                "price": "Es. 45.50",
+                "concentration": "Es. 65",
+                "sodiumQty": "Es. 20, 25",
+                "density": "Es. 1.2"
+            },
+            "Verdict": {
+                "prompt": "Compila entrambi i campi per vedere il verdetto.",
+                "draw": "Pareggio!",
+                "drawDesc": "I due prodotti hanno lo stesso identico costo per principio attivo.",
+                "winner": "Vincitore",
+                "savings": "Risparmi",
+                "perActiveKg": "/ kg attivo",
+                "calciumReal": "Calcio (Reale)",
+                "sodiumReal": "Sodio (Reale)",
+                "calciumName": "Ipoclorito di Calcio",
+                "sodiumName": "Ipoclorito di Sodio"
+            },
+            "Footer": {
+                "disclaimer": "I calcoli si basano sulla quantità di principio attivo (cloro) effettivamente disponibile.\nAssicurati di inserire i prezzi corretti comprensivi di IVA se applicabile."
+            }
+        }
+    }
+}
