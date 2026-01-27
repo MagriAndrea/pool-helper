@@ -1,9 +1,12 @@
 {
+    "AppName": "Pool Helper",
     "HomePage": {
         "title": "Pool Helper",
         "welcome": "Welcome to your Pool Helper"
     },
     "Navigation": {
+        "home": "Home",
+        "close": "Close",
         "tools": "Tools",
         "chlorineComparison": "Chlorine Comparison"
     },

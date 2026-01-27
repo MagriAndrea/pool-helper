@@ -6,7 +6,7 @@ import {NextIntlClientProvider} from 'next-intl';
 import {getMessages} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 import {routing} from '../../i18n/routing';
-import { Navbar } from "@/components/Navbar";
+import { NavigationUI } from "@/components/NavigationUI";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,7 +51,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <NextIntlClientProvider messages={messages}>
-            <Navbar />
+            <NavigationUI />
             <main className="flex-1">
               {children}
             </main>

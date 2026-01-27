@@ -1,9 +1,12 @@
 {
+    "AppName": "Pool Helper",
     "HomePage": {
         "title": "Pool Helper",
         "welcome": "Benvenuto nel tuo assistente per la piscina"
     },
     "Navigation": {
+        "home": "Home",
+        "close": "Chiudi",
         "tools": "Strumenti",
         "chlorineComparison": "Confronto Ipocloriti"
     },

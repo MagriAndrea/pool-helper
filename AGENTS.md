@@ -74,3 +74,5 @@ This project uses a **Hierarchical Documentation System**.
 | `src/lib/` | Utilities and Helpers | **SEE `src/lib/AGENTS.md`** |
 | `src/i18n/` | Internationalization Config | **SEE `src/i18n/AGENTS.md`** |
 | `src/messages/` | Translation Files (JSON) | **SEE `src/messages/AGENTS.md`** |
+| `src/config/` | Configuration Files (Navigation, etc.) | **SEE `src/config/AGENTS.md`** |
+| `ARCHITECTURE.md` | Overview of the project's architecture | **SEE `ARCHITECTURE.md`** |
