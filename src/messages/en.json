@@ -8,7 +8,8 @@
         "home": "Home",
         "close": "Close",
         "tools": "Tools",
-        "chlorineComparison": "Chlorine Comparison"
+        "chlorineComparison": "Chlorine Comparison",
+        "chlorineComparisonDesc": "Compare different chlorine types to find the best value."
     },
     "Tools": {
         "ChlorineComparison": {

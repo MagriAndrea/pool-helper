@@ -5,6 +5,8 @@ export interface NavItem {
   href?: string;
   labelKey: string;
   icon?: React.ElementType;
+  image?: string;
+  descriptionKey?: string;
   children?: NavItem[];
 }
 
@@ -16,6 +18,8 @@ export const navItems: NavItem[] = [
         {
             href: '/tools/chlorine-comparison',
             labelKey: 'chlorineComparison',
+            descriptionKey: 'chlorineComparisonDesc',
+            image: '/images/chlorine_comparison_placeholder.jpg',
             icon: Beaker,
         }
     ]

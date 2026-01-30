@@ -8,7 +8,8 @@
         "home": "Home",
         "close": "Chiudi",
         "tools": "Strumenti",
-        "chlorineComparison": "Confronto Ipocloriti"
+        "chlorineComparison": "Confronto Ipocloriti",
+        "chlorineComparisonDesc": "Confronta diversi tipi di cloro per trovare il miglior rapporto qualità/prezzo."
     },
     "Tools": {
         "ChlorineComparison": {
