@@ -15,13 +15,13 @@ export const navItems: NavItem[] = [
     labelKey: 'tools',
     icon: Menu, // Using Menu icon as a generic icon for Tools group if needed
     children: [
-        {
-            href: '/tools/chlorine-comparison',
-            labelKey: 'chlorineComparison',
-            descriptionKey: 'chlorineComparisonDesc',
-            image: '/images/chlorine_comparison_placeholder.jpg',
-            icon: Beaker,
-        }
+      {
+        href: '/tools/chlorine-comparison',
+        labelKey: 'chlorineComparison',
+        descriptionKey: 'chlorineComparisonDesc',
+        image: '/images/chlorine_comparison.png',
+        icon: Beaker,
+      }
     ]
   },
 ];

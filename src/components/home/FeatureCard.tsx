@@ -26,30 +26,30 @@ export default function FeatureCard({
     <Link
       href={href}
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-md transition-all hover:scale-[1.02] hover:bg-white/10 hover:shadow-xl dark:bg-black/20 dark:hover:bg-black/30",
+        "dashboard-card group relative flex flex-col overflow-hidden w-full h-full",
         className
       )}
     >
-      {/* Background Image Layer */}
+      {/* Background Image Layer (subtle) */}
       {image && (
-        <div 
-            className="absolute inset-0 z-0 opacity-20 transition-opacity group-hover:opacity-30 bg-cover bg-center"
-            style={{ backgroundImage: `url(${image})` }}
+        <div
+          className="absolute inset-0 z-0 opacity-10 transition-opacity group-hover:opacity-20 bg-cover bg-center grayscale group-hover:grayscale-0"
+          style={{ backgroundImage: `url(${image})` }}
         />
       )}
-      
+
       {/* Content Layer */}
-      <div className="relative z-10 flex flex-col p-6 h-full">
-        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400 group-hover:bg-blue-500/20 group-hover:text-blue-300 transition-colors">
+      <div className="relative z-10 flex flex-col h-full">
+        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
           {Icon && <Icon className="h-6 w-6" />}
         </div>
-        
-        <h3 className="text-xl font-semibold text-foreground mb-2">
+
+        <h3 className="text-xl font-semibold text-foreground mb-2 font-mono">
           {t(titleKey)}
         </h3>
-        
+
         {descriptionKey && (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground font-medium">
             {t(descriptionKey)}
           </p>
         )}

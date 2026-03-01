@@ -1,26 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import {ThemeProvider} from "@/components/theme-provider";
+import { Fira_Sans, Fira_Code } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
 import "../globals.css";
-import {NextIntlClientProvider} from 'next-intl';
-import {getMessages} from 'next-intl/server';
-import {notFound} from 'next/navigation';
-import {routing} from '../../i18n/routing';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
+import { notFound } from 'next/navigation';
+import { routing } from '../../i18n/routing';
 import { NavigationUI } from "@/components/NavigationUI";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const firaSans = Fira_Sans({
+  variable: "--font-fira-sans",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const firaCode = Fira_Code({
+  variable: "--font-fira-code",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   title: "Pool Helper",
-  description: "Your swimming pool assistant",
+  description: "Your swimming pool assistant (Data-Dense Dashboard)",
 };
 
 export default async function RootLayout({
@@ -28,9 +30,9 @@ export default async function RootLayout({
   params
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{locale: string}>;
+  params: Promise<{ locale: string }>;
 }>) {
-  const {locale} = await params;
+  const { locale } = await params;
 
   // Ensure that the incoming `locale` is valid
   if (!routing.locales.includes(locale as any)) {
@@ -42,7 +44,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${firaSans.variable} ${firaCode.variable} font-sans antialiased`}
       >
         <ThemeProvider
           attribute="class"

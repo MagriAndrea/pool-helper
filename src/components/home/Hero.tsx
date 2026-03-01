@@ -1,16 +1,30 @@
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 export default function Hero() {
   const t = useTranslations('HomePage');
 
   return (
-    <section className="flex flex-col items-center justify-center py-20 text-center space-y-4 animate-fade-in-down">
-      <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-cyan-400">
-        {t('title')}
-      </h1>
-      <p className="text-lg md:text-xl text-muted-foreground max-w-2xl px-4">
-        {t('welcome')}
-      </p>
+    <section className="relative w-full flex flex-col items-center justify-center py-24 md:py-32 text-center space-y-8 overflow-hidden">
+      {/* Background layer */}
+      <div className="absolute inset-0 z-0 bg-background/50 pointer-events-none" />
+
+      {/* Content Layer */}
+      <div className="relative z-10 flex flex-col items-center space-y-6 animate-fade-in-down max-w-4xl px-4">
+        <h1 className="text-5xl md:text-7xl font-bold text-foreground drop-shadow-sm font-mono tracking-tight leading-tight">
+          {t('title')}
+        </h1>
+        <p className="text-lg md:text-2xl text-muted-foreground max-w-2xl font-medium">
+          {t('welcome')}
+        </p>
+
+        {/* We can add a placeholder for a primary CTA matching the new dashboard style */}
+        <div className="mt-8">
+          <button className="btn-primary text-lg px-8 py-4">
+            Get Started
+          </button>
+        </div>
+      </div>
     </section>
   );
 }
