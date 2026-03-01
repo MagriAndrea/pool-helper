@@ -2,7 +2,14 @@
     "AppName": "Pool Helper",
     "HomePage": {
         "title": "Pool Helper",
-        "welcome": "Benvenuto nel tuo assistente per la piscina"
+        "welcome": "Benvenuto nel tuo assistente per la piscina",
+        "getStarted": "Inizia Ora"
+    },
+    "Theme": {
+        "toggle": "Cambia tema",
+        "light": "Chiaro",
+        "dark": "Scuro",
+        "system": "Sistema"
     },
     "Navigation": {
         "home": "Home",

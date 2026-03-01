@@ -29,9 +29,10 @@
 
 ### 📢 RULE #1: SELF-ENFORCING DOCUMENTATION
 
-**If you (or previous agents) ignore a rule, the rule is TOO WEAK.**
+**If you (or previous agents) ignores a rule, the rule is TOO WEAK.**
 
 **YOUR REQUIRED ACTION:**
+0. Notify the user that a rule was ignored
 1. Rewrite the rule to be MORE visible (bold, CAPS, emoji)
 2. Move it higher up in the document
 3. 🚨 Add concrete examples (See "Examples of Discrepancies" above)
@@ -56,7 +57,13 @@
      - **Specific** → Local `AGENTS.md`.
      - **Category** → Parent `AGENTS.md`.
      - **Global** → Root `AGENTS.md`.
-8.  **🦾 USE SKILLS / SUB-AGENTS ON DEMAND**:
+8.  **🌍 TRANSLATION CHECK (STRICT)**:
+    *   **ALWAYS** verify that text visible to the user is properly translated using `next-intl`.
+    *   **NEVER** leave hardcoded text in components. If you add a string, you must add it to both `en.json` and `it.json`.
+9.  **🚫 DO NOT RUN DEV/BUILD SERVERS (STRICT)**:
+    *   **NEVER** run commands like `npm run dev` or `npm run build` in the terminal.
+    *   The human user already has `npm run dev` running continuously and can see the changes live. Running these commands will cause port conflicts or unnecessary processing.
+10. **🦾 USE SKILLS / SUB-AGENTS ON DEMAND**:
     *   If the user prompts you to "act like X", "use skill X", or asks for specialized help (e.g., UI Design, Shadcn components), **YOU MUST FIRST READ the matching `.md` file in `.agent/skills/`** before executing any coding tasks.
     *   **✅ EXAMPLES**:
         *   User: "Use the UI Designer skill to improve this page." → Action: `view_file` on `.agent/skills/ui-ux-pro-max/SKILL.md`, then apply those rules.

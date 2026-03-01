@@ -2,7 +2,14 @@
     "AppName": "Pool Helper",
     "HomePage": {
         "title": "Pool Helper",
-        "welcome": "Welcome to your Pool Helper"
+        "welcome": "Welcome to your Pool Helper",
+        "getStarted": "Get Started"
+    },
+    "Theme": {
+        "toggle": "Toggle theme",
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
     },
     "Navigation": {
         "home": "Home",

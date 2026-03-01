@@ -21,7 +21,7 @@ export default function Hero() {
         {/* We can add a placeholder for a primary CTA matching the new dashboard style */}
         <div className="mt-8">
           <button className="btn-primary text-lg px-8 py-4">
-            Get Started
+            {t('getStarted')}
           </button>
         </div>
       </div>
