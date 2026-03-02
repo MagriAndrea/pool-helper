@@ -12,9 +12,11 @@ The project is built emphasizing **maintainability**, **scalability**, and **off
 - **Language**: TypeScript (Strict Mode).
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
   - CSS Variables based theming (OKLCH color space) for high-fidelity dark mode support.
+  - Typography utilizes **Fira Sans** for UI elements and **Fira Code** for monospace/technical data.
+  - Color palette focuses on fresh cyan and clean green for a modern, playful aesthetic.
 - **UI Library**: [Shadcn/UI](https://ui.shadcn.com/)
   - Headless components (Radix UI) styled with Tailwind.
-  - "New York" style, "Zinc" base color.
+  - Custom "Data-Dense Dashboard" aesthetic, replacing default Shadcn styles.
 - **Internationalization**: [next-intl](https://next-intl-docs.vercel.app/)
   - Middleware-based routing for `/[locale]/` segments.
   - JSON-based message catalogues.

@@ -42,7 +42,26 @@
 
 ---
 
-## 2. 🛡️ Operational Rules (NON-NEGOTIABLE)
+## 2. 📝 MANDATORY WIP (WORK IN PROGRESS) TRACKING
+
+**EVERY SINGLE TASK MUST BE TRACKED USING A TEMPORARY `WIP.md` FILE.**
+The `WIP.md` acts as a crucial **Handoff Document**. It must provide absolute context so a new agent can resume work tomorrow without asking redundant questions.
+
+1. **Create/Update `WIP.md`**: Before starting any non-trivial task, create or update `WIP.md` in the project root.
+2. **Required Structure**: The `WIP.md` file MUST contain exactly these sections with high granularity:
+   - **1. Initial State**: What was the starting point or context? (e.g., "The user has provided a raw text guide and a tools-first homepage...").
+   - **2. Objective**: The exact goal, including architectural decisions and constraints agreed upon with the user (e.g., "Single scrolling page, separate theory from practice...").
+   - **3. Target Files**: A list of the specific files/paths being modified or created for this task.
+   - **4. Current Situation & Checklist**: What has been done and what is left. Use ✅ and ❌ to clearly mark status.
+   - **5. Success Criteria**: How do we know the task is complete? (So the agent knows when to archive it).
+3. **Save to Changelog**: Once the task is fully completed (Success Criteria met):
+   - Rename/Move the `WIP.md` file into the `changelog/` directory.
+   - Name it `changelog/YYYY-MM-DD_Task_Name.md`.
+   - Delete the root `WIP.md`.
+
+---
+
+## 3. �🛡️ Operational Rules (NON-NEGOTIABLE)
 
 1.  **Write in English**: The project is in Italian, but AGENTS.md MUST be in English because AI agents are optimized for English.
 2.  **Optimize for Attention**: Use `🛑 CRITICAL` for bans and `⚡ QUICK START` for immediate context.
@@ -68,8 +87,14 @@
     *   **✅ EXAMPLES**:
         *   User: "Use the UI Designer skill to improve this page." → Action: `view_file` on `.agent/skills/ui-ux-pro-max/SKILL.md`, then apply those rules.
         *   User: "Add a Shadcn list component here." → Action: `view_file` on `.agent/skills/shadcn-pro.md`, then proceed.
+11. **📝 AUTO-UPDATE DOCUMENTATION (STRICT)**:
+    *   Whenever you make a significant change to the project's architecture, tech stack, design system, or core logic, **YOU MUST AUTOMATICALLY UPDATE `ARCHITECTURE.md`** (or other relevant `.md` files).
+    *   **DO NOT** wait for the user to ask you to update the documentation. It is your responsibility to keep it in sync with the codebase.
+12. **🧹 AGGRESSIVE HOUSEKEEPING (STRICT)**:
+    *   **ALWAYS** ask the user to delete any temporary scripts, files, texts, or assets that were created or used temporarily during a task (e.g., a script to convert one format to another).
+    *   This is to ensure the project remains clean and free of leftover files that "who knows who made" or "who knows if they are needed".
 
-## 3. 🧭 Navigation & Hierarchy
+## 4. 🧭 Navigation & Hierarchy
 
 This project uses a **Hierarchical Documentation System**.
 - **This File** (`/AGENTS.md`): Root file of the project.
@@ -77,7 +102,7 @@ This project uses a **Hierarchical Documentation System**.
 - **Pyramidal Structure**: Top-level AGENTS.md files are general, deeper ones are specific.
 - **Fallback**: If no `AGENTS.md` exists, check for `README.md`.
 
-## 4. 🗺️ Map of Knowledge
+## 5. 🗺️ Map of Knowledge
 
 | Path | Content | AI Agent Action |
 |------|---------|-----------------|
@@ -89,3 +114,4 @@ This project uses a **Hierarchical Documentation System**.
 | `src/messages/` | Translation Files (JSON) | **SEE `src/messages/AGENTS.md`** |
 | `src/config/` | Configuration Files (Navigation, etc.) | **SEE `src/config/AGENTS.md`** |
 | `ARCHITECTURE.md` | Overview of the project's architecture | **SEE `ARCHITECTURE.md`** |
+| `changelog/` | Archive of completed WIP tasks | **Store finished WIP files here** |
