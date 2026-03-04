@@ -44,20 +44,48 @@
 
 ## 2. 📝 MANDATORY WIP (WORK IN PROGRESS) TRACKING
 
-**EVERY SINGLE TASK MUST BE TRACKED USING A TEMPORARY `WIP.md` FILE.**
-The `WIP.md` acts as a crucial **Handoff Document**. It must provide absolute context so a new agent can resume work tomorrow without asking redundant questions.
+The WIP protocol is used for **complex tasks requiring multiple steps**. It acts as a **Handoff Document** to provide absolute context across different chats or agents, preventing context overload.
 
-1. **Create/Update `WIP.md`**: Before starting any non-trivial task, create or update `WIP.md` in the project root.
-2. **Required Structure**: The `WIP.md` file MUST contain exactly these sections with high granularity:
-   - **1. Initial State**: What was the starting point or context? (e.g., "The user has provided a raw text guide and a tools-first homepage...").
-   - **2. Objective**: The exact goal, including architectural decisions and constraints agreed upon with the user (e.g., "Single scrolling page, separate theory from practice...").
-   - **3. Target Files**: A list of the specific files/paths being modified or created for this task.
-   - **4. Current Situation & Checklist**: What has been done and what is left. Use ✅ and ❌ to clearly mark status.
-   - **5. Success Criteria**: How do we know the task is complete? (So the agent knows when to archive it).
-3. **Save to Changelog**: Once the task is fully completed (Success Criteria met):
-   - Rename/Move the `WIP.md` file into the `changelog/` directory.
-   - Name it `changelog/YYYY-MM-DD_Task_Name.md`.
-   - Delete the root `WIP.md`.
+### 🚦 WHEN TO USE WIP (Decision Tree)
+
+**DO NOT** use a WIP for simple tasks (e.g., creating a simple UI component, a quick bug fix, modifying 1-2 files).
+
+**HOW TO IDENTIFY A COMPLEX TASK (Requires WIP):**
+- 📏 **Long/Multi-topic prompt**: The user gives a very long prompt touching multiple architectural areas (Note: pasting a long React component with a simple question does NOT count as complex).
+- ⚠️ **Explicit difficulty**: The user explicitly tells you the task is difficult.
+- 🤖 **Agent Autonomy**: If you (the agent) realize the request is too complex for a couple shots, **you must proactively propose creating a WIP**.
+
+### 📁 FILE NAMING & MULTIPLE WIPS
+
+- **The user works alone on this project**, but **multiple concurrent WIPs are allowed** (the user or agents might be working on different features simultaneously).
+- **Naming Convention**: `WIP_ShortDescriptiveName.md` (e.g., `WIP_FeatureCardRefactor.md`, `WIP_TranslationSystem.md`).
+
+### 🔄 NEW CHATS & EXISTING WIPS ALGORITHM
+
+When starting a **NEW CHAT**, always check the root folder for existing `WIP_*.md` files.
+1. **IF** the user's prompt matches an open task (`❌`) in an existing WIP:
+   - 🛑 **ASK FIRST**: "I see this relates to `WIP_xyz.md`, should I proceed with this task and update the WIP?"
+   - Wait for confirmation.
+2. **IF** the user's prompt is completely unrelated to any open WIP (e.g., request for an unrelated bug fix):
+   - 📢 **NOTIFY**: Briefly state "I will proceed with this task without touching the existing WIPs to avoid altering them."
+   - Proceed normally without updating any WIP file.
+
+### 🏗️ REQUIRED WIP STRUCTURE
+
+When creating or updating a `WIP_*.md` file, it MUST contain exactly these sections:
+- **1. Initial State**: What was the starting point or context? (e.g., "The user requested to transition `FeatureCard.tsx` from a Client Component to a Server Component...").
+- **2. Objective**: The exact goal, including architectural decisions and constraints agreed upon with the user (e.g., "Refactor the component to fetch data server-side while keeping the interactive parts in a smaller client component...").
+- **3. Target Files**: A list of the specific files/paths being modified or created for this task (e.g., `src/components/home/FeatureCard.tsx`, `src/components/home/FeatureCardInteractive.tsx`).
+- **4. Current Situation & Checklist**: What has been done and what is left. Use ✅ and ❌ to clearly mark status.
+- **5. Success Criteria**: How do we know the task is complete? (So the agent knows when to archive it).
+
+### 💾 ARCHIVING TO CHANGELOG & UPDATING DOCS
+
+Once the task is fully completed (Success Criteria met):
+1. **Move** the `WIP_*.md` file into the `changelog/` directory.
+2. **Rename** it to `changelog/YYYY-MM-DD_ShortDescriptiveName.md`.
+3. **Delete** the original `WIP_*.md` from the root.
+4. **UPDATE DOCUMENTATION**: Automatically update `ARCHITECTURE.md` (or any other relevant documentation) to reflect the changes introduced by the completed WIP.
 
 ---
 
@@ -87,10 +115,7 @@ The `WIP.md` acts as a crucial **Handoff Document**. It must provide absolute co
     *   **✅ EXAMPLES**:
         *   User: "Use the UI Designer skill to improve this page." → Action: `view_file` on `.agent/skills/ui-ux-pro-max/SKILL.md`, then apply those rules.
         *   User: "Add a Shadcn list component here." → Action: `view_file` on `.agent/skills/shadcn-pro.md`, then proceed.
-11. **📝 AUTO-UPDATE DOCUMENTATION (STRICT)**:
-    *   Whenever you make a significant change to the project's architecture, tech stack, design system, or core logic, **YOU MUST AUTOMATICALLY UPDATE `ARCHITECTURE.md`** (or other relevant `.md` files).
-    *   **DO NOT** wait for the user to ask you to update the documentation. It is your responsibility to keep it in sync with the codebase.
-12. **🧹 AGGRESSIVE HOUSEKEEPING (STRICT)**:
+11. **🧹 AGGRESSIVE HOUSEKEEPING (STRICT)**:
     *   **ALWAYS** ask the user to delete any temporary scripts, files, texts, or assets that were created or used temporarily during a task (e.g., a script to convert one format to another).
     *   This is to ensure the project remains clean and free of leftover files that "who knows who made" or "who knows if they are needed".
 
