@@ -110,11 +110,12 @@ Once the task is fully completed (Success Criteria met):
 9.  **🚫 DO NOT RUN DEV/BUILD SERVERS (STRICT)**:
     *   **NEVER** run commands like `npm run dev` or `npm run build` in the terminal.
     *   The human user already has `npm run dev` running continuously and can see the changes live. Running these commands will cause port conflicts or unnecessary processing.
-10. **🦾 USE SKILLS / SUB-AGENTS ON DEMAND**:
-    *   If the user prompts you to "act like X", "use skill X", or asks for specialized help (e.g., UI Design, Shadcn components), **YOU MUST FIRST READ the matching `.md` file in `.agent/skills/`** before executing any coding tasks.
+10. **🦾 USE SKILLS / SUB-AGENTS ON DEMAND (LOCAL SUBMODULE)**:
+    *   This project utilizes the `agency-agents` skills installed via a local git submodule in `.agents/agency-agents/`.
+    *   If the user prompts you to "act like X", "use skill X", or asks for specialized help, **YOU MUST FIRST READ the matching `.md` file in `.agents/agency-agents/`** before executing any coding tasks.
+    *   **⚠️ INITIALIZATION**: Keep in mind that different IDEs expect agents in different formats (e.g., `.mdc` for Cursor, `CONVENTIONS.md` for Aider). The user must run `npm run setup:agents` to convert and install the agents for their specific environment.
     *   **✅ EXAMPLES**:
-        *   User: "Use the UI Designer skill to improve this page." → Action: `view_file` on `.agent/skills/ui-ux-pro-max/SKILL.md`, then apply those rules.
-        *   User: "Add a Shadcn list component here." → Action: `view_file` on `.agent/skills/shadcn-pro.md`, then proceed.
+        *   User: "Use the UI Designer skill to improve this page." → Action: `view_file` on `.agents/agency-agents/agents/design/ui-designer.md`, then apply those rules.
 11. **🧹 AGGRESSIVE HOUSEKEEPING (STRICT)**:
     *   **ALWAYS** ask the user to delete any temporary scripts, files, texts, or assets that were created or used temporarily during a task (e.g., a script to convert one format to another).
     *   This is to ensure the project remains clean and free of leftover files that "who knows who made" or "who knows if they are needed".
@@ -131,7 +132,7 @@ This project uses a **Hierarchical Documentation System**.
 
 | Path | Content | AI Agent Action |
 |------|---------|-----------------|
-| `.agent/skills/` | Specialized Sub-agents & AI Skills | **READ matching skill when acting as an expert** |
+| `.agents/agency-agents/` | Local Sub-agents & AI Skills Repository | **READ matching skill when acting as an expert** |
 | `src/app/` | Application Logic (Next.js App Router) | **SEE `src/app/AGENTS.md`** |
 | `src/components/` | UI Components (Shadcn/UI) | **SEE `src/components/AGENTS.md`** |
 | `src/lib/` | Utilities and Helpers | **SEE `src/lib/AGENTS.md`** |

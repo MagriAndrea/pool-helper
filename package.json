@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "setup:agents": "cd .agents/agency-agents && ./scripts/convert.sh && ./scripts/install.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
