@@ -110,15 +110,24 @@ Once the task is fully completed (Success Criteria met):
 9.  **🚫 DO NOT RUN DEV/BUILD SERVERS (STRICT)**:
     *   **NEVER** run commands like `npm run dev` or `npm run build` in the terminal.
     *   The human user already has `npm run dev` running continuously and can see the changes live. Running these commands will cause port conflicts or unnecessary processing.
-10. **🦾 USE SKILLS / SUB-AGENTS ON DEMAND (LOCAL SUBMODULE)**:
-    *   This project utilizes the `agency-agents` skills installed via a local git submodule in `.agents/agency-agents/`.
-    *   If the user prompts you to "act like X", "use skill X", or asks for specialized help, **YOU MUST FIRST READ the matching `.md` file in `.agents/agency-agents/`** before executing any coding tasks.
-    *   **⚠️ INITIALIZATION**: Keep in mind that different IDEs expect agents in different formats (e.g., `.mdc` for Cursor, `CONVENTIONS.md` for Aider). The user must run `npm run setup:agents` to convert and install the agents for their specific environment.
-    *   **✅ EXAMPLES**:
-        *   User: "Use the UI Designer skill to improve this page." → Action: `view_file` on `.agents/agency-agents/agents/design/ui-designer.md`, then apply those rules.
+10. **🦾 USE SUB-AGENTS ON DEMAND (CLAUDE CODE NATIVE)**:
+    *   The `agency-agents` submodule (`.agents/agency-agents/`) is exposed to Claude Code as **native subagents** via symlinks in `.claude/agents/` (gitignored). Setup: `npm run setup:agents`.
+    *   **🛑 DO NOT manually `Read` the agent `.md` files.** They are invocable via the `Agent`/`Task` tool, which runs them in an isolated context window. Reading them inline wastes context and bypasses the subagent sandbox.
+    *   **✅ WHEN TO INVOKE A SUBAGENT**: When the user says "act as X", "use the X subagent", "use the X skill", or explicitly names an agent from the roster → call the `Agent` tool with `subagent_type` matching the agent name.
+        *   Example: User says "Use the UI Designer to improve this page" → `Agent(subagent_type="UI Designer", prompt="...")`.
+    *   **⚠️ DO NOT spawn subagents proactively for generic tasks** — only when the user explicitly requests one, or when the task genuinely matches an agent's specialty AND would benefit from an isolated context (see the `Agent` tool guidance in the system prompt).
+    *   **🔄 UPDATING**: To pull new agents from upstream: `git submodule update --remote .agents/agency-agents && npm run setup:agents`.
+    *   **🧰 OTHER IDEs**: If using Cursor/Aider/Windsurf/etc., run the upstream converter: `cd .agents/agency-agents && ./scripts/convert.sh && ./scripts/install.sh --tool <name>`.
 11. **🧹 AGGRESSIVE HOUSEKEEPING (STRICT)**:
     *   **ALWAYS** ask the user to delete any temporary scripts, files, texts, or assets that were created or used temporarily during a task (e.g., a script to convert one format to another).
     *   This is to ensure the project remains clean and free of leftover files that "who knows who made" or "who knows if they are needed".
+12. **🇬🇧 LANGUAGE SPLIT: EVERYTHING IS ENGLISH EXCEPT TRANSLATION VALUES (STRICT)**:
+    *   **✅ CODE is ENGLISH — NO EXCEPTIONS**: every identifier, file name, variable, component, type, i18n key, route segment, CSS class, comment, AND **URL fragment / anchor ID** MUST be in English (e.g. `GuideSection`, `chemistry`, `cleaning`, `actions`, `sections.chemistry.title`, `<section id="chemistry">`, `href="/#chemistry"`).
+    *   **✅ ITALIAN LIVES ONLY IN `src/messages/it.json`**: Italian is confined to the **values** of the Italian translation file. Everything else — including keys in `it.json` — stays English.
+    *   **⚓ ANCHORS ARE ENGLISH**: URL fragments that appear in the address bar are part of the code layer, not the UX layer. Keep them English for total project consistency.
+        *   **✅ DO**: `<section id="chemistry">`, `href="/#chemistry"`, nav label key `chemistry` → translation value `"Chimica"` (in `it.json`) / `"Chemistry"` (in `en.json`).
+        *   **🛑 DO NOT**: `<section id="chimica">`, `href="/#chimica"`, Italian variable names, Italian comments, Italian keys.
+    *   **⚠️ PENALTY**: Mixing Italian into code produces inconsistent identifiers that make refactors and searches painful. The only Italian strings in the repo should be translation values inside `it.json`.
 
 ## 4. 🧭 Navigation & Hierarchy
 

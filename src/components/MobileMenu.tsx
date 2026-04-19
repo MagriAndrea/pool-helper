@@ -7,6 +7,7 @@ import { Menu, X } from 'lucide-react';
 import { navItems } from '@/config/nav-items';
 import { cn } from '@/lib/utils';
 import { ModeToggle } from '@/components/mode-toggle';
+import { AnchorLink } from '@/components/AnchorLink';
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -98,19 +99,38 @@ export function MobileMenu() {
                         {item.children.map((child, childIndex) => {
                           const ChildIcon = child.icon;
                           const isActive = pathname === child.href;
+                          const classes = cn(
+                            "flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 group ml-2",
+                            isActive
+                              ? "bg-primary/10 text-primary font-medium"
+                              : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                          );
+                          const content = (
+                            <>
+                              {ChildIcon && <ChildIcon className={cn("w-5 h-5 transition-colors", isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground")} />}
+                              <span>{t(child.labelKey)}</span>
+                            </>
+                          );
+                          if (child.isAnchor) {
+                            return (
+                              <AnchorLink
+                                key={childIndex}
+                                href={child.href || '#'}
+                                className={classes}
+                                onClick={() => setIsOpen(false)}
+                              >
+                                {content}
+                              </AnchorLink>
+                            );
+                          }
                           return (
                             <Link
                               key={childIndex}
                               href={child.href || '#'}
-                              className={cn(
-                                "flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 group ml-2",
-                                isActive
-                                  ? "bg-primary/10 text-primary font-medium"
-                                  : "hover:bg-muted text-muted-foreground hover:text-foreground"
-                              )}
+                              className={classes}
+                              onClick={() => setIsOpen(false)}
                             >
-                              {ChildIcon && <ChildIcon className={cn("w-5 h-5 transition-colors", isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground")} />}
-                              <span>{t(child.labelKey)}</span>
+                              {content}
                             </Link>
                           );
                         })}

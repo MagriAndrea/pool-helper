@@ -9,7 +9,7 @@ import { useLocalStorage } from './use-local-storage';
 const DEFAULT_CALCIUM: CalciumInput = {
   price: 0,
   weight: 0,
-  concentration: 67.5,
+  concentration: 71.5,
 };
 
 const DEFAULT_SODIUM: SodiumInput = {

@@ -16,7 +16,125 @@
         "close": "Chiudi",
         "tools": "Strumenti",
         "chlorineComparison": "Confronto Ipocloriti",
-        "chlorineComparisonDesc": "Confronta diversi tipi di cloro per trovare il miglior rapporto qualità/prezzo."
+        "chlorineComparisonDesc": "Confronta diversi tipi di cloro per trovare il miglior rapporto qualità/prezzo.",
+        "guide": "Guida",
+        "chemistry": "Chimica",
+        "chemistryDesc": "Alcalinità, pH, cloro e stabilizzante spiegati.",
+        "cleaning": "Pulizia",
+        "cleaningDesc": "Filtri, detriti e igiene ordinaria della piscina.",
+        "actions": "Azioni",
+        "actionsDesc": "Shock, pulizia filtri e procedure stagionali."
+    },
+    "Guide": {
+        "eyebrow": "Manuale del proprietario",
+        "title": "Guida alla Manutenzione della Piscina",
+        "subtitle": "Tutto quello che ti serve per avere un'acqua limpida, bilanciata e sicura.",
+        "sections": {
+            "chemistry": {
+                "title": "Chimica",
+                "intro": "Tre parametri tengono in equilibrio l'acqua: alcalinità (80-120 ppm), pH (7,2-7,6) e cloro libero (1-3 ppm). Controllali sempre in quest'ordine — alcalinità, pH, cloro — perché ognuno influenza il successivo.",
+                "alkalinity": {
+                    "title": "Alcalinità",
+                    "p1": "L'alcalinità funziona da tampone per il pH: se resta tra 80 e 120 ppm, il pH rimane stabile e poco volatile. In piscina l'alcalinità tende a diminuire nel tempo, perché i prodotti acidi come il diminutore di pH consumano i bicarbonati presenti nell'acqua. Per riportarla nel range si usa il bicarbonato di sodio, che aumenta leggermente anche il pH."
+                },
+                "ph": {
+                    "title": "pH",
+                    "p1": "Il pH misura l'acidità dell'acqua. Un valore tra 7,2 e 7,6 permette a tutti gli altri prodotti (cloro, antialga, flocculante, chiarificante) di lavorare al massimo dell'efficacia. L'acqua del rubinetto è leggermente basica (pH ≈ 7,5).",
+                    "p2": "In piscina il pH tende a salire nel tempo a causa di pioggia ed esposizione all'aria. Per abbassarlo si usa il diminutore di pH o l'acido muriatico, che intacca poco l'alcalinità. Per alzarlo si usa il carbonato di sodio, che però alza anche un po' l'alcalinità."
+                },
+                "chlorine": {
+                    "title": "Cloro",
+                    "p1": "Il cloro disinfetta l'acqua prevenendo alghe e batteri pericolosi. Si trova in più forme — pastiglie, granuli, liquido — ognuna con concentrazione e livello di stabilizzazione diversi."
+                },
+                "chlorineStabilized": {
+                    "title": "Cloro stabilizzato",
+                    "p1": "Il tricloro in pastiglie (tipicamente 200 g) e il dicloro isocianurato al 56% in granuli sono entrambi clori stabilizzati: contengono acido cianurico che li protegge dalla luce solare. Il dicloro è molto forte e agisce rapidamente."
+                },
+                "chlorineUnstabilized": {
+                    "title": "Cloro non stabilizzato",
+                    "p1": "L'ipoclorito di sodio è un cloro liquido al 12-15% di cloro attivo, senza stabilizzanti, usato per gli shock. L'ipoclorito di calcio è granulare al 70-73% di cloro attivo, anch'esso non stabilizzato e adatto agli shock. Le due sostanze differiscono per stato fisico (liquido/solido), concentrazione (~15% contro ~73%) e pH (13 contro 11).",
+                    "p2": "A parità di shock, con l'ipoclorito di calcio serve circa un quinto del peso rispetto al sodio. Entrambi fanno salire temporaneamente il pH di circa un punto, perché l'ipoclorito si scompone in acido cloridrico (HCl) e una base; a reazione conclusa il pH torna quasi al valore iniziale, quindi l'aumento netto dopo uno shock è trascurabile.",
+                    "p3": "⚠️ Non mischiare mai ipoclorito con altri tipi di cloro: rischio di esplosione, incendio e fumi tossici."
+                },
+                "chloramines": {
+                    "title": "Clorammine",
+                    "p1": "Quando il cloro reagisce con la materia organica si formano le clorammine (cloro combinato), che disinfettano molto meno del cloro libero. Per tenerle basse la cosa più efficace è aggiungere più cloro."
+                },
+                "stabilizer": {
+                    "title": "Stabilizzante",
+                    "p1": "Lo stabilizzante è acido cianurico, presente nel tricloro in pastiglie e nel dicloro isocianurato. Protegge il cloro dalla distruzione dei raggi UV. Il valore ottimale è 30-50 ppm: sotto i 30 il cloro si degrada troppo in fretta al sole; sopra i 50 risulta \"legato\" e perde efficacia.",
+                    "p2": "Attenzione: usare dicloro isocianurato per shock ripetuti innalza rapidamente lo stabilizzante. Una volta troppo alto, l'unico modo per abbassarlo è uno svuotamento parziale della piscina."
+                },
+                "hardness": {
+                    "title": "Durezza",
+                    "p1": "La durezza del calcio deve stare tra 175 e 400 ppm. Sotto soglia l'acqua tende a corrodere il cemento; sopra soglia si formano incrostazioni su tubi e telo. Una durezza ben bilanciata aiuta, insieme all'alcalinità, a stabilizzare il pH.",
+                    "p2": "Se la durezza è troppo alta si può trattare con un prodotto sequestrante."
+                },
+                "algaecide": {
+                    "title": "Antialga",
+                    "p1": "L'antialga è un preventivo che evita la proliferazione delle alghe. Alcune formulazioni specifiche servono anche a rimuoverle dopo che si sono formate."
+                },
+                "flocculant": {
+                    "title": "Flocculante",
+                    "p1": "Il flocculante aggrega le particelle in sospensione rendendole pesanti, così si depositano sul fondo. È utile soprattutto dopo uno shock che ha abbattuto molte alghe verdi scure, quando l'acqua resta torbida."
+                }
+            },
+            "cleaning": {
+                "title": "Pulizia",
+                "intro": "La prima difesa contro alghe e acqua torbida è rimuovere costantemente i detriti. Meno cibo organico c'è nell'acqua, meno lavoro deve fare il cloro.",
+                "circulation": {
+                    "title": "Circolazione",
+                    "p1": "Far circolare bene l'acqua è fondamentale: più fa caldo, più ore serve tenere accesa la pompa. In generale 12 ore al giorno sono una base sicura, ma il valore esatto dipende dal volume della vasca e dalla portata della pompa (solitamente espressa in galloni per ora).",
+                    "p2": "La temperatura pesa molto: d'estate serve circa il doppio delle ore rispetto all'inverno."
+                },
+                "debris": {
+                    "title": "Detriti",
+                    "p1": "Bisogna sempre rimuovere i detriti organici e inorganici che finiscono in acqua. I detriti organici (foglie, insetti, pollini) nutrono le alghe; quelli inorganici (sabbia, polvere) intorbidiscono l'acqua. Un retino a maglia fine, usato quotidianamente, è la prima arma di manutenzione."
+                },
+                "robot": {
+                    "title": "Robottino",
+                    "p1": "Il robottino di pulizia ha un filtro da pochi micron: è perfetto per aspirare alghe e particelle fini sul fondo. Nell'uso ordinario è il modo più comodo per mantenere il fondo pulito senza manovre manuali."
+                }
+            },
+            "actions": {
+                "title": "Azioni",
+                "intro": "Oltre alla manutenzione quotidiana, la piscina richiede interventi periodici programmati: shock per ripristinare il disinfettante, pulizia dei filtri e del fondo.",
+                "shock": {
+                    "title": "Shock",
+                    "p1": "Lo shock consiste nell'immettere una grande quantità di cloro per sterilizzare l'acqua e distruggere tutti gli organismi presenti. Perché sia efficace, alcalinità e pH devono essere nel range corretto. È importante anche spazzolare tutte le superfici: mettere le alghe in sospensione le espone all'azione del cloro.",
+                    "p2": "In condizioni normali il cloro libero sta tra 1 e 3 ppm; in uno shock si punta a 10 ppm, in casi gravi fino a 30 ppm. L'ipoclorito di calcio è il cloro migliore perché bastano pochi chili per uno shock potente; anche l'ipoclorito di sodio funziona bene.",
+                    "p3": "Lo shock si fa in media una volta a settimana (spesso meno). Sole forte, caldo e molta gente in acqua sono i fattori che più lo rendono necessario."
+                },
+                "filterCleaning": {
+                    "title": "Pulizia filtri",
+                    "p1": "Il filtro al quarzo cattura le particelle in sospensione. In condizioni normali basta pulirlo ogni 1-2 settimane. Dopo uno shock va invece pulito subito e più a fondo, soprattutto se l'acqua era piena di alghe."
+                },
+                "bottomCleaning": {
+                    "title": "Pulizia fondo",
+                    "p1": "La pulizia ordinaria del fondo si fa con il robottino. In presenza di grosse quantità di alghe depositate si usa l'aspiratore manuale con il selettore in modalità waste, per scaricare direttamente all'esterno senza far passare lo sporco dal filtro."
+                },
+                "formulas": {
+                    "title": "Formule del cloro",
+                    "description": "Le tre grandezze del cloro sono legate tra loro: se ne conosci due, la terza si ricava.",
+                    "headers": {
+                        "parameter": "Parametro",
+                        "formula": "Formula"
+                    },
+                    "total": {
+                        "label": "Cloro totale",
+                        "formula": "cloro libero + cloro combinato"
+                    },
+                    "free": {
+                        "label": "Cloro libero",
+                        "formula": "cloro totale − cloro combinato"
+                    },
+                    "combined": {
+                        "label": "Cloro combinato",
+                        "formula": "cloro totale − cloro libero"
+                    }
+                }
+            }
+        }
     },
     "Tools": {
         "ChlorineComparison": {

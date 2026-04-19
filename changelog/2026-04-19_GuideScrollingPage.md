@@ -6,7 +6,7 @@ The project currently has a "tools-first" homepage (`src/app/[locale]/page.tsx`)
 ## 2. Objective
 - **Architecture**: Create a single, long-scrolling guide page structure.
 - **Separation of Concerns**: The theoretical guide must be completely separated from the practical calculators (tools). A user should be able to use a tool without reading the history/theory.
-- **Navigation**: The navbar links should use anchor tags (`#chimica`, `#pulizia`) to smoothly scroll down to the respective sections on the page, rather than navigating to entirely new pages.
+- **Navigation**: The navbar links should use anchor tags (`#chemistry`, `#cleaning`) to smoothly scroll down to the respective sections on the page, rather than navigating to entirely new pages.
 - **Text Translation Strategy**: The actual implementation of `testo.md` is paused. The immediate goal is to build the visual scaffolding (UI/Layout) for this scrolling page using placeholder text (Lorem Ipsum), so it's ready when the user finalizes the content.
 - **Agent Hand-off**: Establish a robust `WIP.md` tracking system.
 
@@ -20,8 +20,14 @@ The project currently has a "tools-first" homepage (`src/app/[locale]/page.tsx`)
 ✅ Discussed and agreed upon the architectural approach (Single page, anchor scrolling, separate theory/tools).
 ✅ Updated `AGENTS.md` to enforce detailed `WIP.md` tracking (Handoff document style).
 ✅ Created `changelog/` directory.
-❌ Build the visual scaffolding (scrolling layout) in `page.tsx` using placeholder text.
-❌ Update Navbar to support anchor link scrolling.
+✅ Built the visual scaffolding (scrolling layout) in `page.tsx` using Lorem Ipsum placeholders.
+   - `src/components/home/GuideSection.tsx` — reusable section (anchor id + icon + intro + paragraphs).
+   - `src/components/home/GuideScrolling.tsx` — guide hero + 3 sections (`#chemistry`, `#cleaning`, `#actions`).
+   - Added `.guide-anchor { scroll-margin-top: 5rem }` and `html { scroll-behavior: smooth }` in `globals.css` to offset the sticky navbar.
+✅ Updated Navbar to support anchor link scrolling.
+   - `src/config/nav-items.ts` — new `guide` group with `isAnchor: true` children pointing to `/#chemistry`, `/#cleaning`, `/#actions`.
+   - `src/components/Navbar.tsx` + `src/components/MobileMenu.tsx` — render anchors with plain `<a>` (bypasses next-intl Link for hash-only nav) and close the mobile menu on click.
+   - Translations added under `Navigation.guide/chemistry/cleaning/actions` and a new `Guide` namespace with Lorem Ipsum body text (EN + IT).
 ❌ Review the scaffolding with the user.
 
 ## 5. Success Criteria

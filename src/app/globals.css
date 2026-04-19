@@ -168,4 +168,13 @@
   .glass-panel {
     @apply bg-background/80 backdrop-blur-md border border-border/50;
   }
+
+  /* Guide sections: offset anchor targets below sticky header (h-16) */
+  .guide-anchor {
+    scroll-margin-top: 5rem;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
 }

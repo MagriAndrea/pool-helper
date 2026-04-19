@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { Beaker, ChevronDown } from 'lucide-react';
 import { navItems } from '@/config/nav-items';
+import { AnchorLink } from '@/components/AnchorLink';
 
 import {
   DropdownMenu,
@@ -20,7 +21,7 @@ export function Navbar() {
   const tApp = useTranslations();
 
   return (
-    <header className="sticky top-0 z-50 w-full glass-panel">
+    <header className="hidden md:block sticky top-0 z-50 w-full glass-panel">
       <div className="container flex h-16 max-w-screen-2xl items-center px-4 md:px-8">
         <div className="mr-8 flex">
           <Link href="/" className="flex items-center space-x-3">
@@ -54,9 +55,15 @@ export function Navbar() {
                     <DropdownMenuContent align="end">
                       {item.children.map((child, childIndex) => (
                         <DropdownMenuItem key={childIndex} asChild>
-                          <Link href={child.href || '#'}>
-                            {t(child.labelKey)}
-                          </Link>
+                          {child.isAnchor ? (
+                            <AnchorLink href={child.href || '#'}>
+                              {t(child.labelKey)}
+                            </AnchorLink>
+                          ) : (
+                            <Link href={child.href || '#'}>
+                              {t(child.labelKey)}
+                            </Link>
+                          )}
                         </DropdownMenuItem>
                       ))}
                     </DropdownMenuContent>
