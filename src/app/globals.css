@@ -67,9 +67,9 @@
   --secondary: #22D3EE;
   --secondary-foreground: #164E63;
   --muted: #CFFAFE;
-  --muted-foreground: #0891B2;
-  --accent: #22C55E; /* Clean Green */
-  --accent-foreground: #FFFFFF;
+  --muted-foreground: #0E7490; /* Cyan-700 — WCAG AA on --background */
+  --accent: #CFFAFE; /* Muted cyan tint — subtle hover for ghost/outline */
+  --accent-foreground: #0E7490;
   --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
   --border: #A5F3FC;
@@ -104,8 +104,8 @@
   --secondary-foreground: #FFFFFF;
   --muted: #334155;
   --muted-foreground: #A5F3FC;
-  --accent: #22C55E; /* Bright Green */
-  --accent-foreground: #0F172A;
+  --accent: #334155; /* Muted navy tint — subtle hover for ghost/outline */
+  --accent-foreground: #ECFEFF;
   --destructive: #F87171;
   --destructive-foreground: #FFFFFF;
   --border: #334155;
@@ -143,9 +143,15 @@
   .btn-primary:hover {
     @apply opacity-90 -translate-y-[1px];
   }
+  .btn-primary:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
 
   .btn-secondary {
     @apply bg-transparent text-primary border-2 border-primary px-6 py-3 rounded-md font-semibold transition-all duration-200 cursor-pointer;
+  }
+  .btn-secondary:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 
   /* Cards */
@@ -154,6 +160,9 @@
   }
   .dashboard-card:hover {
     @apply shadow-lg -translate-y-[2px];
+  }
+  .dashboard-card:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background -translate-y-[2px];
   }
 
   /* Inputs */
@@ -175,6 +184,8 @@
   }
 }
 
-html {
-  scroll-behavior: smooth;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }

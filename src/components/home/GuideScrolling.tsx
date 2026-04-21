@@ -53,9 +53,9 @@ export default function GuideScrolling() {
         <p className="text-sm uppercase tracking-widest text-primary font-semibold">
           {t('eyebrow')}
         </p>
-        <h1 className="text-4xl md:text-5xl font-bold font-mono tracking-tight text-foreground">
+        <h2 className="text-4xl md:text-5xl font-bold font-mono tracking-tight text-foreground">
           {t('title')}
-        </h1>
+        </h2>
         <p className="text-lg text-muted-foreground">
           {t('subtitle')}
         </p>

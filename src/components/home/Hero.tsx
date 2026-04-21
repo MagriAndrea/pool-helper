@@ -26,7 +26,7 @@ export default function Hero() {
       </div>
 
       {/* Content Layer */}
-      <div className="relative z-10 flex flex-col items-center space-y-6 animate-fade-in-down max-w-4xl px-4">
+      <div className="relative z-10 flex flex-col items-center space-y-6 animate-in fade-in slide-in-from-top-4 duration-500 max-w-4xl px-4">
         <h1 className="text-5xl md:text-7xl font-bold text-foreground drop-shadow-sm font-mono tracking-tight leading-tight">
           {t('title')}
         </h1>
