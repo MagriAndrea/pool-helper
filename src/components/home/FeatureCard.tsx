@@ -24,7 +24,11 @@ export default function FeatureCard({
   const t = useTranslations('Navigation');
 
   const classes = cn(
-    "dashboard-card group relative flex flex-col overflow-hidden w-full h-full",
+    "group relative flex flex-col overflow-hidden w-full h-full",
+    "rounded-xl p-6 bg-card text-card-foreground border border-border/50 shadow-md",
+    "transition-all duration-base cursor-pointer",
+    "hover:shadow-lg hover:-translate-y-[2px]",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:-translate-y-[2px]",
     className
   );
 

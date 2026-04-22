@@ -30,6 +30,10 @@
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
@@ -51,6 +55,12 @@
   --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
   --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
   --shadow-xl: 0 20px 25px rgba(0,0,0,0.15);
+
+  /* Motion tokens — pair with tw-animate-css and transition-* utilities */
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 500ms;
 }
 
 :root {
@@ -72,6 +82,10 @@
   --accent-foreground: #0E7490;
   --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
+  --info: #2563EB; /* Blue-600 — AA on card/background */
+  --info-foreground: #FFFFFF;
+  --warning: #A16207; /* Yellow-700 — AA on card/background */
+  --warning-foreground: #FFFFFF;
   --border: #A5F3FC;
   --input: #A5F3FC;
   --ring: #0891B2;
@@ -108,6 +122,10 @@
   --accent-foreground: #ECFEFF;
   --destructive: #F87171;
   --destructive-foreground: #FFFFFF;
+  --info: #60A5FA; /* Blue-400 — AA on dark card */
+  --info-foreground: #0F172A;
+  --warning: #FBBF24; /* Yellow-400 — AA on dark card */
+  --warning-foreground: #0F172A;
   --border: #334155;
   --input: #334155;
   --ring: #22D3EE;
@@ -136,43 +154,6 @@
 }
 
 @layer components {
-  /* Buttons */
-  .btn-primary {
-    @apply bg-primary text-primary-foreground px-6 py-3 rounded-md font-semibold transition-all duration-200 cursor-pointer;
-  }
-  .btn-primary:hover {
-    @apply opacity-90 -translate-y-[1px];
-  }
-  .btn-primary:focus-visible {
-    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
-  }
-
-  .btn-secondary {
-    @apply bg-transparent text-primary border-2 border-primary px-6 py-3 rounded-md font-semibold transition-all duration-200 cursor-pointer;
-  }
-  .btn-secondary:focus-visible {
-    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
-  }
-
-  /* Cards */
-  .dashboard-card {
-    @apply bg-card text-card-foreground rounded-xl p-6 shadow-md transition-all duration-200 cursor-pointer border border-border/50;
-  }
-  .dashboard-card:hover {
-    @apply shadow-lg -translate-y-[2px];
-  }
-  .dashboard-card:focus-visible {
-    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background -translate-y-[2px];
-  }
-
-  /* Inputs */
-  .dashboard-input {
-    @apply px-4 py-3 border border-border rounded-lg text-base transition-colors duration-200 bg-background text-foreground;
-  }
-  .dashboard-input:focus {
-    @apply border-primary outline-none ring-2 ring-primary/20;
-  }
-  
   /* Utilities */
   .glass-panel {
     @apply bg-background/80 backdrop-blur-md border border-border/50;

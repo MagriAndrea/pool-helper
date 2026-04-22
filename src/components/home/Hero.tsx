@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { Button } from '@/components/ui/button';
 
 export default function Hero() {
   const t = useTranslations('HomePage');
@@ -26,16 +27,16 @@ export default function Hero() {
       </div>
 
       {/* Content Layer */}
-      <div className="relative z-10 flex flex-col items-center space-y-6 animate-in fade-in slide-in-from-top-4 duration-500 max-w-4xl px-4">
+      <div className="relative z-10 flex flex-col items-center space-y-6 animate-in fade-in slide-in-from-top-4 duration-slower max-w-4xl px-4">
         <h1 className="text-5xl md:text-7xl font-bold text-foreground drop-shadow-sm font-mono tracking-tight leading-tight">
           {t('title')}
         </h1>
         <p className="text-lg md:text-2xl text-muted-foreground max-w-2xl font-medium">
           {t('welcome')}
         </p>
-        <a href="#tools" className="btn-primary text-lg px-8 py-4 inline-block">
-          {t('getStarted')}
-        </a>
+        <Button asChild size="lg" className="h-auto px-8 py-4 text-lg font-semibold">
+          <a href="#tools">{t('getStarted')}</a>
+        </Button>
       </div>
     </section>
   );

@@ -23,9 +23,9 @@ export function SodiumCard({ input, onChange }: SodiumCardProps) {
   };
 
   return (
-    <Card className="h-full border-l-4 border-l-yellow-500 shadow-md">
+    <Card className="h-full border-l-4 border-l-warning shadow-md">
       <CardHeader>
-        <CardTitle className="text-xl text-yellow-600 dark:text-yellow-400">
+        <CardTitle className="text-xl text-warning">
           {t('Labels.sodiumTitle')}
         </CardTitle>
         <CardDescription>
@@ -72,7 +72,7 @@ export function SodiumCard({ input, onChange }: SodiumCardProps) {
         </div>
 
         {input.unit === 'l' && (
-           <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
+           <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-slow">
              <Label htmlFor="na_density">{t('Labels.density')}</Label>
              <Input
                id="na_density"
@@ -110,7 +110,7 @@ export function SodiumCard({ input, onChange }: SodiumCardProps) {
 
         {/* Transparency Section */}
         {input.quantity > 0 && input.concentration > 0 && (
-           <div className="mt-4 rounded-md bg-slate-50 p-3 text-sm text-slate-600 dark:bg-slate-900 dark:text-slate-400">
+           <div className="mt-4 rounded-md bg-muted p-3 text-sm text-muted-foreground">
              <div className="flex justify-between">
                 <span>{t('Labels.activeChlorine')}:</span>
                 <span className="font-medium">

@@ -13,7 +13,7 @@ export function ComparisonVerdict({ result }: ComparisonVerdictProps) {
 
   if (!result || !result.winner) {
     return (
-      <div className="mt-6 rounded-xl border border-dashed p-8 text-center text-muted-foreground animate-in fade-in duration-500">
+      <div className="mt-6 rounded-xl border border-dashed p-8 text-center text-muted-foreground animate-in fade-in duration-slower">
         <Scale className="mx-auto mb-2 h-8 w-8 opacity-50" />
         <p>{t('prompt')}</p>
       </div>
@@ -29,7 +29,7 @@ export function ComparisonVerdict({ result }: ComparisonVerdictProps) {
 
   return (
     <div className={cn(
-      "mt-6 overflow-hidden rounded-xl shadow-lg transition-all duration-500 animate-in slide-in-from-bottom-4",
+      "mt-6 overflow-hidden rounded-xl shadow-lg transition-all duration-slower animate-in slide-in-from-bottom-4",
       winnerColor
     )}>
       <div className="p-6 text-center">

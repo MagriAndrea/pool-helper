@@ -37,7 +37,7 @@ export function MobileMenu() {
             'w-14 h-14 rounded-2xl',
             'flex items-center justify-center',
             'bg-primary text-primary-foreground shadow-lg',
-            'transition-all duration-200',
+            'transition-all duration-base',
             'hover:scale-[1.05] hover:shadow-xl active:scale-95',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
             'data-[state=open]:opacity-0 data-[state=open]:scale-90 data-[state=open]:pointer-events-none',
@@ -54,7 +54,7 @@ export function MobileMenu() {
             'bg-background/80 backdrop-blur-sm',
             'data-[state=open]:animate-in data-[state=open]:fade-in-0',
             'data-[state=closed]:animate-out data-[state=closed]:fade-out-0',
-            'duration-200',
+            'duration-base',
           )}
         />
 
@@ -67,7 +67,7 @@ export function MobileMenu() {
             'focus:outline-none',
             'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-bottom-4',
             'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-bottom-4',
-            'duration-200',
+            'duration-base',
           )}
         >
           <Dialog.Title className="sr-only">{t('menuTitle')}</Dialog.Title>
@@ -97,7 +97,7 @@ export function MobileMenu() {
                       const ChildIcon = child.icon;
                       const isActive = pathname === child.href;
                       const classes = cn(
-                        'flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 group ml-2',
+                        'flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-base group ml-2',
                         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                         isActive
                           ? 'bg-primary/10 text-primary font-medium'
@@ -155,7 +155,7 @@ export function MobileMenu() {
                   key={index}
                   href={item.href || '#'}
                   className={cn(
-                    'flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 group',
+                    'flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-base group',
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                     isActive
                       ? 'bg-primary/10 text-primary font-medium'
