@@ -24,9 +24,9 @@ export function CalciumCard({ input, onChange }: CalciumCardProps) {
   };
 
   return (
-    <Card className="h-full border-l-4 border-l-blue-500 shadow-md">
+    <Card className="h-full border-l-4 border-l-info shadow-md">
       <CardHeader>
-        <CardTitle className="text-xl text-blue-600 dark:text-blue-400">
+        <CardTitle className="text-xl text-info">
           {t('Labels.calciumTitle')}
         </CardTitle>
         <CardDescription>
@@ -71,7 +71,7 @@ export function CalciumCard({ input, onChange }: CalciumCardProps) {
         
         {/* Transparency Section */}
         {input.weight > 0 && input.concentration > 0 && (
-           <div className="mt-4 rounded-md bg-slate-50 p-3 text-sm text-slate-600 dark:bg-slate-900 dark:text-slate-400">
+           <div className="mt-4 rounded-md bg-muted p-3 text-sm text-muted-foreground">
              <div className="flex justify-between">
                 <span>{t('Labels.activeChlorine')}:</span>
                 <span className="font-medium">
