@@ -14,6 +14,8 @@
     "Navigation": {
         "home": "Home",
         "close": "Chiudi",
+        "openMenu": "Apri menu",
+        "menuTitle": "Menu di navigazione",
         "tools": "Strumenti",
         "chlorineComparison": "Confronto Ipocloriti",
         "chlorineComparisonDesc": "Confronta diversi tipi di cloro per trovare il miglior rapporto qualità/prezzo.",
