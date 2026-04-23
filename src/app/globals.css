@@ -165,8 +165,8 @@
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
+/* NOTE: no global `scroll-behavior: smooth` on <html>.
+   It hijacks Next.js' per-route scroll reset (new pages end up stuck at the
+   previous scroll position). Smooth scrolling for in-page anchors is handled
+   programmatically in `AnchorLink` via `scrollIntoView({ behavior: 'smooth' })`,
+   which also respects `prefers-reduced-motion` at the browser level. */

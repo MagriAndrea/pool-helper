@@ -18,7 +18,7 @@ export default function ChlorineComparisonPage() {
   } = useChlorineComparison();
 
   return (
-    <div className="container max-w-4xl py-8 px-4 md:py-12">
+    <div className="container mx-auto max-w-4xl py-8 px-4 md:py-12">
       <div className="mb-8 text-center space-y-2">
         <h1 className="text-3xl font-bold tracking-tight md:text-4xl text-foreground">
           {t('title')}
