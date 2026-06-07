@@ -36,12 +36,23 @@ The project follows a standard Next.js `src` directory pattern.
 
   /components
     /ui                 # Reusable Shadcn primitives (Button, Card, Input).
+    /tools              # Tool-specific UI components (calculators).
+    /home               # Home page sections.
     theme-provider.tsx  # Next-themes wrapper for standardizing context.
-    
+
   /lib                  # Pure business logic and utilities.
-    calculator.ts       # Core chemical calculation algorithms (Pure functions).
+    /calculator         # Modular chemical calculation algorithms (Pure functions).
     utils.ts            # Tailwind class merging (cn helper).
-    use-local-storage.ts # Custom hook for client-side persistence.
+    shared-state.ts     # Shared localStorage key constants across tools.
+
+  /hooks                # Custom React hooks (client-side).
+    use-local-storage.ts        # localStorage persistence with SSR-safe hydration.
+    use-tool-state.ts           # Per-tool state + bidirectional shared-key sync.
+    use-chlorine-comparison.ts  # State + debounced API for the comparison tool.
+    use-shock-calculator.ts     # State + debounced API for the shock tool.
+
+  /config               # Static configuration.
+    nav-items.ts        # Navigation menu structure (tools, guide).
 
   /messages             # Translation dictionaries.
     it.json
@@ -71,8 +82,22 @@ Theming is handled via `next-themes` interacting with Tailwind CSS variables.
 To respect user privacy and allow offline usage without authentication:
 - **Storage**: Browser `localStorage` is used to persist calculator state.
 - **Implementation**: A custom React hook (`useLocalStorage`) handles hydration to prevent Server-Side Rendering (SSR) mismatches (hydration errors), ensuring data is only read after the component mounts on the client.
+- **Shared pool profile (cross-tool)**: `useToolState` (in `src/hooks`) layers a "per-tool key with bidirectional shared references" model on top. Each tool persists its full state under a `TOOL_KEYS` entry, while values that describe the pool itself (volume, CYA, FC, CC) are mirrored to `SHARED_KEYS` (`ph_pool_*`, defined in `src/lib/shared-state.ts`). Writing tool state updates both, so values entered in one tool are reused by another while you work. A tool's **reset is a full wipe** — it clears the tool key *and* the mapped shared keys — so every field is cleared and stays cleared after a reload.
 
 ### 4.4 Calculator Logic (Architecture)
-Calculation logic is decoupled from UI components.
-- **Location**: `src/lib/calculator.ts`.
-- **Design**: Pure functions accepting input parameters and returning typed result objects. This facilitates easier unit testing and potential reuse in API routes.
+Calculation logic is decoupled from UI components and lives in `src/lib/calculator/` as a **module of pure functions** (see its `AGENTS.md`).
+- **Primitives**: `chlorine-target.ts` (target FC from CYA + water color + breakpoint), `chlorine-dose.ts` (pure chlorine grams from volume × gap), `product-conversion.ts` (product amount + side effects), `pool-volume.ts` (volume from shape + dimensions). Each is independently callable and exposed via its own API route.
+- **Orchestrator**: `shock.ts` composes the primitives into a single `computeShock` used by the Shock Calculator.
+- **Constants**: all chemistry numbers live in `constants.ts` with inline source citations (TFP / Orenda / PHTA). **Do not change them without consulting the source.**
+- **Ranges**: results use a `RangeOrValue` type (`range.ts`) so "I don't know" answers (CYA → 30–80 ppm, FC → 0–2 ppm) propagate as min–max ranges.
+- **i18n boundary**: the calculator returns numbers and codes only — never localized prose. The UI formats numbers via next-intl. This keeps all translations in one place.
+- **Backward compatibility**: `index.ts` re-exports everything, so `@/lib/calculator` keeps resolving for the existing Chlorine Comparison tool (`chlorine-comparison.ts`).
+
+### 4.5 Public Calculation API (Modular)
+Calculation endpoints live under `src/app/api/v1/calculate/`. Each primitive has a thin POST route that validates input and calls the matching pure function, so calculations are reusable by any client (and future tools):
+- `chlorine-target/`, `chlorine-dose/`, `product-conversion/`, `pool-volume/` — individual primitives.
+- `shock/` — a wrapper that orchestrates the primitives in one call (what the Shock Calculator UI uses).
+- `chlorine/` — the pre-existing Chlorine Comparison endpoint.
+
+### 4.6 Tools
+Tools live at `/[locale]/tools/<slug>`: `chlorine-comparison`, `shock`, and `pool-volume`. Tool components are **location-agnostic** — the `PoolVolumeCalculator` is used both as the standalone `/tools/pool-volume` page and embedded inside the Shock tool's volume modal, sharing state through the `ph_pool_*` localStorage keys. **To add a new tool, follow the `add-pool-tool` project skill** (`.claude/skills/add-pool-tool/`), which encodes the full file-by-file recipe and conventions.

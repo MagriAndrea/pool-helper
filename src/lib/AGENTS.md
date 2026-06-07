@@ -15,3 +15,5 @@
 | Path | Content | AI Agent Action |
 |------|---------|-----------------|
 | `utils.ts` | Shared utilities | **Check for `cn` and other helpers** |
+| `calculator/` | Modular pool-chemistry engine (pure functions) | **SEE `src/lib/calculator/AGENTS.md`** |
+| `shared-state.ts` | localStorage key registry (`SHARED_KEYS`, `TOOL_KEYS`) | **Use these keys for cross-tool shared state** |

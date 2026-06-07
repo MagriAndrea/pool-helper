@@ -17,6 +17,6 @@
 
 | Path | Content | AI Agent Action |
 |------|---------|-----------------|
-| `api/` | Backend API Routes | **Read `route.ts` files** |
+| `api/` | Backend API Routes. `api/v1/calculate/*` are thin POST wrappers over the pure functions in `src/lib/calculator` — one route per primitive plus a `shock/` orchestrator. | **Read `route.ts` files; keep routes thin, logic lives in `lib`** |
 | `layout.tsx` | Root Layouts | **Check for global providers/wrappers** |
 | `page.tsx` | Page UI | **Primary entry point for routes** |

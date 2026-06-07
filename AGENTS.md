@@ -142,9 +142,11 @@ This project uses a **Hierarchical Documentation System**.
 | Path | Content | AI Agent Action |
 |------|---------|-----------------|
 | `.agents/agency-agents/` | Local Sub-agents & AI Skills Repository | **READ matching skill when acting as an expert** |
+| `.claude/skills/` | Project skills (committed). `add-pool-tool` = the file-by-file recipe for a new tool. | **INVOKE/READ `add-pool-tool` before building a new tool** |
 | `src/app/` | Application Logic (Next.js App Router) | **SEE `src/app/AGENTS.md`** |
 | `src/components/` | UI Components (Shadcn/UI) | **SEE `src/components/AGENTS.md`** |
 | `src/lib/` | Utilities and Helpers | **SEE `src/lib/AGENTS.md`** |
+| `src/hooks/` | Custom React Hooks (client-side state) | **SEE `src/hooks/AGENTS.md`** |
 | `src/i18n/` | Internationalization Config | **SEE `src/i18n/AGENTS.md`** |
 | `src/messages/` | Translation Files (JSON) | **SEE `src/messages/AGENTS.md`** |
 | `src/config/` | Configuration Files (Navigation, etc.) | **SEE `src/config/AGENTS.md`** |

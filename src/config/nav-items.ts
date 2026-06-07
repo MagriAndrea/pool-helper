@@ -1,5 +1,5 @@
 
-import { Beaker, BookOpen, FlaskConical, Droplets, ListChecks, Menu } from 'lucide-react';
+import { Beaker, BookOpen, FlaskConical, Droplets, ListChecks, Menu, Zap, Ruler } from 'lucide-react';
 
 export interface NavItem {
   href?: string;
@@ -26,6 +26,18 @@ export const navItems: NavItem[] = [
         descriptionKey: 'chlorineComparisonDesc',
         image: '/images/chlorine_comparison.png',
         icon: Beaker,
+      },
+      {
+        href: '/tools/shock',
+        labelKey: 'shock',
+        descriptionKey: 'shockDesc',
+        icon: Zap,
+      },
+      {
+        href: '/tools/pool-volume',
+        labelKey: 'poolVolume',
+        descriptionKey: 'poolVolumeDesc',
+        icon: Ruler,
       }
     ]
   },

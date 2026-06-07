@@ -26,5 +26,5 @@
 | `ui/` | Shadcn Primitives | **Use these as building blocks** |
 | `NavigationUI.tsx` | Main Navigation Wrapper (Desktop/Mobile switcher) | **Wrap `Navbar` and `MobileMenu`** |
 | `Navbar.tsx` | Desktop Navigation Bar | **Uses `nav-items.ts` for dynamic links** |
-| `MobileMenu.tsx` | Mobile Navigation (FAB + Sheet) | **Uses `nav-items.ts` for dynamic links** |
+| `MobileMenu.tsx` | Mobile Navigation (Radix Dialog overlay) | **Uses `nav-items.ts` for dynamic links** |
 | `tools/` | Specific Tool Components (Calculators, etc.) | **Keep logic isolated in subfolders** |
