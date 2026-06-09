@@ -31,12 +31,14 @@ export const navItems: NavItem[] = [
         href: '/tools/shock',
         labelKey: 'shock',
         descriptionKey: 'shockDesc',
+        image: '/images/pool_shock.png',
         icon: Zap,
       },
       {
         href: '/tools/pool-volume',
         labelKey: 'poolVolume',
         descriptionKey: 'poolVolumeDesc',
+        image: '/images/pool_volume.png',
         icon: Ruler,
       }
     ]
