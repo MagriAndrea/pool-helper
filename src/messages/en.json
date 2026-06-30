@@ -306,6 +306,78 @@
                 "highCya": "Your CYA ({value} ppm) is very high. Consider a partial drain before shocking.",
                 "alreadyEnough": "You already have enough free chlorine for this shock level.",
                 "lowDose": "The calculated amount is very small — measuring it precisely may be hard."
+            },
+            "Info": {
+                "title": "How the Shock Calculator works",
+                "subtitle": "The full logic and formulas behind the result — nothing hidden.",
+                "overview": {
+                    "title": "What this tool computes",
+                    "p1": "It answers one question: how much chlorine product to pour in to bring your water to a safe shock level — given the pool volume, the water condition, the stabilizer (CYA) and the chlorine already present. Every step below is exactly what runs under the hood."
+                },
+                "chlorine": {
+                    "title": "Free, combined and total chlorine",
+                    "p1": "Free chlorine (FC) is the active disinfectant. Combined chlorine (CC) is chlorine already bonded to organic matter — the weak, smelly 'used-up' chlorine (chloramines). Total chlorine (TC) is just FC + CC.",
+                    "p2": "A shock works on FC: you push it well above normal to kill algae and burn off chloramines. So the dose depends on how far your current FC is from the target, and — when you provide it — on your CC."
+                },
+                "target": {
+                    "title": "Step 1 — The target free chlorine (SLAM)",
+                    "p1": "The target is not a fixed number: it scales with your cyanuric acid (CYA). CYA locks most of the chlorine into a reserve, leaving only a small fraction as active hypochlorous acid (HOCl). More CYA means less active chlorine at the same FC, so you need a higher FC. The TroubleFreePool 'SLAM' method captures this with a single ratio:",
+                    "formula": "Target FC = {ratio} × CYA × color multiplier",
+                    "p2": "That {pct} of CYA is the shock level that restores enough active HOCl no matter how much stabilizer is in the water."
+                },
+                "whySlam": {
+                    "title": "Why SLAM, and not a fixed dose",
+                    "p1": "Two simpler approaches exist. A fixed target (e.g. '10 ppm, 30 in bad cases') is easy but ignores CYA, so it under-doses high-CYA pools — the chlorine is there but inactive — and over-doses low-CYA ones. The retail 'pounds per 10,000 gallons' rule is practical but tied to one product and one assumed CYA.",
+                    "p2": "SLAM is the only model where what matters is the FC-to-CYA ratio, not absolute FC. '10 ppm' is meaningless without knowing CYA. By anchoring on {pct} of CYA, the same killing power is reached whether your CYA is 30 or 90 — that is why this tool uses it, and why it asks for your CYA (or a prudent estimate when you don't know it).",
+                    "p3": "We stay honest about the limit: above {cyaHigh} ppm of CYA, even shock-level FC struggles, and the real fix is partly draining and refilling. The tool warns you instead of demanding an impossible dose."
+                },
+                "breakpoint": {
+                    "title": "Step 1b — Breakpoint (when combined chlorine is high)",
+                    "p1": "Destroying chloramines needs a separate push: FC has to cross a 'breakpoint' of about {mult} times the CC. Below it you create more chloramines; above it they break down into harmless nitrogen gas.",
+                    "formula": "Breakpoint target = {mult} × combined chlorine",
+                    "p2": "The tool computes both targets and keeps the higher one, so a high CC raises your result on its own:",
+                    "formula2": "Final target = max( SLAM target , {mult} × CC , color minimum )",
+                    "p3": "Example: a SLAM target of 20 ppm with a CC of 3 ppm gives a breakpoint of 30 ppm, which wins — and the result tells you which one drove the number. The {mult}× rule is a conservative industry rule of thumb (some chemists argue the true demand is lower), so we label it as such."
+                },
+                "color": {
+                    "title": "Step 1c — How the water color changes the result",
+                    "p1": "The water condition sets a severity multiplier on the SLAM target, plus a minimum floor so a visible bloom is never under-treated:",
+                    "headerState": "Water",
+                    "headerMultiplier": "Multiplier",
+                    "headerFloor": "Minimum FC",
+                    "perfectNote": "no algae shock",
+                    "p2": "So at the same CYA, going from light green to very dark water multiplies the target — and therefore the product — by up to {maxMult}×. 'Perfect' water means no algae shock at all: the tool only suggests a breakpoint shock if your CC is above {ccHigh} ppm."
+                },
+                "dose": {
+                    "title": "Step 2 — From target to grams of pure chlorine",
+                    "p1": "Once the target is known, the dose is simply the gap to fill across the whole pool. Since 1 ppm = 1 milligram per litre, one gram of pure chlorine raises 1,000 litres by 1 ppm:",
+                    "formula": "Pure chlorine (g) = volume (L) × (target − current FC) ÷ 1000",
+                    "p2": "If your current FC already meets the target, nothing needs to be added."
+                },
+                "product": {
+                    "title": "Step 3 — From pure chlorine to product",
+                    "p1": "You don't buy 'pure chlorine' — you buy a product at some strength, so we divide by its available-chlorine fraction. Stabilized chlorine (trichlor tablets, dichlor granules) is deliberately excluded: it adds CYA every single time, which is exactly what makes a pool unmanageable over a season.",
+                    "formulaCalcium": "Calcium hypochlorite (solid): grams = pure chlorine ÷ (concentration %)",
+                    "formulaSodium": "Sodium hypochlorite (liquid): mL = pure chlorine ÷ (trade % × 10)",
+                    "p2": "Liquid chlorine is sold in 'trade %' (grams of available chlorine per 100 mL); storing it internally as grams per litre avoids the classic weight-vs-volume dosing error. Each product also nudges the water:",
+                    "headerName": "Product",
+                    "headerStrength": "Typical strength",
+                    "headerAdds": "Side effect (per ppm FC)",
+                    "sodiumAdds": "+{salt} ppm salt · raises pH briefly",
+                    "calciumAdds": "+{hardness} ppm calcium hardness · raises pH"
+                },
+                "unknowns": {
+                    "title": "When you answer “I don't know”",
+                    "p1": "If you don't know your CYA, the tool evaluates the target across a prudent range ({cyaMin}–{cyaMax} ppm). If you don't know your current chlorine, it spans {fcMin}–{fcMax} ppm. The headline figure is the average of that range, and a warning shows the full span — because without measuring, the honest answer is a range, not a single number."
+                },
+                "safety": {
+                    "title": "Assumptions & safety",
+                    "p1": "Balance the pH first — a shock with bad pH wastes product. Never mix different chlorine products (toxic gas). Brush the surfaces to suspend algae. Re-test after the water has circulated, and wait until FC drops back to the normal band before swimming. These numbers are guidance, not a lab measurement."
+                },
+                "sources": {
+                    "title": "Sources",
+                    "p1": "The constants and methods above come from:"
+                }
             }
         },
         "PoolVolume": {
@@ -331,6 +403,10 @@
             "litersUnit": "liters",
             "secondary": "= {m3} m³ · {gal} US gal",
             "applyButton": "Use this volume"
+        },
+        "Info": {
+            "back": "Back to the tool",
+            "buttonLabel": "How it works"
         }
     }
 }

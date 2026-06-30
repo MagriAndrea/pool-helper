@@ -38,7 +38,7 @@
         "sections": {
             "chemistry": {
                 "title": "Chimica",
-                "intro": "Tre parametri tengono in equilibrio l'acqua: alcalinità (80-120 ppm), pH (7,2-7,6) e cloro libero (1-3 ppm). Controllali sempre in quest'ordine — alcalinità, pH, cloro — perché ognuno influenza il successivo.",
+                "intro": "Tre parametri tengono in equilibrio l'acqua: alcalinità (80-120 ppm), pH (7,2-7,6) e cloro libero (1-3 ppm). Controllali sempre in quest'ordine, alcalinità, pH, cloro, perché ognuno influenza il successivo.",
                 "alkalinity": {
                     "title": "Alcalinità",
                     "p1": "L'alcalinità funziona da tampone per il pH: se resta tra 80 e 120 ppm, il pH rimane stabile e poco volatile. In piscina l'alcalinità tende a diminuire nel tempo, perché i prodotti acidi come il diminutore di pH consumano i bicarbonati presenti nell'acqua. Per riportarla nel range si usa il bicarbonato di sodio, che aumenta leggermente anche il pH."
@@ -50,7 +50,7 @@
                 },
                 "chlorine": {
                     "title": "Cloro",
-                    "p1": "Il cloro disinfetta l'acqua prevenendo alghe e batteri pericolosi. Si trova in più forme — pastiglie, granuli, liquido — ognuna con concentrazione e livello di stabilizzazione diversi."
+                    "p1": "Il cloro disinfetta l'acqua prevenendo alghe e batteri pericolosi. Si trova in più forme, pastiglie, granuli, liquido, ognuna con concentrazione e livello di stabilizzazione diversi."
                 },
                 "chlorineStabilized": {
                     "title": "Cloro stabilizzato",
@@ -192,11 +192,11 @@
             "Intro": {
                 "title": "Quanto shock serve alla tua piscina?",
                 "subtitle": "2 minuti · ti guidiamo passo dopo passo",
-                "explanation": "Lo shock è una grande dose di cloro che ripristina la disinfezione e abbatte alghe e clorammine. Questo strumento ti dice quanto prodotto serve e quale usare — quando l'acqua ne ha davvero bisogno.",
+                "explanation": "Lo shock è una grande dose di cloro che ripristina la disinfezione e abbatte alghe e clorammine. Questo strumento ti dice quanto prodotto serve e quale usare, quando l'acqua ne ha davvero bisogno.",
                 "phWarning": "Prima di tutto: l'acqua deve avere il pH bilanciato. Se il pH è fuori range, lo shock potrebbe non funzionare bene.",
                 "phLink": "Scopri come bilanciare il pH",
                 "callToAction": "Inserisci i dati qui sotto e ti accompagniamo passo dopo passo. 👇",
-                "revealHint": "— gli step si rivelano man mano che compili —"
+                "revealHint": "gli step si rivelano man mano che compili"
             },
             "Volume": {
                 "title": "Quanta acqua ha la tua piscina?",
@@ -209,12 +209,12 @@
                 "helpText": "Non sai quanti litri ha la tua piscina?",
                 "calculateButton": "Calcola il volume",
                 "modalTitle": "Calcola il volume della piscina",
-                "modalPlaceholder": "Strumento calcolo volume — in arrivo",
+                "modalPlaceholder": "Strumento calcolo volume, in arrivo",
                 "modalClose": "Chiudi"
             },
             "Color": {
                 "title": "Di che colore è la tua acqua?",
-                "subtitle": "Tocca la piscina più simile alla tua — definisce l'intensità dello shock",
+                "subtitle": "Tocca la piscina più simile alla tua: definisce l'intensità dello shock",
                 "perfectLabel": "Acqua perfetta",
                 "perfectDescription": "blu, limpida",
                 "lightGreenLabel": "Shock leggero",
@@ -232,7 +232,7 @@
                 "label": "Acido cianurico",
                 "placeholder": "es. 30",
                 "unit": "ppm",
-                "reassure": "Nessun problema: useremo un valore prudente (30–80 ppm) e il risultato sarà un range un po' più ampio.",
+                "reassure": "Nessun problema: useremo un valore prudente (30-80 ppm) e il risultato sarà un range un po' più ampio.",
                 "highWarning": "⚠ Il tuo CYA è molto alto. Anche shockando, il cloro fa fatica a funzionare. Valuta di sostituire una parte dell'acqua prima di shockare.",
                 "learnMore": "Cos'è? Scopri di più sull'acido cianurico"
             },
@@ -305,7 +305,79 @@
             "Warnings": {
                 "highCya": "Il tuo CYA ({value} ppm) è molto alto. Valuta uno svuotamento parziale prima di shockare.",
                 "alreadyEnough": "Hai già abbastanza cloro libero per questo livello di shock.",
-                "lowDose": "La quantità calcolata è molto piccola — potrebbe essere difficile dosarla con precisione."
+                "lowDose": "La quantità calcolata è molto piccola, potrebbe essere difficile dosarla con precisione."
+            },
+            "Info": {
+                "title": "Come funziona il Calcolatore Shock",
+                "subtitle": "Tutta la logica e le formule dietro il risultato: niente di nascosto.",
+                "overview": {
+                    "title": "Cosa calcola questo strumento",
+                    "p1": "Risponde a una domanda: quanto prodotto a base di cloro versare per portare l'acqua a un livello di shock sicuro, dati il volume della piscina, la condizione dell'acqua, lo stabilizzante (CYA) e il cloro già presente. Ogni passo qui sotto è esattamente ciò che gira sotto al programma."
+                },
+                "chlorine": {
+                    "title": "Cloro libero, combinato e totale",
+                    "p1": "Il cloro libero (FC) è il disinfettante attivo. Il cloro combinato (CC) è il cloro già legato alla materia organica, il cloro debole e puzzolente ormai 'consumato' (le clorammine). Il cloro totale (TC) è semplicemente FC + CC.",
+                    "p2": "Lo shock agisce sull'FC: lo spingi ben sopra il normale per uccidere le alghe e bruciare le clorammine. Quindi la dose dipende da quanto il tuo FC attuale è lontano dall'obiettivo e, quando lo fornisci, dal tuo CC."
+                },
+                "target": {
+                    "title": "Passo 1: L'obiettivo di cloro libero (SLAM)",
+                    "p1": "L'obiettivo non è un numero fisso: scala con il tuo acido cianurico (CYA). Il CYA lega gran parte del cloro in una riserva, lasciando attiva solo una piccola frazione come acido ipocloroso (HOCl). Più CYA significa meno cloro attivo a parità di FC, quindi serve un FC più alto. Il metodo 'SLAM' di TroubleFreePool lo cattura con un solo rapporto:",
+                    "formula": "Obiettivo FC = {ratio} × CYA × moltiplicatore colore",
+                    "p2": "Quel {pct} del CYA è il livello di shock che ripristina abbastanza HOCl attivo indipendentemente da quanto stabilizzante c'è in acqua."
+                },
+                "whySlam": {
+                    "title": "Perché lo SLAM, e non una dose fissa",
+                    "p1": "Esistono due approcci più semplici. Un obiettivo fisso (es. '10 ppm, 30 nei casi gravi') è facile ma ignora il CYA, quindi sotto-dosa le piscine con CYA alto, il cloro c'è ma è inattivo, e sovra-dosa quelle con CYA basso. La regola da negozio 'libbre per 10.000 galloni' è pratica ma legata a un solo prodotto e a un CYA assunto.",
+                    "p2": "Lo SLAM è l'unico modello in cui ciò che conta è il rapporto FC/CYA, non l'FC assoluto. '10 ppm' non significa nulla senza sapere il CYA. Ancorandosi al {pct} del CYA, si raggiunge la stessa potenza disinfettante che il tuo CYA sia 30 o 90, ecco perché lo strumento lo usa, e perché ti chiede il CYA (o una stima prudente se non lo conosci).",
+                    "p3": "Siamo onesti sul limite: sopra {cyaHigh} ppm di CYA, anche un FC da shock fatica, e la vera soluzione è svuotare e riempire in parte. Lo strumento ti avvisa invece di pretendere una dose impossibile."
+                },
+                "breakpoint": {
+                    "title": "Passo 1b: Breakpoint (quando il cloro combinato è alto)",
+                    "p1": "Distruggere le clorammine richiede una spinta a parte: l'FC deve superare un 'punto di rottura' di circa {mult} volte il CC. Sotto, crei altre clorammine; sopra, si scompongono in azoto gassoso innocuo.",
+                    "formula": "Obiettivo breakpoint = {mult} × cloro combinato",
+                    "p2": "Lo strumento calcola entrambi gli obiettivi e tiene il più alto, quindi un CC alto alza il risultato da solo:",
+                    "formula2": "Obiettivo finale = max( obiettivo SLAM , {mult} × CC , minimo colore )",
+                    "p3": "Esempio: un obiettivo SLAM di 20 ppm con un CC di 3 ppm dà un breakpoint di 30 ppm, che vince, e il risultato ti dice quale ha determinato il numero. La regola {mult}× è una regola pratica prudente del settore (alcuni chimici sostengono che la richiesta reale sia minore), perciò la segnaliamo come tale."
+                },
+                "color": {
+                    "title": "Passo 1c: Come il colore dell'acqua cambia il risultato",
+                    "p1": "La condizione dell'acqua imposta un moltiplicatore di gravità sull'obiettivo SLAM, più un minimo di sicurezza così una fioritura visibile non è mai sotto-trattata:",
+                    "headerState": "Acqua",
+                    "headerMultiplier": "Moltiplicatore",
+                    "headerFloor": "FC minimo",
+                    "perfectNote": "nessuno shock alghe",
+                    "p2": "Quindi a parità di CYA, passando da verde chiaro ad acqua molto scura l'obiettivo, e di conseguenza il prodotto, si moltiplica fino a {maxMult}×. Acqua 'perfetta' significa nessuno shock per alghe: lo strumento suggerisce uno shock di breakpoint solo se il tuo CC è sopra {ccHigh} ppm."
+                },
+                "dose": {
+                    "title": "Passo 2: Dall'obiettivo ai grammi di cloro puro",
+                    "p1": "Una volta noto l'obiettivo, la dose è semplicemente il divario da colmare su tutta la piscina. Poiché 1 ppm = 1 milligrammo per litro, un grammo di cloro puro alza 1.000 litri di 1 ppm:",
+                    "formula": "Cloro puro (g) = volume (L) × (obiettivo − FC attuale) ÷ 1000",
+                    "p2": "Se il tuo FC attuale raggiunge già l'obiettivo, non serve aggiungere nulla."
+                },
+                "product": {
+                    "title": "Passo 3: Dal cloro puro al prodotto",
+                    "p1": "Non compri 'cloro puro', compri un prodotto a una certa concentrazione, quindi dividiamo per la sua frazione di cloro disponibile. Il cloro stabilizzato (pastiglie di tricloro, granuli di dicloro) è escluso di proposito: aggiunge CYA ogni singola volta, che è esattamente ciò che rende una piscina ingestibile nel corso di una stagione.",
+                    "formulaCalcium": "Ipoclorito di calcio (solido): grammi = cloro puro ÷ (concentrazione %)",
+                    "formulaSodium": "Ipoclorito di sodio (liquido): mL = cloro puro ÷ (trade % × 10)",
+                    "p2": "Il cloro liquido si vende in 'trade %' (grammi di cloro disponibile per 100 mL); memorizzarlo internamente come grammi per litro evita il classico errore peso-contro-volume. Ogni prodotto inoltre modifica l'acqua:",
+                    "headerName": "Prodotto",
+                    "headerStrength": "Concentrazione tipica",
+                    "headerAdds": "Effetto collaterale (per ppm FC)",
+                    "sodiumAdds": "+{salt} ppm sale · alza il pH brevemente",
+                    "calciumAdds": "+{hardness} ppm durezza calcica · alza il pH"
+                },
+                "unknowns": {
+                    "title": "Quando rispondi “non lo so”",
+                    "p1": "Se non conosci il CYA, lo strumento valuta l'obiettivo su un range prudente ({cyaMin}-{cyaMax} ppm). Se non conosci il cloro attuale, spazia tra {fcMin}-{fcMax} ppm. Il numero in evidenza è la media di quel range, e un'avvertenza mostra l'intervallo completo, perché senza misurare, la risposta onesta è un range, non un numero secco."
+                },
+                "safety": {
+                    "title": "Assunzioni e sicurezza",
+                    "p1": "Bilancia prima il pH, uno shock con pH sbagliato spreca prodotto. Non mischiare mai prodotti a base di cloro diversi (gas tossico). Spazzola le superfici per mettere in sospensione le alghe. Ritesta dopo che l'acqua ha circolato, e aspetta che l'FC torni nella fascia normale prima di fare il bagno. Questi numeri sono una guida, non una misura di laboratorio."
+                },
+                "sources": {
+                    "title": "Fonti",
+                    "p1": "Le costanti e i metodi qui sopra provengono da:"
+                }
             }
         },
         "PoolVolume": {
@@ -331,6 +403,10 @@
             "litersUnit": "litri",
             "secondary": "= {m3} m³ · {gal} galloni US",
             "applyButton": "Usa questo volume"
+        },
+        "Info": {
+            "back": "Torna allo strumento",
+            "buttonLabel": "Come funziona"
         }
     }
 }
