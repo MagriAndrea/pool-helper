@@ -179,6 +179,21 @@ Prefer an `icon` (renders in nav + FeaturesGrid). Only set `image` if the asset 
 
 ---
 
+## 9.5 Step 7b — Transparency `/info` page
+
+Every tool gets a `/[locale]/tools/<slug>/info` page documenting the full logic + formulas, so the calculation is never a black box.
+
+- **Entry**: add `<InfoButton href="/tools/<slug>/info" />` (from `components/tools/shared/`) to the tool page header.
+- **Layout**: build the page as a **Server Component** (no `'use client'`) using `ToolInfoLayout` + `InfoSection` + `Formula` from `components/tools/shared/`. Generic chrome (back link, button label) lives in the shared `Tools.Info` namespace.
+- **Content (hybrid)**: structure in TSX, prose in `Tools.<Name>.Info.*` keys — one paragraph per key, EN + IT.
+- **Live numbers (anti-drift)**: pull every constant (ratios, multipliers, thresholds, ranges, coefficients) from `src/lib/calculator/constants.ts` and interpolate it into the prose/tables, so the doc can never drift from the engine. Format with `Intl.NumberFormat(useLocale())`.
+- **Formulas**: plain mono text via `<Formula>` (same notation as the in-tool breakdown — no math-renderer dependency).
+- **Sources**: list the authoritative source links at the bottom.
+
+Reference implementation: `src/app/[locale]/tools/shock/info/page.tsx`.
+
+---
+
 ## 10. Step 8 — Verify (no dev/build server!)
 
 ```bash
@@ -218,5 +233,6 @@ Optionally compile + run a pure function against worked examples (`npx tsc src/l
 - [ ] Nav entry with a lucide `icon`.
 - [ ] No theme-inverting emphasis boxes; works in dark + mobile.
 - [ ] Reset is a full wipe, styled red.
+- [ ] `/tools/<slug>/info` page (ToolInfoLayout, numbers pulled from `constants.ts`) + `InfoButton` on the tool page header.
 - [ ] `tsc` 0 errors; `eslint` clean on new files; i18n parity + key-existence pass.
 - [ ] `ARCHITECTURE.md` + relevant `AGENTS.md` updated; WIP archived to `changelog/` when done.
