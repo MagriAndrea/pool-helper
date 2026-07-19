@@ -56,7 +56,6 @@ export default function ChlorineComparisonPage() {
         <ComparisonVerdict result={comparison} />
       </div>
       
-      {/* Footer / Disclaimer could go here */}
       <div className="mt-12 text-center text-xs text-muted-foreground opacity-50">
         <p className="whitespace-pre-line">
           {t('Footer.disclaimer')}
