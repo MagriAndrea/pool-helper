@@ -37,7 +37,10 @@ The project follows a standard Next.js `src` directory pattern.
   /components
     /ui                 # Reusable Shadcn primitives (Button, Card, Input).
     /tools              # Tool-specific UI components (calculators).
+      /shared           # Cross-tool building blocks: ToolInfoLayout, InfoSection,
+                        # Formula, InfoButton — the "tool info page" toolkit.
     /home               # Home page sections.
+    Footer.tsx          # Global footer (About/Disclaimer links, privacy tagline).
     theme-provider.tsx  # Next-themes wrapper for standardizing context.
 
   /lib                  # Pure business logic and utilities.
@@ -50,6 +53,7 @@ The project follows a standard Next.js `src` directory pattern.
     use-tool-state.ts           # Per-tool state + bidirectional shared-key sync.
     use-chlorine-comparison.ts  # State + debounced API for the comparison tool.
     use-shock-calculator.ts     # State + debounced API for the shock tool.
+    use-pool-volume.ts          # State + debounced API for the pool volume tool.
 
   /config               # Static configuration.
     nav-items.ts        # Navigation menu structure (tools, guide).
@@ -62,7 +66,8 @@ The project follows a standard Next.js `src` directory pattern.
     request.ts          # Server-side request config (locale validation).
     routing.ts          # Navigation wrappers (Link, useRouter) with locale context.
 
-  middleware.ts         # Edge middleware for locale detection and redirection.
+  proxy.ts              # Edge middleware for locale detection and redirection.
+                        # (Next.js 16 renamed `middleware.ts` → `proxy.ts`.)
 ```
 
 ## 4. Core Patterns & Implementation Details
@@ -70,7 +75,7 @@ The project follows a standard Next.js `src` directory pattern.
 ### 4.1 Internationalization (i18n)
 The application utilizes a **sub-path routing strategy** (`/it/...`, `/en/...`).
 - **Middleware**: Intercepts requests to ensure usage of a valid locale. Redirects root (`/`) to the default locale (`/it`).
-- **Routing**: Internal navigation uses `src/i18n/pathnames.ts` (or standard Next.js Link wrapped by `next-intl`) to preserve the current locale automatically.
+- **Routing**: Internal navigation uses the `Link` / `redirect` / `usePathname` / `useRouter` wrappers exported by `src/i18n/routing.ts` (created via `createNavigation`) to preserve the current locale automatically.
 
 ### 4.2 Theming Implementation
 Theming is handled via `next-themes` interacting with Tailwind CSS variables.

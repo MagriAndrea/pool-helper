@@ -29,7 +29,8 @@
         "cleaning": "Pulizia",
         "cleaningDesc": "Filtri, detriti e igiene ordinaria della piscina.",
         "actions": "Azioni",
-        "actionsDesc": "Shock, pulizia filtri e procedure stagionali."
+        "actionsDesc": "Shock, pulizia filtri e procedure stagionali.",
+        "about": "Progetto"
     },
     "Guide": {
         "eyebrow": "Manuale del proprietario",
@@ -407,6 +408,67 @@
         "Info": {
             "back": "Torna allo strumento",
             "buttonLabel": "Come funziona"
+        }
+    },
+    "Footer": {
+        "tagline": "Nessun cookie, nessun tracciamento: i tuoi dati restano nel tuo browser.",
+        "about": "Progetto",
+        "disclaimer": "Disclaimer",
+        "copyright": "© {year} Pool Helper"
+    },
+    "About": {
+        "title": "Il progetto",
+        "subtitle": "Un'estate di vibe coding, prove ed errori con la piscina di casa.",
+        "sections": {
+            "what": {
+                "title": "Cos'è Pool Helper",
+                "p1": "Pool Helper nasce nell'estate 2026 come progetto per imparare il \"vibe coding\": costruire un'applicazione reale lavorando fianco a fianco con un'intelligenza artificiale, dalla progettazione al codice. L'obiettivo era duplice, imparare a programmare con questi strumenti e, allo stesso tempo, mettere ordine in quello che stavo imparando sulla manutenzione della piscina di casa."
+            },
+            "sources": {
+                "title": "Da dove vengono le informazioni",
+                "p1": "I contenuti di questo sito nascono dall'esperienza diretta di manutenzione e recupero di una piscina, insieme a video divulgativi su YouTube, ricerche fatte con l'aiuto di intelligenze artificiali e articoli tecnici trovati online (in particolare TroubleFreePool e Orenda, citati nelle pagine dei singoli strumenti). Non sono un professionista del settore, ogni numero usato nei calcolatori è comunque verificato e riportato con la sua fonte."
+            },
+            "why": {
+                "title": "Perché condividerlo",
+                "p1": "Chi si ritrova per la prima volta a gestire una piscina affronta gli stessi dubbi che ho avuto io. Condividere questi strumenti e queste guide è un modo per rendere utile ciò che ho imparato, oltre a essere un progetto che mi piace poter mostrare."
+            },
+            "howItsBuilt": {
+                "title": "Come è fatto",
+                "p1": "Il sito è costruito con Next.js, TypeScript e Tailwind CSS, con l'obiettivo dichiarato di essere strutturato a regola d'arte, logica di calcolo separata dall'interfaccia, codice modulare e documentazione pubblica delle API di calcolo."
+            }
+        },
+        "disclaimerCallout": "Prima di usare i calcolatori, leggi il disclaimer."
+    },
+    "Disclaimer": {
+        "title": "Disclaimer",
+        "subtitle": "Da leggere prima di usare gli strumenti di calcolo.",
+        "sections": {
+            "purpose": {
+                "title": "Scopo informativo",
+                "p1": "Tutti i contenuti e i calcolatori di Pool Helper hanno uno scopo puramente informativo ed educativo. Non sostituiscono il parere di un tecnico piscine qualificato. Le formule e le soglie usate sono basate su fonti pubbliche (citate nelle pagine dei singoli strumenti) e sull'esperienza personale dell'autore, non su una validazione professionale."
+            },
+            "scope": {
+                "title": "Ambito: piscine a clorazione manuale",
+                "p1": "Le indicazioni su cloro e stabilizzante (CYA) di questo sito sono pensate per piscine mantenute con cloro dosato manualmente (pastiglie, granuli, liquido). Le piscine con elettrolisi salina (generatore di cloro a sale) richiedono un range di CYA più alto (indicativamente 70-80 ppm) e non sono l'obiettivo di questa guida: se hai un generatore a sale, questi strumenti non fanno per te."
+            },
+            "safety": {
+                "title": "Sicurezza con i prodotti chimici",
+                "p1": "Segui sempre le istruzioni riportate sull'etichetta del prodotto che stai usando, hanno la precedenza su qualunque indicazione di questo sito. Non mischiare mai tra loro prodotti chimici diversi (rischio di reazioni pericolose, fumi tossici). Conserva i prodotti chimici fuori dalla portata di bambini e animali, in un luogo ventilato e lontano da fonti di calore."
+            },
+            "liability": {
+                "title": "Nessuna responsabilità",
+                "p1": "L'autore non si assume alcuna responsabilità per danni a persone, animali, impianti o proprietà derivanti dall'uso delle informazioni presenti su questo sito. L'uso dei calcolatori e delle guide è a proprio rischio."
+            },
+            "privacy": {
+                "title": "Privacy e dati",
+                "p1": "Pool Helper non usa cookie, non traccia la navigazione e non richiede account. I dati inseriti nei calcolatori (volume, prezzi, valori chimici) restano esclusivamente nel browser dell'utente, salvati in locale (localStorage), e non vengono mai inviati o condivisi con l'autore o con terzi.",
+                "p2": "Puoi verificarlo di persona, senza doverti fidare della mia parola:",
+                "githubLinkLabel": "il codice sorgente di Pool Helper è pubblico su GitHub."
+            },
+            "affiliate": {
+                "title": "Link affiliati",
+                "p1": "Il sito potrebbe in futuro includere link di affiliazione (ad esempio verso Amazon) per prodotti citati nelle guide, acquistando tramite quei link l'autore potrebbe ricevere una piccola commissione, senza alcun costo aggiuntivo per l'utente. Al momento questa funzionalità non è attiva, quando lo sarà verrà segnalata chiaramente in questa pagina."
+            }
         }
     }
 }

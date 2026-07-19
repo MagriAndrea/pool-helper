@@ -29,7 +29,8 @@
         "cleaning": "Cleaning",
         "cleaningDesc": "Filters, debris and routine pool hygiene.",
         "actions": "Actions",
-        "actionsDesc": "Shock, filter cleaning and seasonal procedures."
+        "actionsDesc": "Shock, filter cleaning and seasonal procedures.",
+        "about": "About"
     },
     "Guide": {
         "eyebrow": "Pool Owner's Handbook",
@@ -407,6 +408,67 @@
         "Info": {
             "back": "Back to the tool",
             "buttonLabel": "How it works"
+        }
+    },
+    "Footer": {
+        "tagline": "No cookies, no tracking — your data stays in your browser.",
+        "about": "About",
+        "disclaimer": "Disclaimer",
+        "copyright": "© {year} Pool Helper"
+    },
+    "About": {
+        "title": "The project",
+        "subtitle": "A summer of vibe coding, trial and error with the pool at home.",
+        "sections": {
+            "what": {
+                "title": "What Pool Helper is",
+                "p1": "Pool Helper started in the summer of 2026 as a project to learn \"vibe coding\": building a real application while working side by side with an AI, from design to code. The goal was twofold — learn to build software this way, and at the same time put some order into what I was learning about maintaining the pool at home."
+            },
+            "sources": {
+                "title": "Where the information comes from",
+                "p1": "The content on this site comes from hands-on experience maintaining and recovering a pool, together with YouTube videos, research done with the help of AI, and technical articles found online (in particular TroubleFreePool and Orenda, cited on each tool's page). I'm not a pool professional — every number used in the calculators is still verified and listed with its source."
+            },
+            "why": {
+                "title": "Why share it",
+                "p1": "Anyone managing a pool for the first time runs into the same questions I had. Sharing these tools and guides is a way to make what I learned useful to someone else, and it's also a project I enjoy being able to show."
+            },
+            "howItsBuilt": {
+                "title": "How it's built",
+                "p1": "The site is built with Next.js, TypeScript and Tailwind CSS, with the stated goal of being built the right way — calculation logic separated from the UI, modular code, and public documentation for the calculation API."
+            }
+        },
+        "disclaimerCallout": "Before using the calculators, read the disclaimer."
+    },
+    "Disclaimer": {
+        "title": "Disclaimer",
+        "subtitle": "Read this before using the calculators.",
+        "sections": {
+            "purpose": {
+                "title": "Informational purpose",
+                "p1": "All content and calculators on Pool Helper are for informational and educational purposes only. They do not replace the advice of a qualified pool professional. The formulas and thresholds used are based on public sources (cited on each tool's page) and the author's personal experience, not on professional validation."
+            },
+            "scope": {
+                "title": "Scope: manually chlorinated pools",
+                "p1": "This site's chlorine and stabilizer (CYA) guidance is meant for pools maintained with manually dosed chlorine (tablets, granules, liquid). Saltwater pools (salt chlorine generators) need a higher CYA range (roughly 70-80 ppm) and are outside the scope of this guide — if you have a salt generator, these tools aren't for you."
+            },
+            "safety": {
+                "title": "Chemical safety",
+                "p1": "Always follow the instructions on the label of the product you're using — they take priority over anything on this site. Never mix different chemical products together (risk of hazardous reactions, toxic fumes). Store chemicals out of reach of children and pets, in a ventilated area away from heat sources."
+            },
+            "liability": {
+                "title": "No liability",
+                "p1": "The author accepts no responsibility for damage to people, animals, equipment or property resulting from the use of the information on this site. Use of the calculators and guides is at your own risk."
+            },
+            "privacy": {
+                "title": "Privacy and data",
+                "p1": "Pool Helper uses no cookies, tracks no browsing activity, and requires no account. Data entered into the calculators (volume, prices, chemical values) stays entirely in the user's browser, saved locally (localStorage), and is never sent to or shared with the author or any third party.",
+                "p2": "You can verify this yourself, without having to take my word for it:",
+                "githubLinkLabel": "Pool Helper's source code is public on GitHub."
+            },
+            "affiliate": {
+                "title": "Affiliate links",
+                "p1": "This site may in the future include affiliate links (for example to Amazon) for products mentioned in the guides — purchasing through those links may earn the author a small commission, at no extra cost to the user. This is not active yet; when it is, it will be clearly disclosed on this page."
+            }
         }
     }
 }

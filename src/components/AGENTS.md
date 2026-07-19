@@ -27,4 +27,5 @@
 | `NavigationUI.tsx` | Main Navigation Wrapper (Desktop/Mobile switcher) | **Wrap `Navbar` and `MobileMenu`** |
 | `Navbar.tsx` | Desktop Navigation Bar | **Uses `nav-items.ts` for dynamic links** |
 | `MobileMenu.tsx` | Mobile Navigation (Radix Dialog overlay) | **Uses `nav-items.ts` for dynamic links** |
+| `Footer.tsx` | Global site footer (About/Disclaimer links, privacy tagline) | **Mounted once in `[locale]/layout.tsx`** |
 | `tools/` | Specific Tool Components (Calculators, etc.) | **Keep logic isolated in subfolders** |

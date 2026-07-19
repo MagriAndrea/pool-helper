@@ -1,5 +1,5 @@
 
-import { Beaker, BookOpen, FlaskConical, Droplets, ListChecks, Menu, Zap, Ruler } from 'lucide-react';
+import { Beaker, BookOpen, FlaskConical, Droplets, ListChecks, Menu, Zap, Ruler, Info } from 'lucide-react';
 
 export interface NavItem {
   href?: string;
@@ -69,5 +69,10 @@ export const navItems: NavItem[] = [
         isAnchor: true,
       },
     ]
+  },
+  {
+    href: '/about',
+    labelKey: 'about',
+    icon: Info,
   },
 ];

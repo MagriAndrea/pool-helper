@@ -7,6 +7,7 @@ import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '../../i18n/routing';
 import { NavigationUI } from "@/components/NavigationUI";
+import { Footer } from "@/components/Footer";
 
 const firaSans = Fira_Sans({
   variable: "--font-fira-sans",
@@ -44,7 +45,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
-        className={`${firaSans.variable} ${firaCode.variable} font-sans antialiased`}
+        className={`${firaSans.variable} ${firaCode.variable} flex min-h-screen flex-col font-sans antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -57,6 +58,7 @@ export default async function RootLayout({
             <main className="flex-1">
               {children}
             </main>
+            <Footer />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
