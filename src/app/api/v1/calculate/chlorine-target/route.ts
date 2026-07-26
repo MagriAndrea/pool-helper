@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { computeChlorineTarget } from '@/lib/calculator';
-import type { ChlorineTargetInput } from '@/lib/calculator';
+import { chlorineTargetInputSchema } from '@/lib/api/schemas';
+import { validateBody } from '@/lib/api/validate';
 
 /**
  * POST /api/v1/calculate/chlorine-target
@@ -8,17 +9,10 @@ import type { ChlorineTargetInput } from '@/lib/calculator';
  */
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as Partial<ChlorineTargetInput>;
-    const { cya, colorLevel, combinedCC } = body;
+    const validation = await validateBody(chlorineTargetInputSchema, request);
+    if (!validation.success) return validation.response;
 
-    if (!cya || !colorLevel) {
-      return NextResponse.json(
-        { error: 'Missing required fields: cya, colorLevel' },
-        { status: 400 },
-      );
-    }
-
-    const result = computeChlorineTarget({ cya, colorLevel, combinedCC });
+    const result = computeChlorineTarget(validation.data);
     return NextResponse.json(result);
   } catch (error) {
     console.error('chlorine-target error:', error);
