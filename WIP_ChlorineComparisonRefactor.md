@@ -53,11 +53,18 @@ Phase B:
 
 ## 4. Current Situation & Checklist
 
-Planning approved by the user on 2026-07-19. No code written yet. Blocked-by: WIP_DocsAndLegal (soft, Phase 3).
+Planning approved by the user on 2026-07-19. WIP_DocsAndLegal dependency satisfied (merged in PRs #6/#7/#8/#9/#10).
 
-Phase A — Vitest:
-- ❌ Vitest installed + config + `npm test` script
-- ❌ Tests freezing current behavior of all `src/lib/calculator/` modules (green baseline)
+Phase A — Vitest: ✅ **COMPLETE** (written by a Sonnet subagent, verified by the orchestrator)
+- ✅ Vitest 4.1.10 installed + `vitest.config.ts` (node env, `@`→`src` alias) + `test` / `test:run` scripts
+- ✅ 80 characterization tests across 9 files in `src/lib/calculator/__tests__/`, all passing — numeric expectations hand-derived from the formulas, not snapshotted
+- ✅ `constants.test.ts` pins every cited chemistry constant, so an unsourced edit fails the suite
+- ✅ `chlorine-comparison.test.ts` covers the exact worked example from `scripts/verify-logic.ts` — this is the parity baseline Phase B must reproduce
+- ✅ **Net proven by mutation testing**, not just by being green. Four deliberate mutations were each caught, then reverted: SLAM ratio 0.4→0.5 (10 failures), comparison `<`→`<=` (1), sodium density 1.2→1.0 (3), breakpoint 10→8 (5)
+- ✅ `tsc --noEmit` clean; lint adds zero new problems
+- ✅ Calculator sources untouched — verified via `git diff`, so the baseline records real current behaviour
+
+**Documented quirks** (deliberately pinned as current behaviour, NOT bugs — do not "fix" them without deciding to): `combinedCC: 0` is treated as "not provided"; a SLAM-vs-floor tie favours SLAM (reduce order); non-positive `density` falls back to `DEFAULT_SODIUM_DENSITY`. Also noted: the `floor` strategy is structurally unreachable in the CYA-unknown branch under current constants, since `0.4 × 30` already exceeds every colour floor.
 
 Phase B — Refactor:
 - ❌ Slot-based types + single metrics function + slot-based compare
