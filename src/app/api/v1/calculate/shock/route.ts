@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { computeShock } from '@/lib/calculator';
-import type { ShockInput } from '@/lib/calculator';
+import { shockInputSchema } from '@/lib/api/schemas';
+import { validateBody } from '@/lib/api/validate';
 
 /**
  * POST /api/v1/calculate/shock
@@ -10,17 +11,10 @@ import type { ShockInput } from '@/lib/calculator';
  */
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as Partial<ShockInput>;
-    const { volume, colorLevel, cya, chlorine, product } = body;
+    const validation = await validateBody(shockInputSchema, request);
+    if (!validation.success) return validation.response;
 
-    if (!volume || !colorLevel || !cya || !chlorine || !product) {
-      return NextResponse.json(
-        { error: 'Missing required fields: volume, colorLevel, cya, chlorine, product' },
-        { status: 400 },
-      );
-    }
-
-    const result = computeShock({ volume, colorLevel, cya, chlorine, product });
+    const result = computeShock(validation.data);
     return NextResponse.json(result);
   } catch (error) {
     console.error('Shock calculation error:', error);

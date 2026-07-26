@@ -104,5 +104,11 @@ Calculation endpoints live under `src/app/api/v1/calculate/`. Each primitive has
 - `shock/` — a wrapper that orchestrates the primitives in one call (what the Shock Calculator UI uses).
 - `chlorine/` — the pre-existing Chlorine Comparison endpoint.
 
+**Validation & documentation share one source of truth** (`src/lib/api/`, see its `AGENTS.md`):
+- `schemas.ts` — a Zod schema per endpoint. Routes validate through `validate.ts`'s `validateBody`, returning `400 { error, details }` on failure.
+- `openapi.ts` — builds the OpenAPI 3.1 document, **generating each request schema from those same Zod schemas** via `z.toJSONSchema()`. A schema change therefore updates validation and documentation together; they cannot drift.
+- Served at `/api/v1/openapi.json` (machine-readable) and rendered at `/[locale]/docs/api` (human-readable, in the site's own style).
+- Caveat: Zod `.refine()` rules have no JSON Schema equivalent, so they are enforced at runtime but stated in prose in the spec (currently only `max >= min` on range inputs).
+
 ### 4.6 Tools
 Tools live at `/[locale]/tools/<slug>`: `chlorine-comparison`, `shock`, and `pool-volume`. Each has a companion `/[slug]/info` page (linked via an `InfoButton`) built on the shared toolkit (`ToolInfoLayout` / `InfoSection` / `Formula` in `src/components/tools/shared/`), explaining the formulas and assumptions behind that tool's numbers. Tool components are **location-agnostic** — the `PoolVolumeCalculator` is used both as the standalone `/tools/pool-volume` page and embedded inside the Shock tool's volume modal, sharing state through the `ph_pool_*` localStorage keys. **To add a new tool, follow the `add-pool-tool` project skill** (`.claude/skills/add-pool-tool/`), which encodes the full file-by-file recipe and conventions.

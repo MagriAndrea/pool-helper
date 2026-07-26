@@ -84,15 +84,21 @@ Phase 2 — Tool info pages:
 - ✅ i18n keys (en + it) — validated: JSON valid, key parity, no em/en dashes in Italian
 - ✅ Small DRY fix while grounding the comparison page in real constants: `chlorine-comparison.ts` now imports `DEFAULT_SODIUM_DENSITY` from `constants.ts` instead of a hardcoded `1.2`
 - ✅ `tsc --noEmit` and `npm run lint` clean (no new errors/warnings)
-- ❌ Pending user review of the technical content (formulas/assumptions) before merge
+- ✅ Content approved by the user; merged to `main` via [PR #7](https://github.com/MagriAndrea/pool-helper/pull/7) (Vercel preview build succeeded)
+
+**Phase 2 complete.** Every tool (`chlorine-comparison`, `shock`, `pool-volume`) now has an `/info` page reachable via `InfoButton`.
 
 Phase 3 — API docs & README:
-- ❌ Zod schemas per endpoint in `src/lib/api/`
-- ❌ Routes migrated to Zod validation (type + range checks, typed 400s)
-- ❌ OpenAPI 3.1 generation + `/api/v1/openapi.json`
-- ❌ `/docs/api` viewer page (decide Scalar vs custom at implementation, with user)
-- ❌ README rewrite
-- ❌ ARCHITECTURE.md / AGENTS.md updates
+- ✅ Zod schemas per endpoint in `src/lib/api/schemas.ts` (+ `validate.ts` helper) — written by a Sonnet subagent against a fixed export-name contract
+- ✅ Routes migrated to Zod validation (typed 400 `{ error, details }`). Two real bugs closed: negative/zero volumes and dimensions are now rejected, and `pool-volume` can no longer be given circle dimensions for a rectangle (it used to silently compute garbage)
+- ✅ OpenAPI 3.1 generation (`openapi.ts`, via `z.toJSONSchema`) + `/api/v1/openapi.json`
+- ✅ `/[locale]/docs/api` page — **custom renderer, NOT Scalar**: `@scalar/nextjs-api-reference` loads its UI from `cdn.jsdelivr.net`, a third-party request that would contradict the no-tracking claim on `/disclaimer`. The machine-readable spec is still standard OpenAPI, so anyone can render it with Scalar/Swagger themselves
+- ✅ README rewrite
+- ✅ ARCHITECTURE.md (§4.5) + `src/lib/api/AGENTS.md` + `src/lib/AGENTS.md` updated
+- ✅ Verified: `tsc --noEmit` clean, lint adds nothing, i18n parity + no em/en dashes, 21 runtime schema cases and a generated-spec structural check all pass
+- ❌ Pending user review before merge
+
+**Design note for future work:** request bodies are documented with generated schemas; responses are documented with a description + realistic example rather than a hand-written schema. Restating the calculator's return types as Zod would duplicate `src/lib/calculator/types.ts` without buying validation (we never validate our own output) — i.e. it would reintroduce exactly the drift this module prevents. Revisit only if a real consumer needs machine-readable response contracts.
 
 ## 5. Success Criteria
 

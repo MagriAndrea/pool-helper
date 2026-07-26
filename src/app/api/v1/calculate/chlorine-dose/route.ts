@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { computeChlorineDose } from '@/lib/calculator';
-import type { ChlorineDoseInput } from '@/lib/calculator';
+import { chlorineDoseInputSchema } from '@/lib/api/schemas';
+import { validateBody } from '@/lib/api/validate';
 
 /**
  * POST /api/v1/calculate/chlorine-dose
@@ -8,17 +9,10 @@ import type { ChlorineDoseInput } from '@/lib/calculator';
  */
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as Partial<ChlorineDoseInput>;
-    const { volume, targetFC, currentFC } = body;
+    const validation = await validateBody(chlorineDoseInputSchema, request);
+    if (!validation.success) return validation.response;
 
-    if (!volume || !targetFC || !currentFC) {
-      return NextResponse.json(
-        { error: 'Missing required fields: volume, targetFC, currentFC' },
-        { status: 400 },
-      );
-    }
-
-    const result = computeChlorineDose({ volume, targetFC, currentFC });
+    const result = computeChlorineDose(validation.data);
     return NextResponse.json(result);
   } catch (error) {
     console.error('chlorine-dose error:', error);

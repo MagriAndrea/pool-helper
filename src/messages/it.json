@@ -472,10 +472,30 @@
             "buttonLabel": "Come funziona"
         }
     },
+    "ApiDocs": {
+        "title": "API di calcolo",
+        "subtitle": "Gli stessi calcoli usati dagli strumenti del sito, richiamabili da qualsiasi client.",
+        "intro": "Ogni calcolatore di Pool Helper è esposto come endpoint HTTP pubblico. Gli endpoint accettano una richiesta POST con corpo JSON e rispondono in JSON, non richiedono autenticazione e non registrano i dati inviati.",
+        "specTitle": "Specifica OpenAPI",
+        "specIntro": "Questa pagina è generata dalla specifica OpenAPI 3.1 del progetto, che a sua volta nasce dagli schemi di validazione usati dal server. Puoi scaricarla e usarla con qualsiasi strumento compatibile (Swagger UI, Scalar, generatori di client).",
+        "specLink": "Apri la specifica OpenAPI (JSON)",
+        "endpointsTitle": "Endpoint",
+        "requestTitle": "Corpo della richiesta",
+        "responseTitle": "Risposta",
+        "exampleTitle": "Esempio",
+        "fieldColumn": "Campo",
+        "typeColumn": "Tipo",
+        "requiredColumn": "Obbligatorio",
+        "required": "sì",
+        "optional": "no",
+        "errorsTitle": "Errori",
+        "errorsIntro": "Se il corpo della richiesta non è valido, la risposta è 400 con un campo error descrittivo e un campo details che elenca i singoli problemi di validazione. In caso di errore imprevisto la risposta è 500."
+    },
     "Footer": {
         "tagline": "Nessun cookie, nessun tracciamento: i tuoi dati restano nel tuo browser.",
         "about": "Progetto",
         "disclaimer": "Disclaimer",
+        "apiDocs": "API",
         "copyright": "© {year} Pool Helper"
     },
     "About": {

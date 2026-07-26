@@ -21,6 +21,9 @@ export function Footer() {
           <Link href="/disclaimer" className="transition-colors hover:text-foreground">
             {t('disclaimer')}
           </Link>
+          <Link href="/docs/api" className="transition-colors hover:text-foreground">
+            {t('apiDocs')}
+          </Link>
         </nav>
 
         <p>{t('copyright', { year })}</p>

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { convertToProduct } from '@/lib/calculator';
-import type { ProductConversionInput } from '@/lib/calculator';
+import { productConversionInputSchema } from '@/lib/api/schemas';
+import { validateBody } from '@/lib/api/validate';
 
 /**
  * POST /api/v1/calculate/product-conversion
@@ -9,26 +10,10 @@ import type { ProductConversionInput } from '@/lib/calculator';
  */
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as Partial<ProductConversionInput>;
-    const { pureChlorineG, productId, concentrationPct, densityKgL, deltaFC } = body;
+    const validation = await validateBody(productConversionInputSchema, request);
+    if (!validation.success) return validation.response;
 
-    if (!pureChlorineG || !productId || concentrationPct == null || !deltaFC) {
-      return NextResponse.json(
-        {
-          error:
-            'Missing required fields: pureChlorineG, productId, concentrationPct, deltaFC',
-        },
-        { status: 400 },
-      );
-    }
-
-    const result = convertToProduct({
-      pureChlorineG,
-      productId,
-      concentrationPct,
-      densityKgL,
-      deltaFC,
-    });
+    const result = convertToProduct(validation.data);
     return NextResponse.json(result);
   } catch (error) {
     console.error('product-conversion error:', error);
