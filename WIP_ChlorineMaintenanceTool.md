@@ -287,6 +287,30 @@ Q1's reconstruction claimed e.g. "CYA 30 → min 2.2, target 3.5"; the real tabl
 
 **🆕 A factor the research missed, and it materially affects the projection.** The same TFP CYA page documents that **CYA is not permanent**: chlorine breakdown in sunlight degrades it via hydroxyl radicals, losing **2 to 10 ppm per month** depending on sun exposure (10+ ppm/month in extreme heat and sun). Q3 modelled only how fast CYA *accumulates* from stabilized products. A projection that ignores degradation will **overstate** how quickly CYA leaves the ideal range, in a hot Italian summer possibly by a lot. Phase B must decide explicitly: model degradation as a subtracted term, or state clearly that the projection is a worst case that ignores it. Either is defensible; silently ignoring it is not.
 
+### 7.1 How CYA is actually lost — the full mechanism (primary source, read directly)
+
+Follow-up pass on [TFP wiki, CYA](https://www.troublefreepool.com/wiki/index.php?title=CYA), section "How is CYA Lost and Degrade in Pool Water?". **The intuitive model ("sun and heat eat the CYA") is wrong in a way that matters for the info page: CYA is destroyed by CHLORINE. Sun and heat only decide how fast chlorine does it.** Three distinct paths:
+
+1. **Hydroxyl radicals (sun-driven).** *"Chlorine breakdown in sunlight causes CYA degradation by hydroxyl radicals. Depending on the amount of sun the pool is exposed to, this loss can range from 2 PPM to 10 PPM per month."* The UV destroys the chlorine; the radicals released in the process attack the CYA. No chlorine breaking down, no radicals.
+2. **Direct oxidation by chlorine (heat-driven), with a quantitative law.** *"High pool water temperatures will cause the chlorine to oxidize Cyanuric Acid. This tendency is most evident in water temperatures of 90 degrees or higher. **Every 10°F increase in temperature results in roughly doubling the rate of degradation.**"* 90 °F ≈ 32 °C, above typical Italian pool water, so for the target audience this path is secondary and the 2-10 ppm/month range from path 1 dominates.
+3. **Bacteria, but only at FC = 0.** *"Some bacteria feed on Cyanuric Acid and create ammonia in pool water. This can only occur if the Free Chlorine falls to 0... typically occurs in pools that are closed for the winter and are discovered at the time of pool opening."* Out of scope for a maintenance projection (which assumes chlorine is being dosed), but it is the mechanism behind ammonia at spring opening — directly relevant to the owner's pool-recovery narrative, and worth a line on the info page.
+
+**⚠️ Apparent contradiction on the same TFP page, resolved — do not quote either half alone.** The page also says *"once you add CYA to pool water, it will remain in the water unless you drain"* and *"Because CYA does not break down on its own, dilution is the only proven method to reduce it."* Both are true simultaneously: CYA does not decay spontaneously (it needs chlorine to destroy it), and 2-10 ppm/month is far too slow to rescue an over-stabilized pool. **The info page must not let a reader conclude "I can just wait it out".**
+
+**The numbers that justify that warning** (at the approved 3 ppm/day FC consumption, 30-day month):
+
+| | CYA added per month | vs degradation (2-10 ppm/month) |
+|---|---|---|
+| Dichlor (0.9) | **+81 ppm** | accumulation is **8× to 41×** faster |
+| Trichlor (0.6) | **+55 ppm** | accumulation is **5× to 27×** faster |
+
+Going from CYA 40 (comfortably in range) to CYA 100 (`CYA_HIGH_THRESHOLD`) on dichlor takes **~22 days ignoring degradation, ~23-25 days with it**. That is the owner's multi-year problem compressed into one summer month, and it shows what the approved "subtract degradation" decision actually buys:
+
+- For a **stabilized** product it moves the projected date by only ~3-14 %. Worth doing for honesty, not a rescue.
+- For an **unstabilized** product (liquid chlorine / cal-hypo, `cyaPerPpm: 0`) it is decisive: accumulation is zero, so the net balance is **negative** and CYA slowly falls. This is exactly the edge case flagged in section 4 — the tool must report "your CYA is stable or falling at this rate", never a projected date.
+
+**Second-order effect, deliberately NOT modelled** (state it, don't simulate it): higher CYA reduces daily FC loss, so accumulation self-slows as CYA climbs. TFP quantifies it: *"increasing CYA from 30 to 80 at the same ratio reduces UV loss by approximately 30-40%"*. Modelling this would make the projection a feedback loop for a marginal gain in accuracy, on top of a daily-consumption figure that is itself an estimate. Phase B should keep the linear model and say the projection is a straight-line approximation.
+
 **🆕 TFP explicitly rejects the classic "1-3 ppm" rule, in unusually blunt terms** — quotable on the info page, and directly relevant to `testo.md`: *"The pool industry gets this concept wrong when they state that a 1-3ppm Free Chlorine is all you need. THAT. IS. WRONG! Your Free Chlorine level is determined by your CYA level."*
 
 **Open question #1 is resolved**: the TFP pages are fully readable with browser tooling; the 403 was a limitation of HTTP-fetch tools, not of the source. Anything else in this document still sourced only to a search summary can be verified the same way.
