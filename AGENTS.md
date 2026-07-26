@@ -174,7 +174,13 @@ Once the task is fully completed (Success Criteria met):
         npm run lint          # expect exactly the pre-existing 4 errors / 2 warnings, ZERO new ones
         ```
     *   **⚠️ KNOWN PRE-EXISTING LINT DEBT** (do NOT "fix" it as a drive-by, and do NOT let it hide YOUR new problems): `chemicals.js`, `src/app/[locale]/layout.tsx`, `src/components/Navbar.tsx`, `src/hooks/use-local-storage.ts`, `src/i18n/request.ts`. If the totals change, the new one is yours.
-    *   **🧪 EXERCISE PURE LOGIC DIRECTLY.** There is no test runner yet, but Node ≥ 22 strips TypeScript natively, so a pure module can be imported and driven from a scratch script. Note `node_modules` lives in the **main repo**, not in a worktree, and raw Node needs explicit `.ts`/`.json` extensions and `with { type: 'json' }` where the bundler does not — use a small resolve hook if you hit that. Delete the script afterwards (rule #11).
+    *   **🧪 RUN THE TESTS — THEY EXIST NOW.** `src/lib/calculator/` is covered by Vitest characterization tests:
+        ```bash
+        npx vitest run     # expect ALL passing; run BEFORE and AFTER touching src/lib/calculator/
+        ```
+        **🛑 IF YOU CHANGE CALCULATOR BEHAVIOUR AND A TEST FAILS, THE TEST IS PROBABLY RIGHT.** These tests deliberately pin *current* behaviour, including intentional quirks: `combinedCC: 0` is treated as "not provided", a SLAM-vs-floor tie favours SLAM, and a non-positive `density` falls back to `DEFAULT_SODIUM_DENSITY`. **DO NOT edit a test to make it green.** Work out whether you meant to change that behaviour; if you did, say so explicitly to the human instead of silently rewriting the expectation.
+        **➕ ADD tests when you add pure logic.** `constants.test.ts` pins every cited chemistry number, so an unsourced edit to `constants.ts` fails the suite by design.
+    *   **🧪 FOR SPOT CHECKS OUTSIDE THE SUITE**, Node ≥ 22 strips TypeScript natively, so a module can be imported and driven from a scratch script. Note `node_modules` lives in the **main repo**, not in a worktree, and raw Node needs explicit `.ts`/`.json` extensions and `with { type: 'json' }` where the bundler does not — use a small resolve hook if you hit that. Delete the script afterwards (rule #11).
     *   **👀 THE HUMAN IS YOUR BROWSER.** You cannot see the rendered page. For anything visual (layout, dark mode, mobile), state plainly that you could not verify it visually and ask the user to look.
 10. **🦾 USE SUB-AGENTS ON DEMAND (CLAUDE CODE NATIVE)**:
     *   The `agency-agents` submodule (`.agents/agency-agents/`) is exposed to Claude Code as **native subagents** via symlinks in `.claude/agents/` (gitignored). Setup: `npm run setup:agents`.
