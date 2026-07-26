@@ -70,9 +70,15 @@ Phase A — Research (gate):
 - ✅ Trichlor/dichlor CYA coefficients verified (stoichiometry + datasheets) (Q2)
 - ✅ Daily FC consumption assumption for projection defined (Q3)
 - ✅ Ideal-CYA vs unknown-range vs high-threshold reconciliation decided (Q4)
-- ❌ Research summary appended below and **approved by the user** — *(section 6 written; approval is the user's step, not this agent's)*
+- ✅ Research summary appended below and **APPROVED BY THE USER on 2026-07-26** (after the orchestrator verification pass in section 7). **The Phase A gate is now open: Phase B may write code.**
 
-*(See section 6 below for the full research summary, including Q5 — the salt-water CYA disclaimer verification — and Q6 — the chlorine-lock mechanism — which were also part of this Phase A pass.)*
+*(See section 6 for the full research summary, including Q5 — the salt-water CYA disclaimer verification — and Q6 — the chlorine-lock mechanism. Section 7 is the primary-source verification pass and CORRECTS section 6 in three places: read it before using any number from section 6.)*
+
+### Decisions the user made when approving (2026-07-26)
+
+1. **The CYA projection SUBTRACTS degradation.** Chosen over the simpler accumulation-only worst case. So the projection is a net balance: `CYA(t) = CYA₀ + (accumulation from the product) − (sunlight degradation)`. Degradation is the 2-10 ppm/month figure from section 7 (TFP's CYA page); Phase B must pick and cite a default within that range, expose the assumption on screen, and handle the case where degradation ≥ accumulation (an unstabilized product, or light dichlor use, means CYA never reaches the ceiling — the tool must say "at this rate your CYA is stable / falling", not divide by zero or project a nonsense date).
+2. **Daily FC consumption: 3 ppm/day as the default, but the field is user-editable** — because the user can measure their own (test FC, add nothing, retest 24 h later; the difference is the real consumption). Phase B should say exactly that next to the field, so the number can graduate from a generic assumption to the user's own measurement. Pending final confirmation from the user, who asked what this parameter meant before deciding.
+3. **The salt-water disclaimer stays as it is** (70-80 ppm), per section 7: it is TFP-sourced and correct. Section 6's proposed "50-80" rewrite is rejected — no `it.json`/`en.json` change needed.
 
 Phase B — Model:
 - ❌ Constants + types extended (cited)
