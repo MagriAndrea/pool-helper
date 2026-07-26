@@ -184,6 +184,37 @@
             },
             "Footer": {
                 "disclaimer": "I calcoli si basano sulla quantità di principio attivo (cloro) effettivamente disponibile.\nAssicurati di inserire i prezzi corretti comprensivi di IVA se applicabile."
+            },
+            "Info": {
+                "title": "Come funziona il confronto",
+                "subtitle": "Perché il prezzo di vendita da solo non basta.",
+                "overview": {
+                    "title": "Panoramica",
+                    "p1": "Questo strumento non confronta il prezzo di vendita delle due confezioni, ma il costo reale per chilogrammo di cloro attivo, cioè il principio disinfettante effettivamente contenuto nel prodotto. È l'unico modo corretto per capire quale prodotto conviene davvero."
+                },
+                "activeChlorine": {
+                    "title": "Perché contare il \"cloro attivo\"",
+                    "p1": "Due prodotti con lo stesso prezzo a confezione possono avere concentrazioni di cloro molto diverse: un prodotto più economico al chilo può costare di più per la stessa quantità di disinfezione, se la sua concentrazione è più bassa. Per questo entrambi i prodotti vengono ricondotti alla stessa unità di misura, il costo per chilogrammo di cloro attivo.",
+                    "formula": "costo / kg attivo = prezzo totale ÷ massa di cloro attivo"
+                },
+                "calcium": {
+                    "title": "Ipoclorito di calcio (solido)",
+                    "p1": "Per il prodotto solido basta il peso della confezione, la massa di cloro attivo è la percentuale di concentrazione applicata al peso lordo.",
+                    "formula": "massa attiva = peso confezione (kg) × concentrazione ÷ 100"
+                },
+                "sodium": {
+                    "title": "Ipoclorito di sodio (liquido)",
+                    "p1": "Per il prodotto liquido puoi inserire la quantità in litri o in chilogrammi. Se inserisci i litri, vengono convertiti in peso usando la densità del prodotto (indicata in etichetta), se non la conosci viene usata una densità tipica di {density} kg/L per le soluzioni di ipoclorito di sodio.",
+                    "formula": "massa attiva = (litri × densità) × concentrazione ÷ 100"
+                },
+                "verdict": {
+                    "title": "Come si stabilisce il vincitore",
+                    "p1": "Vince il prodotto con il costo per chilogrammo di cloro attivo più basso. Il risparmio mostrato è la differenza tra i due costi per chilogrammo attivo, ti dice quanto stai risparmiando (o perdendo) per ogni chilo di cloro realmente utile che acquisti."
+                },
+                "limits": {
+                    "title": "Assunzioni e limiti",
+                    "p1": "Inserisci il prezzo comprensivo di IVA se applicabile, altrimenti il confronto non è corretto. La concentrazione da usare è quella indicata sull'etichetta al momento dell'acquisto: l'ipoclorito di sodio liquido si degrada nel tempo (calore, luce, età della confezione), quindi un prodotto vecchio o mal conservato può contenere meno cloro attivo di quanto dichiarato. Questo strumento non stima il degrado, quindi su prodotti non freschi il costo reale potrebbe essere più alto di quello calcolato."
+                }
             }
         },
         "Shock": {
@@ -403,7 +434,38 @@
             "resultKicker": "La tua piscina contiene circa",
             "litersUnit": "litri",
             "secondary": "= {m3} m³ · {gal} galloni US",
-            "applyButton": "Usa questo volume"
+            "applyButton": "Usa questo volume",
+            "Info": {
+                "title": "Come funziona il calcolo del volume",
+                "subtitle": "La formula dietro ai litri della tua piscina.",
+                "overview": {
+                    "title": "Panoramica",
+                    "p1": "Il volume calcolato qui viene usato dagli altri strumenti (come lo Shock Calculator) per dosare correttamente i prodotti chimici, più la stima è precisa, più affidabili sono le dosi suggerite."
+                },
+                "rectangle": {
+                    "title": "Piscina rettangolare",
+                    "p1": "Il volume è il prodotto delle tre dimensioni.",
+                    "formula": "volume = lunghezza × larghezza × profondità media"
+                },
+                "circle": {
+                    "title": "Piscina rotonda",
+                    "p1": "Il volume è quello di un cilindro: l'area del cerchio di base moltiplicata per la profondità.",
+                    "formula": "volume = π × (diametro ÷ 2)² × profondità media"
+                },
+                "depth": {
+                    "title": "Perché \"profondità media\"",
+                    "p1": "Se il fondo della piscina non è piatto (ad esempio digrada verso una zona più profonda), usa la media tra il punto più basso e quello più alto, non la profondità massima: usare il punto più profondo sovrastimerebbe il volume reale."
+                },
+                "units": {
+                    "title": "Unità di misura",
+                    "p1": "Puoi inserire le dimensioni in metri o piedi, il risultato viene sempre mostrato in litri, metri cubi e galloni US, per compatibilità con le fonti in lingua inglese citate negli altri strumenti.",
+                    "formula": "1 piede = {meters} m · 1 m³ = 1000 L · 1 gallone US = {gal} L"
+                },
+                "limits": {
+                    "title": "Limiti",
+                    "p1": "Lo strumento supporta solo forme rettangolari e rotonde. Per piscine di forma libera o irregolare, la stima più semplice è considerarla come il più piccolo rettangolo che la racchiude e correggere il risultato per difetto, oppure rivolgersi a un tecnico per una misurazione precisa."
+                }
+            }
         },
         "Info": {
             "back": "Torna allo strumento",

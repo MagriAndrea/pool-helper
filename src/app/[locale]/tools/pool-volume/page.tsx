@@ -2,12 +2,16 @@
 
 import { useTranslations } from 'next-intl';
 import { PoolVolumeCalculator } from '@/components/tools/pool-volume/PoolVolumeCalculator';
+import { InfoButton } from '@/components/tools/shared/InfoButton';
 
 export default function PoolVolumePage() {
   const t = useTranslations('Tools.PoolVolume');
 
   return (
     <div className="container mx-auto max-w-xl px-4 py-8 md:py-12">
+      <div className="mb-2 flex justify-end">
+        <InfoButton href="/tools/pool-volume/info" />
+      </div>
       <div className="mb-8 space-y-2 text-center">
         <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
           {t('title')}

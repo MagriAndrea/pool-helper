@@ -5,6 +5,7 @@ import { useChlorineComparison } from '@/hooks/use-chlorine-comparison';
 import { CalciumCard } from '@/components/tools/chlorine-comparison/CalciumCard';
 import { SodiumCard } from '@/components/tools/chlorine-comparison/SodiumCard';
 import { ComparisonVerdict } from '@/components/tools/chlorine-comparison/ComparisonVerdict';
+import { InfoButton } from '@/components/tools/shared/InfoButton';
 
 export default function ChlorineComparisonPage() {
   const t = useTranslations('Tools.ChlorineComparison');
@@ -19,6 +20,9 @@ export default function ChlorineComparisonPage() {
 
   return (
     <div className="container mx-auto max-w-4xl py-8 px-4 md:py-12">
+      <div className="mb-2 flex justify-end">
+        <InfoButton href="/tools/chlorine-comparison/info" />
+      </div>
       <div className="mb-8 text-center space-y-2">
         <h1 className="text-3xl font-bold tracking-tight md:text-4xl text-foreground">
           {t('title')}
