@@ -25,7 +25,7 @@ A "tool" is a self-contained calculator under `/[locale]/tools/<slug>`. This pro
 3. **Pure logic in `src/lib/calculator/`.** Deterministic functions, no I/O, no `Date.now()`. All magic numbers go in `constants.ts` **with an inline source citation**.
 4. **The lib returns numbers/codes, never localized prose.** The UI formats numbers via next-intl (so i18n stays in one place). Numbers a user reads → format with `Intl.NumberFormat(locale)` so Italian shows `1,4`.
 5. **API routes are thin.** `src/app/api/v1/calculate/<x>/route.ts` validates input and calls the pure function. One route per primitive; add a wrapper route if the tool orchestrates several.
-6. **Persist with the hooks, SSR-safe.** Use `useToolState` (per-tool key + shared `ph_pool_*` keys) for anything that represents pool reality and should be reused across tools; otherwise `useLocalStorage`. Hydrate inside `useEffect` (never read `localStorage` during render).
+6. **Persist with `useToolState`, SSR-safe — always.** One per-tool key from `TOOL_KEYS`, plus shared `ph_pool_*` mappings for anything that represents pool reality and should be reused across tools. A tool with nothing to share still uses it, with an empty `mappings` array — there is no lower-level persistence hook to fall back to. Hydrate inside `useEffect` (never read `localStorage` during render).
 7. **Reset = full wipe.** A tool's "Start over" clears the tool key AND its mapped shared keys (`useToolState.reset` already does this). Style it red: `text-destructive font-semibold`.
 8. **Theme-safe styling.** Use semantic tokens (`bg-card`, `text-foreground`, `bg-primary`/`text-primary-foreground`, `border-warning`, `text-destructive`). 🛑 Do NOT use `bg-foreground`/`text-background` for emphasis boxes — they INVERT in dark mode and break fixed-color children. For a hero box use `bg-primary text-primary-foreground`.
 9. **Reuse Shadcn primitives** (`@/components/ui/*`) and the shock shared components (`StepCard`, `NumberInput`, `DontKnowToggle`, …). Don't reinvent inputs/cards.
@@ -42,7 +42,7 @@ src/lib/api/schemas.ts                 # Zod input schema (validation AND OpenAP
 src/lib/api/openapi.ts                 # add an API_ENDPOINTS entry so the endpoint is documented
 src/app/api/v1/calculate/<slug>/route.ts   # thin POST wrapper, validates via validateBody()
 src/messages/en.json + it.json         # Tools.<Name> namespace + Navigation.<slug> labels
-src/hooks/use-<slug>.ts                # state (useToolState/useLocalStorage) + debounced fetch
+src/hooks/use-<slug>.ts                # state (useToolState) + debounced fetch
 src/components/tools/<slug>/*.tsx      # UI; lift shared bits into ./shared/
 src/app/[locale]/tools/<slug>/page.tsx # 'use client' page that wires the hook to the components
 src/app/[locale]/tools/<slug>/info/page.tsx  # transparency page (see §9.5)
@@ -168,7 +168,7 @@ export function useMyTool() {
 }
 ```
 
-Add the new key to `TOOL_KEYS` (and `SHARED_KEYS` if you introduce a new shared concept) in `src/lib/shared-state.ts`. Standalone tool with no shared values → use `useLocalStorage` directly (see `use-chlorine-comparison.ts`).
+Add the new key to `TOOL_KEYS` (and `SHARED_KEYS` if you introduce a new shared concept) in `src/lib/shared-state.ts`. A standalone tool with no shared values still goes through `useToolState`, just with an empty `mappings` array — see `use-chlorine-comparison.ts`, which also shows the `migrate` callback used to move a tool off an abandoned storage key (registered in `LEGACY_KEYS`).
 
 ---
 
@@ -268,7 +268,7 @@ Optionally compile + run a pure function against worked examples (`npx tsc src/l
 - [ ] API route under `api/v1/calculate/<slug>/`, validating via `validateBody` — no hand-rolled field checks.
 - [ ] `API_ENDPOINTS` entry in `src/lib/api/openapi.ts` (so `/api/v1/openapi.json` and `/docs/api` pick it up).
 - [ ] `Tools.<Name>` + `Navigation.<slug>` keys in **both** `en.json` and `it.json` (parity OK).
-- [ ] Hook (`useToolState` for shared values, else `useLocalStorage`); new `TOOL_KEYS`/`SHARED_KEYS` entry if needed.
+- [ ] Hook using `useToolState` (empty `mappings` if nothing is shared); new `TOOL_KEYS`/`SHARED_KEYS` entry if needed.
 - [ ] Components reuse Shadcn + shock shared parts; no hardcoded strings; numbers via `Intl.NumberFormat(locale)`.
 - [ ] `'use client'` page wiring hook ↔ components.
 - [ ] Nav entry with a lucide `icon`.

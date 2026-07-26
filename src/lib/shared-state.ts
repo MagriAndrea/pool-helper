@@ -20,5 +20,19 @@ export const SHARED_KEYS = {
 
 export const TOOL_KEYS = {
   shock: 'ph_tool_shock',
-  volume: 'ph_tool_volume', // reserved for the future standalone volume tool
+  volume: 'ph_tool_volume',
+  comparison: 'ph_tool_comparison',
+} as const;
+
+/**
+ * Keys written by earlier versions of the app, kept here only so migrations can
+ * find and delete them. Never write to these.
+ *
+ * `ph_calcium_input` / `ph_sodium_input`: the chlorine-comparison tool predated
+ * the convention above and stored one key per chemical. The A/B slot refactor
+ * folded both into `TOOL_KEYS.comparison`; see `use-chlorine-comparison.ts`.
+ */
+export const LEGACY_KEYS = {
+  comparisonCalcium: 'ph_calcium_input',
+  comparisonSodium: 'ph_sodium_input',
 } as const;

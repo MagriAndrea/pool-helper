@@ -42,6 +42,7 @@ const meanOf = (r: RangeOrValue): number => (r.isRange ? (r.min + r.max) / 2 : r
 
 export function ResultStep({ result, state, update, onReset }: ResultStepProps) {
   const t = useTranslations('Tools.Shock');
+  const tProducts = useTranslations('Products');
   const locale = useLocale();
 
   const nf = (n: number, maxFrac = 2) =>
@@ -183,8 +184,7 @@ export function ResultStep({ result, state, update, onReset }: ResultStepProps) 
         : { sodiumConcentration: v },
     );
   };
-  const productNameFor = (id: ProductId) =>
-    id === 'calcium_hypochlorite' ? t('Result.calciumName') : t('Result.sodiumName');
+  const productNameFor = (id: ProductId) => tProducts(id);
 
   // Final product amount — mean + range warning.
   const amountMean = product ? nf(meanOf(product.amount)) : '';
@@ -250,13 +250,13 @@ export function ResultStep({ result, state, update, onReset }: ResultStepProps) 
       <p className="mt-0.5 text-sm text-muted-foreground">{t('Result.productSubtitle')}</p>
       <div className="mt-3 space-y-2">
         <ProductCard
-          name={t('Result.sodiumName')}
+          name={tProducts('sodium_hypochlorite')}
           description={t('Result.sodiumDescription')}
           isSelected={state.selectedProduct === 'sodium_hypochlorite'}
           onClick={() => selectProduct('sodium_hypochlorite')}
         />
         <ProductCard
-          name={t('Result.calciumName')}
+          name={tProducts('calcium_hypochlorite')}
           description={t('Result.calciumDescription')}
           isSelected={state.selectedProduct === 'calcium_hypochlorite'}
           onClick={() => selectProduct('calcium_hypochlorite')}

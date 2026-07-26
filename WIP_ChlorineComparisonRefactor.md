@@ -66,14 +66,24 @@ Phase A — Vitest: ✅ **COMPLETE** (written by a Sonnet subagent, verified by 
 
 **Documented quirks** (deliberately pinned as current behaviour, NOT bugs — do not "fix" them without deciding to): `combinedCC: 0` is treated as "not provided"; a SLAM-vs-floor tie favours SLAM (reduce order); non-positive `density` falls back to `DEFAULT_SODIUM_DENSITY`. Also noted: the `floor` strategy is structurally unreachable in the CYA-unknown branch under current constants, since `0.4 × 30` already exceeds every colour floor.
 
-Phase B — Refactor:
-- ❌ Slot-based types + single metrics function + slot-based compare
-- ❌ Tests updated/extended: same-type comparison, mixed comparison parity with baseline
-- ❌ `ProductCard` UI + type selector; delete `CalciumCard`/`SodiumCard`
-- ❌ Hook on `TOOL_KEYS.comparison` + legacy key migration (verify with old keys present in localStorage)
-- ❌ API route + Zod schema updated; OpenAPI regenerated
-- ❌ i18n keys updated (en + it)
-- ❌ Docs updated (AGENTS.md, ARCHITECTURE.md, info page wording)
+Phase B — Refactor: ✅ **COMPLETE**
+- ✅ Slot-based types (`ComparisonProductInput`/`ComparisonProductMetrics`/`ComparisonSlotId`, moved into `types.ts` with the other primitives' types) + single `calculateProductMetrics` + `compareProducts` returning `winner: 'A' | 'B' | 'DRAW' | null`
+- ✅ **Parity proven exactly, not approximately**: the pre-refactor worked example now asserts `toBe(1.7399267399267409)` — bit-for-bit identical, because the arithmetic order was preserved
+- ✅ Tests extended to 21 in that file (96 total): two-sodiums, two-calciums, "cheap bulk pack loses to concentrated one", solid-priced-by-the-litre, per-product density fallback, label-density-beats-typical
+- ✅ **Net re-proven by mutation testing** (8 mutations, each applied then reverted): `<`→`<=` (1 failure), dropped solid-in-litres guard (1), swapped winner labels (1), migration reading `quantity` instead of the old `weight` (1), dropped already-migrated guard (1), migration not deleting legacy keys (1), `PRODUCT_IDS` losing a product (1). One mutation **survived at first** — "ignore the label density, always use the typical one" — because every test happened to pass 1.2, which *is* the typical density; a test with 1.35 closed the hole and the mutation is now caught
+- ✅ Generic `ProductCard` with a product `Select` + slot-keyed accent; `CalciumCard`/`SodiumCard` deleted. The card now calls `calculateProductMetrics` instead of re-deriving the math inline, so what it shows cannot drift from what the API returns
+- ✅ Hook on `TOOL_KEYS.comparison` with a one-shot `migrate` (new optional `useToolState` param, running inside the hydration effect — the only point where a rewrite is still visible to that render). Legacy keys registered in a new `LEGACY_KEYS` map and deleted after conversion
+- ✅ API route + Zod schema on `{ slotA, slotB }`; OpenAPI request schema regenerates from Zod, examples and both-locale prose updated
+- ✅ i18n: `Labels`/`Verdict` moved to slot wording, new `Info.slots` section, en/it at 398 keys each, zero em/en dashes in Italian
+- ✅ Docs updated: `ARCHITECTURE.md` (§4.3 persistence + migrations, §4.4 slot model, §4.5 endpoint body), `src/lib/calculator/AGENTS.md` (new rules #7 adding-a-product and #8 slot-keyed), `src/lib/api/AGENTS.md` (rule 7), `src/hooks/AGENTS.md`, root `AGENTS.md` (lint baseline), and the `add-pool-tool` skill
+
+**Beyond the original scope, deliberately** (all reported to the user):
+- A shared top-level `Products` i18n namespace keyed by `ProductId` now holds the product names. The Shock tool was migrated onto it and its duplicate `Result.calciumName`/`sodiumName` keys deleted, so product names have exactly one source. WIP 3 gets trichlor/dichlor names for free by adding two keys.
+- `PRODUCT_RETAIL_FORMS` + `PRODUCT_IDS` added to `constants.ts` (no new uncited numbers — the retail hints reuse `DEFAULT_CALCIUM_PCT` / `DEFAULT_SODIUM_TRADE_PCT` / `DEFAULT_SODIUM_DENSITY`, and a test asserts they do).
+- `src/hooks/use-local-storage.ts` **deleted**: the comparison hook was its last consumer, so the refactor orphaned it. Lint debt therefore dropped from 4 errors / 2 warnings to 3 / 1; the baseline note in `AGENTS.md` was updated so the next agent is not misled.
+- `scripts/verify-logic.ts` **deleted**: a hand-rolled console-log check of the exact example the Vitest suite now pins, importing an API that no longer exists.
+
+**Not verified by me**: anything visual. The product `Select`, the slot badges, the reset button and the verdict banner were never rendered in a browser — the human needs to look, including dark mode and mobile.
 
 ## 5. Success Criteria
 

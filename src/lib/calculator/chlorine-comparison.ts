@@ -1,132 +1,85 @@
-import { DEFAULT_SODIUM_DENSITY } from './constants';
+/**
+ * Chlorine product comparison — cost per kilogram of ACTIVE chlorine.
+ *
+ * Two generic slots (A and B), each holding any supported product. One metrics
+ * function serves every product; the winner is identified by *slot*, which is
+ * what makes same-type comparisons (two sodium hypochlorites, two calcium
+ * hypochlorites) possible at all.
+ */
 
-export type ChemicalType = 'CALCIUM' | 'SODIUM';
-
-export interface CalciumInput {
-  price: number;
-  weight: number; // in kg
-  concentration: number; // percentage 0-100
-}
-
-export interface SodiumInput {
-  price: number;
-  quantity: number; // Volume in L or Weight in Kg
-  unit: 'l' | 'kg';
-  density?: number; // default 1.2 for liquids
-  concentration: number; // percentage 0-100
-}
-
-export interface ChemicalMetrics {
-  type: ChemicalType;
-  grossMass: number; // kg
-  activeMass: number; // kg of pure chlorine
-  pricePerActiveKg: number; // €/kg
-  isValid: boolean;
-}
-
-export interface ComparisonResult {
-  winner: ChemicalType | 'DRAW' | null;
-  savingsPerKg: number;
-  calcium: ChemicalMetrics;
-  sodium: ChemicalMetrics;
-}
+import { PRODUCT_RETAIL_FORMS } from './constants';
+import type {
+  ComparisonProductInput,
+  ComparisonProductMetrics,
+  ComparisonResult,
+  ComparisonSlotId,
+} from './types';
 
 /**
- * Calculates metrics for Calcium Hypochlorite (Solid)
- * Always valid if inputs are positive numbers
+ * Converts one product into comparable metrics.
+ *
+ * Liquids priced by the litre are weighed via density (the label's, or the
+ * product's typical one). Anything priced by the kilogram is already a weight.
  */
-export function calculateCalciumMetrics(input: CalciumInput): ChemicalMetrics {
-  const { price, weight, concentration } = input;
+export function calculateProductMetrics(
+  input: ComparisonProductInput,
+): ComparisonProductMetrics {
+  const { productId, price, quantity, unit, concentration } = input;
+  const retail = PRODUCT_RETAIL_FORMS[productId];
 
-  if (price <= 0 || weight <= 0 || concentration <= 0) {
-    return {
-      type: 'CALCIUM',
-      grossMass: 0,
-      activeMass: 0,
-      pricePerActiveKg: 0,
-      isValid: false,
-    };
-  }
-
-  const activeMass = weight * (concentration / 100);
-  const pricePerActiveKg = price / activeMass;
-
-  return {
-    type: 'CALCIUM',
-    grossMass: weight,
-    activeMass,
-    pricePerActiveKg,
-    isValid: true,
+  const incomplete: ComparisonProductMetrics = {
+    productId,
+    grossMass: 0,
+    activeMass: 0,
+    pricePerActiveKg: 0,
+    isValid: false,
   };
-}
 
-/**
- * Calculates metrics for Sodium Hypochlorite (Liquid)
- * Handles conversion from Liters to Kg if necessary
- */
-export function calculateSodiumMetrics(input: SodiumInput): ChemicalMetrics {
-  const { price, quantity, unit, concentration } = input;
-  // Default density if not provided or invalid, but only relevant for 'l'
-  const density = input.density && input.density > 0 ? input.density : DEFAULT_SODIUM_DENSITY;
-
-  if (price <= 0 || quantity <= 0 || concentration <= 0) {
-    return {
-      type: 'SODIUM',
-      grossMass: 0,
-      activeMass: 0,
-      pricePerActiveKg: 0,
-      isValid: false,
-    };
-  }
+  // Zeros are not an error: the tool posts empty slots on mount.
+  if (price <= 0 || quantity <= 0 || concentration <= 0) return incomplete;
 
   let grossMass = quantity;
   if (unit === 'l') {
+    // A solid has no litres. Rather than silently converting nonsense with some
+    // borrowed density, the slot is reported incomplete.
+    if (retail.form !== 'liquid') return incomplete;
+    const density = input.density && input.density > 0 ? input.density : retail.typicalDensityKgL;
     grossMass = quantity * density;
   }
 
   const activeMass = grossMass * (concentration / 100);
-  const pricePerActiveKg = price / activeMass;
 
   return {
-    type: 'SODIUM',
+    productId,
     grossMass,
     activeMass,
-    pricePerActiveKg,
+    pricePerActiveKg: price / activeMass,
     isValid: true,
   };
 }
 
 /**
- * Compares two results and determines the winner
+ * Compares two slots. The cheaper cost per active kilogram wins; `savingsPerKg`
+ * is what the winner saves you on every kilogram of usable chlorine.
  */
-export function compareChemicals(
-  calcium: ChemicalMetrics,
-  sodium: ChemicalMetrics
+export function compareProducts(
+  slotA: ComparisonProductMetrics,
+  slotB: ComparisonProductMetrics,
 ): ComparisonResult {
-  if (!calcium.isValid || !sodium.isValid) {
-    return {
-      winner: null,
-      savingsPerKg: 0,
-      calcium,
-      sodium,
-    };
+  if (!slotA.isValid || !slotB.isValid) {
+    return { winner: null, savingsPerKg: 0, slotA, slotB };
   }
 
-  let winner: ChemicalType | 'DRAW' = 'DRAW';
+  let winner: ComparisonSlotId | 'DRAW' = 'DRAW';
   let savingsPerKg = 0;
 
-  if (calcium.pricePerActiveKg < sodium.pricePerActiveKg) {
-    winner = 'CALCIUM';
-    savingsPerKg = sodium.pricePerActiveKg - calcium.pricePerActiveKg;
-  } else if (sodium.pricePerActiveKg < calcium.pricePerActiveKg) {
-    winner = 'SODIUM';
-    savingsPerKg = calcium.pricePerActiveKg - sodium.pricePerActiveKg;
+  if (slotA.pricePerActiveKg < slotB.pricePerActiveKg) {
+    winner = 'A';
+    savingsPerKg = slotB.pricePerActiveKg - slotA.pricePerActiveKg;
+  } else if (slotB.pricePerActiveKg < slotA.pricePerActiveKg) {
+    winner = 'B';
+    savingsPerKg = slotA.pricePerActiveKg - slotB.pricePerActiveKg;
   }
 
-  return {
-    winner,
-    savingsPerKg,
-    calcium,
-    sodium,
-  };
+  return { winner, savingsPerKg, slotA, slotB };
 }

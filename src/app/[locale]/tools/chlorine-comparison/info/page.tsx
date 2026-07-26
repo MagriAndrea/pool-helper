@@ -19,19 +19,24 @@ export default function ChlorineComparisonInfoPage() {
         <p>{t('Info.overview.p1')}</p>
       </InfoSection>
 
+      <InfoSection title={t('Info.slots.title')}>
+        <p>{t('Info.slots.p1')}</p>
+        <p>{t('Info.slots.p2')}</p>
+      </InfoSection>
+
       <InfoSection title={t('Info.activeChlorine.title')}>
         <p>{t('Info.activeChlorine.p1')}</p>
         <Formula>{t('Info.activeChlorine.formula')}</Formula>
       </InfoSection>
 
-      <InfoSection title={t('Info.calcium.title')}>
-        <p>{t('Info.calcium.p1')}</p>
-        <Formula>{t('Info.calcium.formula')}</Formula>
+      <InfoSection title={t('Info.solid.title')}>
+        <p>{t('Info.solid.p1')}</p>
+        <Formula>{t('Info.solid.formula')}</Formula>
       </InfoSection>
 
-      <InfoSection title={t('Info.sodium.title')}>
-        <p>{t('Info.sodium.p1', { density })}</p>
-        <Formula>{t('Info.sodium.formula')}</Formula>
+      <InfoSection title={t('Info.liquid.title')}>
+        <p>{t('Info.liquid.p1', { density })}</p>
+        <Formula>{t('Info.liquid.formula')}</Formula>
       </InfoSection>
 
       <InfoSection title={t('Info.verdict.title')}>

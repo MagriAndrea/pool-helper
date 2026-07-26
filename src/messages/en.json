@@ -144,18 +144,27 @@
             }
         }
     },
+    "Products": {
+        "calcium_hypochlorite": "Calcium hypochlorite",
+        "sodium_hypochlorite": "Sodium hypochlorite"
+    },
     "Tools": {
         "ChlorineComparison": {
             "title": "Chlorine Comparison",
             "description": "Find out which chlorine is better value.",
             "reset": "Clear Fields",
+            "HowTo": {
+                "step1": "Pick the chlorine type for each of the two products.",
+                "step2": "Copy price, package size and concentration from the label.",
+                "step3": "You get the real cost per kilo of active chlorine, and which one wins."
+            },
             "Labels": {
-                "calciumTitle": "Calcium Hypochlorite",
-                "calciumSubtitle": "Solid / Granular (Kg)",
-                "sodiumTitle": "Sodium Hypochlorite",
-                "sodiumSubtitle": "Liquid (Liters or Kg)",
-                "volumeOrWeight": "Volume or Weight",
-                "weightPkg": "Package Weight (Kg)",
+                "slotTitle": "Product {slot}",
+                "product": "Chlorine type",
+                "formSolid": "Solid / granular, sold by weight",
+                "formLiquid": "Liquid, sold by volume or weight",
+                "packageVolume": "Package Volume (L)",
+                "packageWeight": "Package Weight (Kg)",
                 "totalPrice": "Total Price (€)",
                 "concentration": "Concentration (%)",
                 "liters": "Liters (L)",
@@ -168,7 +177,7 @@
                 "weight": "Ex. 5, 10, 25",
                 "price": "Ex. 45.50",
                 "concentration": "Ex. 65",
-                "sodiumQty": "Ex. 20, 25",
+                "volume": "Ex. 20, 25",
                 "density": "Ex. 1.2"
             },
             "Verdict": {
@@ -176,12 +185,10 @@
                 "draw": "It's a Draw!",
                 "drawDesc": "Both products have the exact same cost per active ingredient.",
                 "winner": "Winner",
+                "winnerSlot": "Product {slot}",
                 "savings": "You save",
                 "perActiveKg": "/ active kg",
-                "calciumReal": "Calcium (Real)",
-                "sodiumReal": "Sodium (Real)",
-                "calciumName": "Calcium Hypochlorite",
-                "sodiumName": "Sodium Hypochlorite"
+                "slotReal": "Product {slot} (Real)"
             },
             "Footer": {
                 "disclaimer": "Calculations are based on the amount of active ingredient (chlorine) effectively available.\nEnsure you enter correct prices including VAT if applicable."
@@ -193,24 +200,29 @@
                     "title": "Overview",
                     "p1": "This tool doesn't compare the sticker price of the two packages — it compares the real cost per kilogram of active chlorine, the disinfecting ingredient actually contained in the product. That's the only correct way to tell which product is really the better deal."
                 },
+                "slots": {
+                    "title": "Two free slots, not two fixed chemicals",
+                    "p1": "Each side of the comparison is an independent slot, Product A and Product B, and you pick the chemical inside it. That means you can compare two different products (a calcium hypochlorite against a sodium hypochlorite) or two products of the same type — two sodium hypochlorites from different shops, for instance, which is the everyday question when you're standing in front of a shelf.",
+                    "p2": "The winner is announced as \"Product A\" or \"Product B\", never as a chemical name: if both slots hold the same chemical, naming the chemical would tell you nothing about which package to buy."
+                },
                 "activeChlorine": {
                     "title": "Why count \"active chlorine\"",
                     "p1": "Two products at the same package price can have very different chlorine concentrations: a cheaper product per kilogram can end up costing more for the same amount of disinfection if its concentration is lower. That's why both products are converted to the same unit — cost per kilogram of active chlorine.",
                     "formula": "cost / active kg = total price ÷ active chlorine mass"
                 },
-                "calcium": {
-                    "title": "Calcium hypochlorite (solid)",
-                    "p1": "For the solid product, the package weight is all that's needed — the active chlorine mass is the concentration percentage applied to the gross weight.",
+                "solid": {
+                    "title": "Solid products (calcium hypochlorite)",
+                    "p1": "A solid is sold by weight, so the package weight is all that's needed — the active chlorine mass is the concentration percentage applied to the gross weight. Litres aren't offered for a solid, because a granular product has no meaningful volume price.",
                     "formula": "active mass = package weight (kg) × concentration ÷ 100"
                 },
-                "sodium": {
-                    "title": "Sodium hypochlorite (liquid)",
-                    "p1": "For the liquid product you can enter quantity in liters or kilograms. If you enter liters, it's converted to weight using the product's density (shown on the label) — if you don't know it, a typical density of {density} kg/L for sodium hypochlorite solutions is used.",
+                "liquid": {
+                    "title": "Liquid products (sodium hypochlorite)",
+                    "p1": "A liquid can be sold by volume or by weight, so you choose the unit. If you enter litres, it's converted to weight using the product's density (shown on the label) — if you don't know it, a typical density of {density} kg/L for sodium hypochlorite solutions is used.",
                     "formula": "active mass = (liters × density) × concentration ÷ 100"
                 },
                 "verdict": {
                     "title": "How the winner is decided",
-                    "p1": "The product with the lower cost per kilogram of active chlorine wins. The savings shown is the difference between the two active-kg costs — it tells you how much you're saving (or losing) for every kilogram of usable chlorine you buy."
+                    "p1": "The slot with the lower cost per kilogram of active chlorine wins. The savings shown is the difference between the two active-kg costs — it tells you how much you're saving (or losing) for every kilogram of usable chlorine you buy."
                 },
                 "limits": {
                     "title": "Assumptions & limits",
@@ -314,9 +326,7 @@
                 "winnerNoteFloor": "Set to the minimum effective shock level for this water condition.",
                 "productSection": "Which chlorine do you have available?",
                 "productSubtitle": "Your choice changes how much product to pour in.",
-                "sodiumName": "Sodium hypochlorite",
                 "sodiumDescription": "liquid · raises pH · adds salt",
-                "calciumName": "Calcium hypochlorite",
                 "calciumDescription": "granular · raises pH · adds calcium hardness",
                 "concentrationLabel": "Concentration (%)",
                 "densityLabel": "Density (kg/L)",
@@ -519,8 +529,8 @@
             },
             "chlorine": {
                 "summary": "Compare the real cost of two chlorine products",
-                "description": "Compares calcium hypochlorite (sold by weight) against sodium hypochlorite (sold by volume or weight) on cost per kilogram of ACTIVE chlorine, which is the only fair basis for comparison. Zero values are accepted and simply mark that side as incomplete rather than being an error.",
-                "responseDescription": "Per-product metrics (gross mass, active chlorine mass, cost per active kg) and the winner. When either side is incomplete, winner is null."
+                "description": "Compares any two chlorine products on cost per kilogram of ACTIVE chlorine, which is the only fair basis for comparison. Each of the two slots (slotA, slotB) carries its own productId, so the two sides may hold different products or the same one. Products sold by volume (unit 'l') are converted to weight using density, falling back to the product's typical density when omitted; a solid product priced by the litre is reported isValid: false rather than rejected. Zero values are accepted and simply mark that slot as incomplete rather than being an error.",
+                "responseDescription": "Per-slot metrics (gross mass, active chlorine mass, cost per active kg) and the winning slot, 'A' or 'B' (or 'DRAW'). The winner is identified by slot, not by product, so that two products of the same type can be compared. When either slot is incomplete, winner is null."
             }
         }
     },

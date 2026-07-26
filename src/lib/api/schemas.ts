@@ -211,29 +211,29 @@ export const shockInputSchema = z.object({
 });
 
 // ---------------------------------------------------------------------------
-// chlorine-comparison (legacy price-comparison tool)
+// chlorine-comparison
 // ---------------------------------------------------------------------------
 
 /**
- * `CalciumInput` / `SodiumInput` (from `src/lib/calculator/chlorine-comparison.ts`).
+ * `ComparisonProductInput` (from `src/lib/calculator/chlorine-comparison.ts`) —
+ * one of the two comparison slots.
  *
- * 🛑 MUST accept 0 for `price`/`weight`/`quantity`: `use-chlorine-comparison.ts`
- * initialises state to `{ price: 0, weight: 0, quantity: 0 }` and fires a
- * debounced POST to this endpoint immediately on mount. `calculateCalciumMetrics`
- * / `calculateSodiumMetrics` already handle `<= 0` gracefully by returning
- * `isValid: false` — the schema must not 400 what the calculator is designed
- * to accept. `density` follows the same reasoning (`<= 0` falls back to
- * `DEFAULT_SODIUM_DENSITY` inside the calculator, it is never a validation error).
- * `concentration` is capped at 100 (it's a percentage) but otherwise
- * nonnegative for the same zero-on-mount reason.
+ * 🛑 MUST accept 0 for `price`/`quantity`: `use-chlorine-comparison.ts`
+ * initialises both slots to `{ price: 0, quantity: 0 }` and fires a debounced
+ * POST to this endpoint immediately on mount. `calculateProductMetrics` already
+ * handles `<= 0` gracefully by returning `isValid: false` — the schema must not
+ * 400 what the calculator is designed to accept. `density` follows the same
+ * reasoning (`<= 0` falls back to the product's typical density inside the
+ * calculator, it is never a validation error). `concentration` is capped at 100
+ * (it's a percentage) but otherwise nonnegative for the same zero-on-mount reason.
+ *
+ * A solid product priced by the litre is accepted here too, and reported
+ * `isValid: false` by the calculator rather than rejected: same zero-on-mount
+ * reasoning, plus the UI may briefly hold a stale unit while the user switches
+ * a slot's product type.
  */
-const calciumComparisonInputSchema = z.object({
-  price: z.number().nonnegative(),
-  weight: z.number().nonnegative(),
-  concentration: z.number().nonnegative().max(100),
-});
-
-const sodiumComparisonInputSchema = z.object({
+const comparisonSlotSchema = z.object({
+  productId: productIdSchema,
   price: z.number().nonnegative(),
   quantity: z.number().nonnegative(),
   unit: z.enum(['l', 'kg']),
@@ -241,8 +241,8 @@ const sodiumComparisonInputSchema = z.object({
   concentration: z.number().nonnegative().max(100),
 });
 
-/** `{ calciumInput: CalciumInput; sodiumInput: SodiumInput }` — the `/chlorine` comparison endpoint. */
+/** `{ slotA, slotB }` — the `/chlorine` comparison endpoint. */
 export const chlorineComparisonInputSchema = z.object({
-  calciumInput: calciumComparisonInputSchema,
-  sodiumInput: sodiumComparisonInputSchema,
+  slotA: comparisonSlotSchema,
+  slotB: comparisonSlotSchema,
 });

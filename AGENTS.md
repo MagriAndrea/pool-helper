@@ -171,15 +171,17 @@ Once the task is fully completed (Success Criteria met):
     *   **✅ RUN THESE INSTEAD — "it compiles" is NOT verification:**
         ```bash
         npx tsc --noEmit      # expect zero output
-        npm run lint          # expect exactly the pre-existing 4 errors / 2 warnings, ZERO new ones
+        npm run lint          # expect exactly the pre-existing 3 errors / 1 warning, ZERO new ones
         ```
-    *   **⚠️ KNOWN PRE-EXISTING LINT DEBT** (do NOT "fix" it as a drive-by, and do NOT let it hide YOUR new problems): `chemicals.js`, `src/app/[locale]/layout.tsx`, `src/components/Navbar.tsx`, `src/hooks/use-local-storage.ts`, `src/i18n/request.ts`. If the totals change, the new one is yours.
+    *   **⚠️ KNOWN PRE-EXISTING LINT DEBT** (do NOT "fix" it as a drive-by, and do NOT let it hide YOUR new problems): `chemicals.js`, `src/app/[locale]/layout.tsx`, `src/components/Navbar.tsx`, `src/i18n/request.ts`. If the totals change, the new one is yours. (Was 4 errors / 2 warnings until `src/hooks/use-local-storage.ts` was deleted — the A/B slot refactor orphaned it, so its debt left with it. Deleting dead code you created is fine; "fixing" the remaining four is not.)
     *   **🧪 RUN THE TESTS — THEY EXIST NOW.** `src/lib/calculator/` is covered by Vitest characterization tests:
         ```bash
         npx vitest run     # expect ALL passing; run BEFORE and AFTER touching src/lib/calculator/
         ```
-        **🛑 IF YOU CHANGE CALCULATOR BEHAVIOUR AND A TEST FAILS, THE TEST IS PROBABLY RIGHT.** These tests deliberately pin *current* behaviour, including intentional quirks: `combinedCC: 0` is treated as "not provided", a SLAM-vs-floor tie favours SLAM, and a non-positive `density` falls back to `DEFAULT_SODIUM_DENSITY`. **DO NOT edit a test to make it green.** Work out whether you meant to change that behaviour; if you did, say so explicitly to the human instead of silently rewriting the expectation.
+        **🛑 IF YOU CHANGE CALCULATOR BEHAVIOUR AND A TEST FAILS, THE TEST IS PROBABLY RIGHT.** These tests deliberately pin *current* behaviour, including intentional quirks: `combinedCC: 0` is treated as "not provided", a SLAM-vs-floor tie favours SLAM, and a non-positive `density` falls back to the product's typical density instead of erroring. **DO NOT edit a test to make it green.** Work out whether you meant to change that behaviour; if you did, say so explicitly to the human instead of silently rewriting the expectation.
         **➕ ADD tests when you add pure logic.** `constants.test.ts` pins every cited chemistry number, so an unsourced edit to `constants.ts` fails the suite by design.
+        **🧬 A GREEN SUITE PROVES NOTHING — MUTATION-TEST IT.** Break the code on purpose (flip a comparison operator, delete a guard, change a coefficient), confirm a test fails, revert. A mutation that survives is a hole in the net, not a pass: when "always use the typical density instead of the label's" survived, the cause was that every test happened to pass the typical value — the fix was a test with a *different* density, not a shrug.
+        **🛑 COMMIT BEFORE YOU MUTATE.** The revert step is `git checkout -- <file>`, which restores the last **commit** and silently destroys uncommitted work in that file. Mutating a file you have not committed will erase your own refactor (this has already happened once, mid-refactor, to two files). Commit first, then mutate; the diff you are testing is then recoverable.
     *   **🧪 FOR SPOT CHECKS OUTSIDE THE SUITE**, Node ≥ 22 strips TypeScript natively, so a module can be imported and driven from a scratch script. Note `node_modules` lives in the **main repo**, not in a worktree, and raw Node needs explicit `.ts`/`.json` extensions and `with { type: 'json' }` where the bundler does not — use a small resolve hook if you hit that. Delete the script afterwards (rule #11).
     *   **👀 THE HUMAN IS YOUR BROWSER.** You cannot see the rendered page. For anything visual (layout, dark mode, mobile), state plainly that you could not verify it visually and ask the user to look.
 10. **🦾 USE SUB-AGENTS ON DEMAND (CLAUDE CODE NATIVE)**:

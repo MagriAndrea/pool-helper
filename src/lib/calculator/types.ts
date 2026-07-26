@@ -19,6 +19,9 @@ export type ColorLevel = 'perfect' | 'light_green' | 'green_brown' | 'dark_green
 /** Shock products. Stabilized chlorine (trichlor/dichlor) is intentionally excluded. */
 export type ProductId = 'sodium_hypochlorite' | 'calcium_hypochlorite';
 
+/** Physical form a product is sold in. Liquids need a density to be weighed. */
+export type ProductForm = 'solid' | 'liquid';
+
 export interface VolumeInput {
   value: number;
   unit: Unit;
@@ -205,4 +208,49 @@ export interface ShockResult {
   product: ProductConversionResult | null;
   breakdown: ShockBreakdown;
   warnings: WarningCode[];
+}
+
+// ---------------------------------------------------------------------------
+// chlorine-comparison
+// ---------------------------------------------------------------------------
+
+/**
+ * Which of the two comparison slots is being referred to.
+ *
+ * The comparison is deliberately slot-keyed, not product-keyed: identifying the
+ * winner as `'A'`/`'B'` is the only way to compare two products of the *same*
+ * type (two sodium hypochlorites, two calcium hypochlorites).
+ */
+export type ComparisonSlotId = 'A' | 'B';
+
+/** Unit a product is sold in, as printed on the shop label. */
+export type ProductSaleUnit = 'l' | 'kg';
+
+/** One side of the comparison: a product as it appears on a shop shelf. */
+export interface ComparisonProductInput {
+  productId: ProductId;
+  price: number;
+  /** Package size: litres when `unit` is `'l'`, kilograms when `'kg'`. */
+  quantity: number;
+  unit: ProductSaleUnit;
+  /** kg/L, liquids only. Falls back to the product's typical density. */
+  density?: number;
+  /** Active chlorine on the label, as a percentage 0-100. */
+  concentration: number;
+}
+
+export interface ComparisonProductMetrics {
+  productId: ProductId;
+  grossMass: number; // kg
+  activeMass: number; // kg of pure available chlorine
+  pricePerActiveKg: number; // currency per kg of active chlorine
+  isValid: boolean;
+}
+
+export interface ComparisonResult {
+  /** `null` while either slot is incomplete. */
+  winner: ComparisonSlotId | 'DRAW' | null;
+  savingsPerKg: number;
+  slotA: ComparisonProductMetrics;
+  slotB: ComparisonProductMetrics;
 }

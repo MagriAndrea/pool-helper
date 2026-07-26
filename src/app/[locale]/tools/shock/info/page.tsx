@@ -33,6 +33,7 @@ const SOURCES = [
 
 export default function ShockInfoPage() {
   const t = useTranslations('Tools.Shock');
+  const tProducts = useTranslations('Products');
   const locale = useLocale();
 
   const fmt = (n: number, min = 0, max = 2) =>
@@ -49,12 +50,12 @@ export default function ShockInfoPage() {
 
   const productRows = [
     {
-      name: t('Result.sodiumName'),
+      name: tProducts('sodium_hypochlorite'),
       strength: `≈ ${fmt(DEFAULT_SODIUM_TRADE_PCT)}%`,
       adds: t('Info.product.sodiumAdds', { salt }),
     },
     {
-      name: t('Result.calciumName'),
+      name: tProducts('calcium_hypochlorite'),
       strength: `≈ ${fmt(DEFAULT_CALCIUM_PCT)}%`,
       adds: t('Info.product.calciumAdds', { hardness }),
     },

@@ -6,7 +6,7 @@
  * where applicable, verified against theoretical stoichiometry.
  */
 
-import type { ColorLevel, ProductId, SideEffects } from './types';
+import type { ColorLevel, ProductForm, ProductId, SideEffects } from './types';
 
 // --- SLAM (TroubleFreePool) -------------------------------------------------
 // Shock FC target ≈ 40% of CYA.
@@ -63,4 +63,40 @@ export interface ProductCoefficients {
 export const PRODUCT_COEFFICIENTS: Record<ProductId, ProductCoefficients> = {
   sodium_hypochlorite: { cyaPerPpm: 0, hardnessPerPpm: 0, saltPerPpm: 0.82, pHEffect: 'up' },
   calcium_hypochlorite: { cyaPerPpm: 0, hardnessPerPpm: 0.7, saltPerPpm: 0, pHEffect: 'up' },
+};
+
+// --- How each product is sold in shops --------------------------------------
+// Physical form decides whether a volume price is even meaningful: a solid has
+// no litres. `typicalConcentrationPct` / `typicalDensityKgL` are prefill hints
+// for the UI — the user must always read their own label. Both reuse the cited
+// product defaults above; no new numbers are introduced here.
+//
+// A discriminated union, not an optional field: `typicalDensityKgL` exists only
+// where a density means something, so consumers narrow instead of asserting.
+export type ProductRetailForm =
+  | { form: Extract<ProductForm, 'solid'>; typicalConcentrationPct: number }
+  | {
+      form: Extract<ProductForm, 'liquid'>;
+      typicalConcentrationPct: number;
+      typicalDensityKgL: number;
+    };
+
+// Canonical display order for product pickers. TypeScript cannot check that this
+// list is complete, so `constants.test.ts` asserts it covers every product —
+// add new products here as well as to the records above.
+export const PRODUCT_IDS: readonly ProductId[] = [
+  'calcium_hypochlorite',
+  'sodium_hypochlorite',
+];
+
+export const PRODUCT_RETAIL_FORMS: Record<ProductId, ProductRetailForm> = {
+  sodium_hypochlorite: {
+    form: 'liquid',
+    typicalConcentrationPct: DEFAULT_SODIUM_TRADE_PCT,
+    typicalDensityKgL: DEFAULT_SODIUM_DENSITY,
+  },
+  calcium_hypochlorite: {
+    form: 'solid',
+    typicalConcentrationPct: DEFAULT_CALCIUM_PCT,
+  },
 };
