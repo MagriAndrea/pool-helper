@@ -242,12 +242,56 @@ The fact that the *cure* differs completely (dilution vs. shocking) is the clear
 
 **Confidence:** High confidence. Multiple independent sources (CPO Class/CPO training content, SwimUniversity, TFP community consensus, and the underlying chemistry of isocyanurate equilibria) agree on both the "myth as literally stated" verdict and the real reversible-equilibrium mechanism. The Anderson 1965 paper's existence and rough conclusion is corroborated by two independent secondary sources, though the paper itself was not directly read (not fetchable via available tools) — the claim about what it did/didn't show is second-hand, flagged accordingly.
 
+## 7. Orchestrator verification pass (primary sources, browser)
+
+> The research above was produced by a Sonnet subagent whose HTTP fetches were blocked by TFP (403). Those pages **are** readable with a real browser, so the load-bearing claims were re-checked directly against the primary TFP wiki. Two of the "open questions" are now closed, one secondary-source table turned out to be **wrong**, and one factor the research never considered came to light.
+
+**Stoichiometry (Q2) — independently recomputed, matches to 4 decimal places.** CYA 129.075 g/mol; trichlor 232.41 g/mol → 91.53 % available chlorine → **0.6068** ppm CYA per ppm FC; dichlor dihydrate 255.98 g/mol → 55.40 % → **0.9102**. Both round to the candidate values (0.6 / 0.9) and the computed label percentages match the commercial specs (≥90 % / 56 %). Nothing to revise.
+
+**Q1 CLOSED — the "target" multiplier is 11.5 %, and it is published, not inferred.** [TFP wiki, CYA Chlorine Relationship](https://www.troublefreepool.com/wiki/index.php?title=CYA_Chlorine_Relationship), read directly, states the whole ladder as percentages of CYA:
+
+| TFP quantity | % of CYA |
+|---|---|
+| Min FC | **7.5 %** |
+| Target FC | **11.5 %** |
+| Yellow/mustard algae min | 15 % |
+| Shock (SLAM) FC | **40 %** |
+| Yellow/mustard shock | 60 % |
+
+- The 40 % figure is an **independent primary-source confirmation of the existing `SLAM_CYA_RATIO = 0.4`** already in `constants.ts`. That constant is correct.
+- The same page confirms the SWG variant: the table "is for tablet or liquid chlorination at a 7.5 % minimum FC/CYA ratio. SWG chlorination can be maintained at a 5 % minimum FC/CYA ratio."
+
+**⚠️ The reconstructed table in Q1 is WRONG — do not use it.** It came from secondary aggregators and disagrees with TFP's actual published table. Real values (primary):
+
+| CYA | Min FC | Target FC range | SLAM |
+|---|---|---|---|
+| 20 | 2 | 3-5 | 8 |
+| 30 | 2 | 4-6 | 12 |
+| 40 | 3 | 5-7 | 16 |
+| 50 | 4 | 6-8 | 20 |
+| 80 | 6 | 9-11 | 31 |
+| 100 | 8 | 11-13 | 39 |
+
+Q1's reconstruction claimed e.g. "CYA 30 → min 2.2, target 3.5"; the real table says **min 2, target 4-6**. The direction of Q1's reasoning survives, its numbers do not.
+
+- **The 2 ppm floor is confirmed by TFP's own rounding**, which is a stronger result than the research claimed: at CYA 20 *and* 30 the published Min FC is 2, i.e. TFP itself does not go below 2 ppm even where 7.5 % would give 1.5. So `max(0.075 × CYA, 2)` reproduces TFP's table rather than merely approximating it.
+- Phase B should therefore encode **three** cited constants, not an invented band: `MAINTENANCE_FC_MIN_RATIO = 0.075`, `MAINTENANCE_FC_TARGET_RATIO = 0.115`, `MAINTENANCE_FC_ABSOLUTE_MIN = 2`.
+
+**Q5 CLOSED — the owner's own recollection was right, and the disclaimer should keep 70-80.** [TFP wiki, CYA](https://www.troublefreepool.com/wiki/index.php?title=CYA), read directly: *"Saltwater chlorine Generation (SWG) pools require a higher level of CYA, about 70-80 ppm, to operate efficiently."* The same page adds that an SWG in a desert climate benefits from around 80 ppm. Pentair's 0-50 manual figure is a real disagreement and worth knowing, but it does not make the live text wrong: **the published sentence is TFP-backed and can stay as it is.** Q5's proposed "50-80" rewrite is therefore *not* recommended — it would replace a sourced figure with a hedge. Optionally add "check your generator's manual", nothing more.
+
+**🆕 A factor the research missed, and it materially affects the projection.** The same TFP CYA page documents that **CYA is not permanent**: chlorine breakdown in sunlight degrades it via hydroxyl radicals, losing **2 to 10 ppm per month** depending on sun exposure (10+ ppm/month in extreme heat and sun). Q3 modelled only how fast CYA *accumulates* from stabilized products. A projection that ignores degradation will **overstate** how quickly CYA leaves the ideal range, in a hot Italian summer possibly by a lot. Phase B must decide explicitly: model degradation as a subtracted term, or state clearly that the projection is a worst case that ignores it. Either is defensible; silently ignoring it is not.
+
+**🆕 TFP explicitly rejects the classic "1-3 ppm" rule, in unusually blunt terms** — quotable on the info page, and directly relevant to `testo.md`: *"The pool industry gets this concept wrong when they state that a 1-3ppm Free Chlorine is all you need. THAT. IS. WRONG! Your Free Chlorine level is determined by your CYA level."*
+
+**Open question #1 is resolved**: the TFP pages are fully readable with browser tooling; the 403 was a limitation of HTTP-fetch tools, not of the source. Anything else in this document still sourced only to a search summary can be verified the same way.
+
 ### Open questions for the owner
 
-1. **TFP's own site returned HTTP 403 to every direct fetch attempt in this session** (wiki pages and blog posts alike; `web.archive.org` was also unreachable from this tool). Every TFP citation above (which is most of them — TFP is the single most-cited source in this research) was read via search-engine-generated summaries of TFP pages, not a verbatim primary-source pull. The specific numbers converge tightly across independent secondary confirmations (Orenda, PHTA, CDC, manufacturer manuals) almost everywhere, which is reassuring, but **if any of this content ships as a public "sources" list, someone with a real browser should open the TFP wiki pages directly at least once** (a human, or an agent with browser tooling) to confirm the exact wording before quoting TFP verbatim on the info page.
-2. **Q1 — the exact "target" (not minimum) FC multiplier is unsettled.** The 7.5%-of-CYA *minimum* is solid, but the upper edge of a "target" band (candidates seen: ~12% to ~18% of CYA depending on source) was not pinned to one canonical formula. Needs a product decision for Phase B: does the tool show a single minimum-based floor, or a min-max "target band"? The research leans toward showing both (a hard floor + a comfort band), but the comfort-band multiplier itself isn't nailed down to a single cited number.
+1. ~~**TFP's own site returned HTTP 403 to every direct fetch attempt in this session**~~ — **RESOLVED in section 7**: the pages were read directly with browser tooling and the key figures confirmed (with one secondary-source table found to be wrong). Original note kept for the record: **TFP's own site returned HTTP 403 to every direct fetch attempt in this session** (wiki pages and blog posts alike; `web.archive.org` was also unreachable from this tool). Every TFP citation above (which is most of them — TFP is the single most-cited source in this research) was read via search-engine-generated summaries of TFP pages, not a verbatim primary-source pull. The specific numbers converge tightly across independent secondary confirmations (Orenda, PHTA, CDC, manufacturer manuals) almost everywhere, which is reassuring, but **if any of this content ships as a public "sources" list, someone with a real browser should open the TFP wiki pages directly at least once** (a human, or an agent with browser tooling) to confirm the exact wording before quoting TFP verbatim on the info page.
+2. ~~**Q1 — the exact "target" (not minimum) FC multiplier is unsettled.**~~ — **RESOLVED in section 7**: TFP publishes it as **11.5 % of CYA**, alongside Min 7.5 % and Shock 40 %. The tool should show a floor *and* a target, both cited, with no invented multiplier. Original note: the upper edge of a "target" band (candidates seen: ~12% to ~18% of CYA depending on source) was not pinned to one canonical formula.
 3. **Q2 — which dichlor hydration form is typical in Italian retail (dihydrate ~56% vs. anhydrous ~62% available chlorine)?** Not verified — no Italian product datasheet was checked. Doesn't affect the CYA-per-ppm-FC ratio (0.9 either way) but does affect any future dose-conversion default strength if Phase B adds one. Also, the `pHEffect` bucket recommendations (`'down'` for trichlor, `'neutral'` for dichlor) are directionally solid but not confirmed against a single primary manufacturer SDS.
 4. **Q4 — PHTA/APSP-11's exact standard wording could not be extracted from the fact-sheet PDF** (tooling limitation, not a source-availability problem); the 30-50 ideal / 100 max figures are corroborated by several independent secondary citations of the standard, but if this needs to be quoted verbatim publicly, re-pull that PDF with better extraction (or read it as an image) first.
-5. **Q5 — the salt-water CYA disclaimer figure is a product/editorial decision, not just a fact gap.** Manufacturer guidance genuinely spans 0-50 ppm (Pentair's current manual) to 60-90 ppm (TFP/Hayward), a real, unresolved disagreement in the industry, not a research gap this session can close further. The owner needs to decide how hedged the disclaimer sentence should be — the proposed "50-80 ppm, depends on manufacturer, check your manual" replacement in Q5 is one reasonable resolution, but a narrower or differently-worded version might be preferred.
+5. ~~**Q5 — the salt-water CYA disclaimer figure is a product/editorial decision.**~~ — **LARGELY RESOLVED in section 7**: TFP's primary CYA page states "about 70-80 ppm" for SWG pools, so the live disclaimer is sourced and correct as written; **no edit is needed**. Pentair's 0-50 manual figure remains a genuine industry disagreement worth knowing, but hedging a sourced figure into a vaguer one would be a downgrade. Only remaining decision: whether to append "check your generator's manual" to the sentence. Original note: manufacturer guidance genuinely spans 0-50 ppm (Pentair) to 60-90 ppm (TFP/Hayward).
 6. **All sources found are US-centric** (TFP, CDC, PHTA, Hayward, Pentair, Orenda — all American organizations/companies). No Italian or EU standard, and no Italian product datasheet, was located or checked for any of the six questions, despite the tool being aimed at an Italian-language audience (`testo.md`, `it.json`). The chemistry itself is universal (stoichiometry doesn't care about geography), and the owner's own field notes independently match the US figures closely (30-50 ppm CYA, 1-3 ppm FC), which is reassuring — but if EU/Italian pool-industry guidance exists and differs, it wasn't found because it wasn't specifically searched for in Italian.
 7. **Q3's 3 ppm/day default is an explicit judgment call**, not a fact — flagged as such in Q3, but worth the owner's sign-off specifically since it directly drives the headline "N weeks until CYA leaves the ideal range" number the whole tool is built around.
+8. **🆕 Does the projection subtract CYA degradation?** Section 7 found that CYA is lost to sunlight at 2-10 ppm/month (10+ in extreme sun), which Q3 never accounted for. An accumulation-only projection is a worst case and will warn earlier than reality, sometimes much earlier in an Italian summer. Product decision for Phase B: model the loss, or keep the projection accumulation-only and say plainly on screen that it ignores degradation. The second option is simpler and errs toward warning; the first is more honest about a hot-climate pool. Either needs to be a stated choice, not a silent omission.
