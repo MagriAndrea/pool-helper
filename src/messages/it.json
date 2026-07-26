@@ -153,9 +153,14 @@
             "title": "Confronto Ipocloriti",
             "description": "Scopri quale cloro conviene acquistare.",
             "reset": "Pulisci Campi",
+            "HowTo": {
+                "step1": "Scegli il tipo di cloro per ognuno dei due prodotti.",
+                "step2": "Copia prezzo, formato e concentrazione dall'etichetta.",
+                "step3": "Ottieni il costo reale per chilo di cloro attivo, e quale dei due conviene."
+            },
             "Labels": {
                 "slotTitle": "Prodotto {slot}",
-                "product": "Quale prodotto",
+                "product": "Tipo di cloro",
                 "formSolid": "Solido / granulare, venduto a peso",
                 "formLiquid": "Liquido, venduto a volume o a peso",
                 "packageVolume": "Volume Confezione (L)",

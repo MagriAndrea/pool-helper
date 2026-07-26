@@ -29,6 +29,7 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
+  --color-placeholder: var(--placeholder);
   --color-muted: var(--muted);
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
@@ -78,6 +79,13 @@
   --secondary-foreground: #164E63;
   --muted: #CFFAFE;
   --muted-foreground: #0E7490; /* Cyan-700 — WCAG AA on --background */
+  /* Input placeholders. Deliberately NOT --muted-foreground: that token is real
+     secondary TEXT and must keep its AA contrast, but at full strength inside a
+     field an example value reads as a value the user already entered.
+     Calibrated by contrast ratio on --card, not by eye: 5.36:1 (the raw token,
+     which looked filled) down to 3.00:1 — faint enough to read as a hint,
+     still at the 3:1 floor rather than vanishing. */
+  --placeholder: color-mix(in oklab, var(--muted-foreground) 70%, var(--card));
   --accent: #CFFAFE; /* Muted cyan tint — subtle hover for ghost/outline */
   --accent-foreground: #0E7490;
   --destructive: #EF4444;
@@ -118,6 +126,10 @@
   --secondary-foreground: #FFFFFF;
   --muted: #334155;
   --muted-foreground: #A5F3FC;
+  /* See the light-mode note. A different percentage on purpose: the dark token is
+     a pale cyan on a dark field, so the same 70% would still read as a value.
+     45% lands at 3.28:1, matching the light mode's perceived weight. */
+  --placeholder: color-mix(in oklab, var(--muted-foreground) 45%, var(--card));
   --accent: #334155; /* Muted navy tint — subtle hover for ghost/outline */
   --accent-foreground: #ECFEFF;
   --destructive: #F87171;

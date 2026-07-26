@@ -65,7 +65,7 @@ export function ProductCard({ slot, input, onChange, onProductChange }: ProductC
 
   return (
     <Card className={cn('h-full border-l-4 shadow-md', styles.border)}>
-      <CardHeader>
+      <CardHeader className="gap-3">
         <CardTitle className={cn('flex items-center gap-2 text-xl', styles.text)}>
           <span
             className={cn(
@@ -77,13 +77,20 @@ export function ProductCard({ slot, input, onChange, onProductChange }: ProductC
           </span>
           {t('Labels.slotTitle', { slot })}
         </CardTitle>
-        <CardDescription>
-          {isLiquid ? t('Labels.formLiquid') : t('Labels.formSolid')}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor={fieldId('product')}>{t('Labels.product')}</Label>
+
+        {/*
+          Choosing the product is the first decision, and every field below only
+          makes sense once it is made — so it leads the card, on its own panel,
+          with the form description reading as an answer to it rather than as a
+          claim about a product the user has not visibly chosen yet.
+        */}
+        <div className="space-y-2 rounded-lg bg-muted/40 p-3">
+          <Label
+            htmlFor={fieldId('product')}
+            className="text-xs font-semibold uppercase tracking-wide"
+          >
+            {t('Labels.product')}
+          </Label>
           <Select
             value={input.productId}
             onValueChange={(value) => {
@@ -92,7 +99,10 @@ export function ProductCard({ slot, input, onChange, onProductChange }: ProductC
               if (productId) onProductChange(productId);
             }}
           >
-            <SelectTrigger id={fieldId('product')} className="w-full">
+            <SelectTrigger
+              id={fieldId('product')}
+              className="h-11 w-full border-2 bg-card text-base font-semibold"
+            >
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -103,8 +113,12 @@ export function ProductCard({ slot, input, onChange, onProductChange }: ProductC
               ))}
             </SelectContent>
           </Select>
+          <CardDescription>
+            {isLiquid ? t('Labels.formLiquid') : t('Labels.formSolid')}
+          </CardDescription>
         </div>
-
+      </CardHeader>
+      <CardContent className="space-y-4">
         {/* Unit toggle — only a liquid can be bought by the litre. */}
         {isLiquid && (
           <div className="flex w-full items-center rounded-md border p-1">

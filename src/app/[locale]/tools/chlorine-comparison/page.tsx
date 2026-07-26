@@ -24,6 +24,18 @@ export default function ChlorineComparisonPage() {
         </p>
       </div>
 
+      {/* What this tool is and how to drive it, before the first input. */}
+      <ol className="mx-auto mb-8 grid max-w-2xl gap-3 rounded-xl border bg-card p-4 text-sm sm:grid-cols-3">
+        {(['step1', 'step2', 'step3'] as const).map((step, index) => (
+          <li key={step} className="flex gap-2.5">
+            <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+              {index + 1}
+            </span>
+            <span className="text-muted-foreground">{t(`HowTo.${step}`)}</span>
+          </li>
+        ))}
+      </ol>
+
       <div className="grid gap-6 md:grid-cols-2 lg:gap-8">
         <div className="flex flex-col">
           <ProductCard

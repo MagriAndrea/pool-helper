@@ -153,9 +153,14 @@
             "title": "Chlorine Comparison",
             "description": "Find out which chlorine is better value.",
             "reset": "Clear Fields",
+            "HowTo": {
+                "step1": "Pick the chlorine type for each of the two products.",
+                "step2": "Copy price, package size and concentration from the label.",
+                "step3": "You get the real cost per kilo of active chlorine, and which one wins."
+            },
             "Labels": {
                 "slotTitle": "Product {slot}",
-                "product": "Which product",
+                "product": "Chlorine type",
                 "formSolid": "Solid / granular, sold by weight",
                 "formLiquid": "Liquid, sold by volume or weight",
                 "packageVolume": "Package Volume (L)",
