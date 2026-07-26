@@ -42,12 +42,13 @@
                 "intro": "Tre parametri tengono in equilibrio l'acqua: alcalinità (80-120 ppm), pH (7,2-7,6) e cloro libero (1-3 ppm). Controllali sempre in quest'ordine, alcalinità, pH, cloro, perché ognuno influenza il successivo.",
                 "alkalinity": {
                     "title": "Alcalinità",
-                    "p1": "L'alcalinità funziona da tampone per il pH: se resta tra 80 e 120 ppm, il pH rimane stabile e poco volatile. In piscina l'alcalinità tende a diminuire nel tempo, perché i prodotti acidi come il diminutore di pH consumano i bicarbonati presenti nell'acqua. Per riportarla nel range si usa il bicarbonato di sodio, che aumenta leggermente anche il pH."
+                    "p1": "L'alcalinità funziona da tampone per il pH: attutisce gli sbalzi improvvisi quando aggiungi un prodotto, per questo va sistemata prima del pH. Attenzione però, tampone non vuol dire pH fermo: un'alcalinità alta spinge il pH verso l'alto. Più alta è l'alcalinità, più anidride carbonica disciolta l'acqua tende a liberare nell'aria, e ogni volta che questo succede il pH sale. Il risultato pratico è che con un'alcalinità alta il pH risale in fretta e serve acido di continuo, mentre riportandola verso il basso del range la risalita rallenta e si stabilizza più in basso.",
+                    "p2": "In piscina l'alcalinità tende a diminuire nel tempo, perché i prodotti acidi come il riduttore di pH consumano i bicarbonati presenti nell'acqua. Per riportarla nel range si usa il bicarbonato di sodio, che aumenta leggermente anche il pH."
                 },
                 "ph": {
                     "title": "pH",
                     "p1": "Il pH misura l'acidità dell'acqua. Un valore tra 7,2 e 7,6 permette a tutti gli altri prodotti (cloro, antialga, flocculante, chiarificante) di lavorare al massimo dell'efficacia. L'acqua del rubinetto è leggermente basica (pH ≈ 7,5).",
-                    "p2": "In piscina il pH tende a salire nel tempo a causa di pioggia ed esposizione all'aria. Per abbassarlo si usa il diminutore di pH o l'acido muriatico, che intacca poco l'alcalinità. Per alzarlo si usa il carbonato di sodio, che però alza anche un po' l'alcalinità."
+                    "p2": "In piscina il pH tende a salire nel tempo a causa di pioggia ed esposizione all'aria. Per abbassarlo, in Italia si usa normalmente il riduttore di pH venduto per piscine, in granuli o liquido. Nelle guide in lingua inglese trovi spesso consigliato l'acido muriatico (acido cloridrico): funziona ed è quello su cui si basano molte fonti citate in questo sito, ma da noi non è la scelta comune per la piscina ed è molto più aggressivo da maneggiare. Per alzare il pH si usa il carbonato di sodio, che però alza anche un po' l'alcalinità."
                 },
                 "chlorine": {
                     "title": "Cloro",
@@ -489,7 +490,39 @@
         "required": "sì",
         "optional": "no",
         "errorsTitle": "Errori",
-        "errorsIntro": "Se il corpo della richiesta non è valido, la risposta è 400 con un campo error descrittivo e un campo details che elenca i singoli problemi di validazione. In caso di errore imprevisto la risposta è 500."
+        "errorsIntro": "Se il corpo della richiesta non è valido, la risposta è 400 con un campo error descrittivo e un campo details che elenca i singoli problemi di validazione. In caso di errore imprevisto la risposta è 500.",
+        "endpoints": {
+            "chlorine-target": {
+                "summary": "Cloro libero da raggiungere per lo shock",
+                "description": "Calcola il livello di cloro libero (FC) a cui puntare, prendendo il più alto tra tre candidati: l'obiettivo SLAM (una quota del valore di CYA, scalata in base a quanto è compromessa l'acqua), la breakpoint chlorination (un multiplo del cloro combinato) e una soglia minima legata alle condizioni dell'acqua. Se il CYA non è noto, l'obiettivo viene restituito come intervallo min-max invece che come valore singolo.",
+                "responseDescription": "L'obiettivo vincente più tutti i candidati considerati, e gli eventuali avvisi generati (ad esempio un CYA abbastanza alto da consigliare una diluizione)."
+            },
+            "chlorine-dose": {
+                "summary": "Grammi di cloro puro necessari",
+                "description": "Converte la differenza tra cloro libero obiettivo e attuale in grammi di cloro puro disponibile, per un dato volume d'acqua. Gli intervalli si propagano: un cloro attuale non noto produce un intervallo invece di un valore unico. Per un input di tipo intervallo, max deve essere maggiore o uguale a min.",
+                "responseDescription": "La differenza di FC da colmare e la corrispondente massa di cloro puro disponibile."
+            },
+            "product-conversion": {
+                "summary": "Converte il cloro puro nella quantità di prodotto reale",
+                "description": "Trasforma una massa di cloro puro disponibile nella quantità di prodotto reale da aggiungere, data la sua concentrazione, e riporta gli effetti collaterali di quel prodotto sull'acqua (durezza calcica, sale, direzione del pH). Per un input di tipo intervallo, max deve essere maggiore o uguale a min.",
+                "responseDescription": "La quantità di prodotto da aggiungere, nell'unità adatta al suo stato fisico, più i suoi effetti collaterali."
+            },
+            "pool-volume": {
+                "summary": "Volume d'acqua della piscina da forma e dimensioni",
+                "description": "Calcola il volume d'acqua per una piscina rettangolare o rotonda. Le dimensioni accettate dipendono dalla forma: il rettangolo richiede lunghezza, larghezza e profondità, il cerchio richiede diametro e profondità. Usa la profondità media, non quella massima, altrimenti il volume risulterà sovrastimato.",
+                "responseDescription": "Lo stesso volume espresso in litri, metri cubi e galloni US."
+            },
+            "shock": {
+                "summary": "Calcolo completo dello shock (orchestratore)",
+                "description": "Esegue chlorine-target, chlorine-dose e product-conversion in una sola chiamata e restituisce il dettaglio numerico di ogni passaggio intermedio. È quello che usa l'interfaccia del Calcolatore Shock. Rispondere \"non lo so\" per CYA o cloro attuale è supportato e trasforma il risultato in un intervallo.",
+                "responseDescription": "I risultati di obiettivo, dose e prodotto insieme, più il dettaglio di ogni valore usato per ottenerli e gli eventuali avvisi. Quando l'acqua non ha bisogno di shock, isNoShockNeeded vale true e i campi dose e product sono null."
+            },
+            "chlorine": {
+                "summary": "Confronta il costo reale di due prodotti a base di cloro",
+                "description": "Confronta l'ipoclorito di calcio (venduto a peso) con l'ipoclorito di sodio (venduto a volume o a peso) sul costo per chilogrammo di cloro ATTIVO, l'unica base di confronto corretta. I valori a zero sono accettati e segnalano semplicemente che quel lato è incompleto, non sono un errore.",
+                "responseDescription": "Le metriche per prodotto (massa lorda, massa di cloro attivo, costo per kg attivo) e il vincitore. Se uno dei due lati è incompleto, winner vale null."
+            }
+        }
     },
     "Footer": {
         "tagline": "Nessun cookie, nessun tracciamento: i tuoi dati restano nel tuo browser.",

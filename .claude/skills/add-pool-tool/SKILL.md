@@ -1,6 +1,6 @@
 ---
 name: add-pool-tool
-description: Use when adding a NEW calculator/tool to the pool-helper project (e.g. "create a tool that…", "new calculator", "add a tool to /tools"). Provides the exact file-by-file recipe — pure lib → public API → i18n → hook → components → page → nav → docs — plus copy-paste stubs, the golden rules, and the static verification commands, so every new tool stays consistent with the existing `chlorine-comparison` and `shock` tools. Read this BEFORE writing any tool code.
+description: Use when adding a NEW calculator/tool to the pool-helper project (e.g. "create a tool that…", "new calculator", "add a tool to /tools"). Provides the exact file-by-file recipe — pure lib → Zod schema → public API → OpenAPI entry → i18n → hook → components → page → info page → nav → docs — plus copy-paste stubs, the golden rules, and the static verification commands, so every new tool stays consistent with the existing `chlorine-comparison`, `shock` and `pool-volume` tools. Read this BEFORE writing any tool code.
 ---
 
 # Add a Pool-Helper Tool
@@ -38,11 +38,14 @@ A "tool" is a self-contained calculator under `/[locale]/tools/<slug>`. This pro
 ```
 src/lib/calculator/<feature>.ts        # pure function(s) + add types to types.ts, numbers to constants.ts
 src/lib/calculator/index.ts            # re-export the new file (barrel)
-src/app/api/v1/calculate/<slug>/route.ts   # thin POST wrapper
+src/lib/api/schemas.ts                 # Zod input schema (validation AND OpenAPI source of truth)
+src/lib/api/openapi.ts                 # add an API_ENDPOINTS entry so the endpoint is documented
+src/app/api/v1/calculate/<slug>/route.ts   # thin POST wrapper, validates via validateBody()
 src/messages/en.json + it.json         # Tools.<Name> namespace + Navigation.<slug> labels
 src/hooks/use-<slug>.ts                # state (useToolState/useLocalStorage) + debounced fetch
 src/components/tools/<slug>/*.tsx      # UI; lift shared bits into ./shared/
 src/app/[locale]/tools/<slug>/page.tsx # 'use client' page that wires the hook to the components
+src/app/[locale]/tools/<slug>/info/page.tsx  # transparency page (see §9.5)
 src/config/nav-items.ts                # add an entry under tools.children (icon from lucide-react)
 ARCHITECTURE.md + relevant AGENTS.md   # document the new tool
 ```
@@ -76,24 +79,60 @@ If "I don't know" answers are possible, model outputs as `RangeOrValue` (`range.
 
 ---
 
-## 4. Step 2 — Public API route
+## 4. Step 2 — Public API route (Zod-validated + documented)
+
+Three files, in this order. 🛑 **Do NOT hand-roll field-presence checks in the route** — that was the old pattern and it let payloads like `{ volume: -5 }` through into the calculators.
+
+**a) The Zod schema** — `src/lib/api/schemas.ts` is the single source of truth for BOTH runtime validation and the published OpenAPI spec. Read `src/lib/api/AGENTS.md` before editing it.
+
+```ts
+// src/lib/api/schemas.ts
+export const myThingInputSchema = z.object({
+  volume: volumeInputSchema,           // reuse the existing shared schemas
+  someFactor: z.number().positive(),
+});
+```
+
+⚠️ **Zero vs positive is a per-field decision, not a default.** ppm readings and computed amounts use `.nonnegative()` (0 is a real reading). Physical setup values (volume, dimensions, concentration %) use `.positive()`. **Before tightening a field, grep the hook that calls the endpoint** — `use-chlorine-comparison.ts` POSTs `{price: 0, weight: 0}` on mount, so that schema must accept zeros or the tool 400s on page load.
+
+⚠️ **`.refine()` is invisible to the OpenAPI spec** (JSON Schema can't express it). If you add one, also state the rule in prose in the endpoint's `description`.
+
+**b) The route** — thin, and identical in shape to every other one:
 
 ```ts
 // src/app/api/v1/calculate/<slug>/route.ts
 import { NextResponse } from 'next/server';
 import { computeMyThing } from '@/lib/calculator';
-import type { MyInput } from '@/lib/calculator';
+import { myThingInputSchema } from '@/lib/api/schemas';
+import { validateBody } from '@/lib/api/validate';
 
+/** POST /api/v1/calculate/<slug> — one line on what it does. */
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as Partial<MyInput>;
-    // validate required fields → 400 if missing
-    const result = computeMyThing(body as MyInput);
+    const validation = await validateBody(myThingInputSchema, request);
+    if (!validation.success) return validation.response;
+
+    const result = computeMyThing(validation.data);
     return NextResponse.json(result);
   } catch (error) {
     console.error('<slug> error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
+}
+```
+
+**c) The documentation entry** — add an object to `API_ENDPOINTS` in `src/lib/api/openapi.ts`. Both `/api/v1/openapi.json` and the `/docs/api` page read that registry, so this one entry documents the endpoint everywhere:
+
+```ts
+{
+  slug: '<slug>',
+  operationId: 'calculateMyThing',
+  summary: 'One-line summary',
+  description: 'What it computes, and any rule the JSON Schema cannot express.',
+  schema: myThingInputSchema,
+  requestExample: { /* a realistic body */ },
+  responseDescription: 'What comes back.',
+  responseExample: { /* a realistic response */ },
 }
 ```
 
@@ -225,7 +264,9 @@ Optionally compile + run a pure function against worked examples (`npx tsc src/l
 ## 11. Final checklist
 
 - [ ] Pure function in `src/lib/calculator/`, constants cited, re-exported in `index.ts`.
-- [ ] API route under `api/v1/calculate/<slug>/`.
+- [ ] Zod input schema in `src/lib/api/schemas.ts` (zero-vs-positive decided per field, hooks checked).
+- [ ] API route under `api/v1/calculate/<slug>/`, validating via `validateBody` — no hand-rolled field checks.
+- [ ] `API_ENDPOINTS` entry in `src/lib/api/openapi.ts` (so `/api/v1/openapi.json` and `/docs/api` pick it up).
 - [ ] `Tools.<Name>` + `Navigation.<slug>` keys in **both** `en.json` and `it.json` (parity OK).
 - [ ] Hook (`useToolState` for shared values, else `useLocalStorage`); new `TOOL_KEYS`/`SHARED_KEYS` entry if needed.
 - [ ] Components reuse Shadcn + shock shared parts; no hardcoded strings; numbers via `Intl.NumberFormat(locale)`.

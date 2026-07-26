@@ -49,8 +49,10 @@ export default function ApiDocsPage() {
                   </span>
                   <code className="font-mono text-sm text-foreground">{endpointPath(endpoint)}</code>
                 </h3>
-                <p className="font-medium text-foreground">{endpoint.summary}</p>
-                <p>{endpoint.description}</p>
+                <p className="font-medium text-foreground">
+                  {t(`endpoints.${endpoint.slug}.summary`)}
+                </p>
+                <p>{t(`endpoints.${endpoint.slug}.description`)}</p>
 
                 <div className="space-y-2">
                   <h4 className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
@@ -63,7 +65,7 @@ export default function ApiDocsPage() {
                   <h4 className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
                     {t('responseTitle')}
                   </h4>
-                  <p>{endpoint.responseDescription}</p>
+                  <p>{t(`endpoints.${endpoint.slug}.responseDescription`)}</p>
                   <JsonBlock value={endpoint.responseExample} />
                 </div>
               </article>

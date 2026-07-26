@@ -42,12 +42,13 @@
                 "intro": "Three parameters keep the water balanced: alkalinity (80-120 ppm), pH (7.2-7.6) and free chlorine (1-3 ppm). Always check them in this order — alkalinity, pH, chlorine — because each one affects the next.",
                 "alkalinity": {
                     "title": "Alkalinity",
-                    "p1": "Alkalinity acts as a buffer for pH: as long as it stays between 80 and 120 ppm, the pH remains stable and not very volatile. In a pool, alkalinity tends to decrease over time because acidic products such as pH reducer consume the bicarbonates in the water. To bring it back into range, use sodium bicarbonate — which also slightly raises the pH."
+                    "p1": "Alkalinity acts as a buffer for pH: it cushions the sudden swings you'd otherwise get when adding a product, which is why you fix it before the pH. But buffered doesn't mean frozen — a high alkalinity actively pushes pH upward. The higher the alkalinity, the more dissolved carbon dioxide the water tends to release into the air, and every time that happens the pH rises. In practice: with high alkalinity the pH climbs back quickly and you need acid constantly, while bringing it toward the low end of the range slows that climb and settles the pH lower.",
+                    "p2": "In a pool, alkalinity tends to decrease over time because acidic products such as pH reducer consume the bicarbonates in the water. To bring it back into range, use sodium bicarbonate — which also slightly raises the pH."
                 },
                 "ph": {
                     "title": "pH",
                     "p1": "pH measures the acidity of the water. A value between 7.2 and 7.6 lets every other product (chlorine, algaecide, flocculant, clarifier) work at peak efficiency. Tap water is slightly basic (pH ≈ 7.5).",
-                    "p2": "In a pool, pH tends to rise over time due to rain and exposure to air. To lower it, use a pH reducer or muriatic acid, which barely affects alkalinity. To raise it, use sodium carbonate — though it also nudges alkalinity upward."
+                    "p2": "In a pool, pH tends to rise over time due to rain and exposure to air. To lower it, the usual choice in Italy is the pool pH reducer sold in granules or liquid form. English-language guides often recommend muriatic acid (hydrochloric acid) instead: it works, and much of the source material cited on this site is based on it, but it is not the common choice here and it is considerably more aggressive to handle. To raise pH, use sodium carbonate — though it also nudges alkalinity upward."
                 },
                 "chlorine": {
                     "title": "Chlorine",
@@ -489,7 +490,39 @@
         "required": "yes",
         "optional": "no",
         "errorsTitle": "Errors",
-        "errorsIntro": "If the request body is invalid, the response is a 400 with a descriptive error field and a details field listing each validation problem. On an unexpected failure the response is a 500."
+        "errorsIntro": "If the request body is invalid, the response is a 400 with a descriptive error field and a details field listing each validation problem. On an unexpected failure the response is a 500.",
+        "endpoints": {
+            "chlorine-target": {
+                "summary": "Target free chlorine for a shock",
+                "description": "Computes the free chlorine (FC) level to aim for, taking the highest of three candidates: the SLAM target (a ratio of the CYA level, scaled by how bad the water looks), breakpoint chlorination (a multiple of combined chlorine), and a per-water-condition floor. When CYA is unknown the target is returned as a min-max range instead of a single value.",
+                "responseDescription": "The winning target plus each candidate that was considered, and any warnings raised (for example a CYA level high enough that dilution is advised)."
+            },
+            "chlorine-dose": {
+                "summary": "Grams of pure chlorine needed",
+                "description": "Converts the gap between the target and current free chlorine into grams of pure available chlorine for a given water volume. Ranges propagate: an unknown current FC produces a range instead of a single figure. For a range input, max must be greater than or equal to min.",
+                "responseDescription": "The FC gap to close and the corresponding mass of pure available chlorine."
+            },
+            "product-conversion": {
+                "summary": "Convert pure chlorine into a real product amount",
+                "description": "Turns a mass of pure available chlorine into how much of an actual product to add, given its concentration, and reports the side effects that product has on the water (calcium hardness, salt, pH direction). For a range input, max must be greater than or equal to min.",
+                "responseDescription": "The amount of product to add, in the unit appropriate to its physical form, plus its side effects."
+            },
+            "pool-volume": {
+                "summary": "Pool water volume from shape and dimensions",
+                "description": "Computes water volume for a rectangular or round pool. The accepted dimensions depend on the shape: a rectangle takes length, width and depth, a circle takes diameter and depth. Use the average depth, not the maximum, or the volume will be overestimated.",
+                "responseDescription": "The same volume expressed in liters, cubic meters and US gallons."
+            },
+            "shock": {
+                "summary": "Full shock calculation (orchestrator)",
+                "description": "Runs chlorine-target, chlorine-dose and product-conversion in a single call and returns a numeric breakdown of every intermediate step. This is what the Shock Calculator UI uses. Answering \"unknown\" for CYA or current chlorine is supported and turns the result into a range.",
+                "responseDescription": "The target, dose and product results together, plus a breakdown of every value used to reach them and any warnings. When the water needs no shock, isNoShockNeeded is true and the dose and product fields are null."
+            },
+            "chlorine": {
+                "summary": "Compare the real cost of two chlorine products",
+                "description": "Compares calcium hypochlorite (sold by weight) against sodium hypochlorite (sold by volume or weight) on cost per kilogram of ACTIVE chlorine, which is the only fair basis for comparison. Zero values are accepted and simply mark that side as incomplete rather than being an error.",
+                "responseDescription": "Per-product metrics (gross mass, active chlorine mass, cost per active kg) and the winner. When either side is incomplete, winner is null."
+            }
+        }
     },
     "Footer": {
         "tagline": "No cookies, no tracking — your data stays in your browser.",
