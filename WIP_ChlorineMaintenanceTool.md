@@ -101,7 +101,29 @@ Phase C — Tool:
 
 ### Q1 — Maintenance FC target as a function of CYA
 
-*(pending)*
+**Answer: use `minFC = 0.075 × CYA` (7.5%) as the floor of the ideal range, with an absolute practical floor of 2 ppm FC regardless of how low CYA is. A reasonable "target" band is roughly `0.075×CYA` to `~0.12–0.15×CYA`, i.e. noticeably above the bare minimum, not a single point value.**
+
+**Reasoning / sources:**
+- TFP's Pool School states the widely-cited rule directly: for tablet/liquid-chlorinated pools, **minimum FC/CYA ratio is 7.5%**; for SWG pools TFP recommends a lower 5% minimum (the generator replenishes continuously, so it can run leaner). 7.5% is explained as "the level at which chlorine kills algae faster than it can reproduce" in an otherwise balanced pool. — [CYA Chlorine Relationship (TFP wiki, via search)](https://www.troublefreepool.com/wiki/index.php?title=CYA_Chlorine_Relationship), [Chlorine/CYA chart vs 7.5% of CYA (TFP thread)](https://www.troublefreepool.com/threads/chlorine-cya-chart-vs-7-5-of-cya.184210/) — note: TFP's own site returns HTTP 403 to automated fetches, so these are read via search-engine snippets/summaries of the TFP page, not a direct fetch of the primary page. Treat as "very likely accurate, not independently re-verified word-for-word."
+- Orenda Technologies independently corroborates the same figure without referencing TFP: "If you maintain a free chlorine to cyanuric acid ratio (FC:CYA) of 0.075:1 ppm, chlorine should be able to stay ahead of algae" — [Chlorine, pH and Cyanuric Acid Relationships](https://blog.orendatech.com/chlorine-ph-and-cya-relationships). Two independent authorities converging on 7.5% is reasonably strong evidence the ratio itself is solid.
+- TFP's actual published FC/CYA table is **not perfectly linear at 7.5%** — it's derived from constant-%HOCl equivalence, not a flat multiplier. Reconstructed table values (via search snippets, unverified against the primary source):
+
+  | CYA (ppm) | Min FC (TFP table) | 7.5%×CYA (linear approx.) | Target FC (TFP table) |
+  |---|---|---|---|
+  | 0 | ~0.07 (practically: use floor, see below) | 0 | ~0.11 (practically: use floor) |
+  | 10 | 0.81 | 0.75 | 1.21 |
+  | 20 | 1.51 | 1.5 | 2.4 |
+  | 30 | 2.2 | 2.25 | 3.5 |
+  | 40 | 2.9 | 3.0 | 4.6 |
+  | 50 | 3.75* | 3.75 | 5–7* |
+  | 80 | 6* | 6.0 | 7–9* |
+
+  (*Rows for 50/80 come from a second, coarser aggregator table — [PoolChemTracker FC/CYA chart](https://www.poolchemtracker.com/blog/fc-cya-chart-chlorine-levels) — that is internally consistent with 7.5%/target-band framing but is a third-party reproduction, not the primary TFP table; the two sources agree closely at 30/40 ppm CYA where they overlap.) **The 7.5% linear rule is an excellent practical approximation of the real (slightly curved) TFP table across the 20–50 ppm CYA band this tool actually targets** — the two diverge more at very low CYA, which is exactly where the absolute floor below takes over.
+- **Absolute floor.** TFP explicitly does not recommend using the raw 7.5% formula at very low CYA: "with little or no CYA, 2 to 4 ppm free chlorine is the target" (via search summary of TFP guidance) — because sub-1-ppm FC targets are impractical to test/maintain and unstabilized chlorine at any level degrades in hours of sun. Independently, the **CDC Model Aquatic Health Code** sets a flat minimum FAC of **1.0 ppm for venues not using CYA and 2.0 ppm for venues using CYA** — no continuous CYA scaling at all, just a step function — [CDC Healthy Swimming / MAHC, via search summary](https://www.cdc.gov/healthy-swimming/about/home-pool-and-hot-tub-water-treatment-and-testing.html). These two independent sources bracket the same idea: **a floor around 2 ppm FC is the right absolute minimum** to encode, below the point where `0.075×CYA` alone would produce an impractically small number.
+- **Reconciling with `testo.md`'s classic "1-3 ppm" advice.** That range is the old CYA-agnostic industry rule of thumb (matches the CDC's flat ≥1 ppm floor reasonably well at the low end). It is a fine approximation exactly in the CYA band the owner has historically run (30-50 ppm): 7.5%×30=2.25, 7.5%×50=3.75 — both land inside or just above "1-3". It **breaks down** as CYA rises toward/past `CYA_HIGH_THRESHOLD` (100): 7.5%×100=7.5 ppm, more than double the top of the classic range — at that point "1-3 ppm" is dangerously low and chlorine will not keep ahead of algae even though the pool "shows" chlorine on a basic test strip. This is the mechanism (see Q6) behind the owner's chlorine-lock experience: they were dosing to the classic 1-3 ppm range while CYA had silently drifted up from repeated dichlor use, so the same FC number that used to be enough stopped being enough.
+- **Recommendation for the model:** `idealFC.min = max(0.075 × CYA, 2)` ppm, `idealFC.max` = something above that floor (candidate: `0.12–0.15 × CYA`, or reuse the existing target-band shape from the table above) — **not settled to a specific multiplier; flagged as an open question below** since Phase A could not pull the primary TFP table verbatim (403) to pin the exact target-band formula, only its shape via secondary sources.
+
+**Confidence:** The 7.5% minimum ratio is solid (two independent primary-ish sources agree, TFP's own table is consistent with it in the 20-50 ppm band). The ~2 ppm absolute floor is solid (CDC MAHC + TFP low-CYA guidance agree). The exact "target" (not just minimum) multiplier is **uncertain** — secondary sources gave inconsistent bands (12% at low CYA rising toward ~15-18% at higher CYA in the table above) and TFP's primary wiki page could not be fetched directly to confirm the canonical formula.
 
 ### Q2 — CYA added per ppm of FC (trichlor / dichlor)
 
