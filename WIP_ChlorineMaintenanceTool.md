@@ -63,16 +63,16 @@ Phase C (per `add-pool-tool` recipe):
 
 ## 4. Current Situation & Checklist
 
-Planning approved by the user on 2026-07-19. No research done yet, no code written. Blocked-by: WIP_DocsAndLegal Phase 3, WIP_ChlorineComparisonRefactor Phase A.
+Planning approved by the user on 2026-07-19. Phase A research completed and documented in section 6 below; no code written yet (Phase A is a hard gate). Blocked-by: WIP_DocsAndLegal Phase 3, WIP_ChlorineComparisonRefactor Phase A.
 
 Phase A — Research (gate):
-- ❌ Maintenance FC/CYA relationship researched + cited
-- ❌ Trichlor/dichlor CYA coefficients verified (stoichiometry + datasheets)
-- ❌ Daily FC consumption assumption for projection defined
-- ❌ Ideal-CYA vs unknown-range vs high-threshold reconciliation decided
-- ❌ Research summary appended below and **approved by the user**
+- ✅ Maintenance FC/CYA relationship researched + cited (Q1)
+- ✅ Trichlor/dichlor CYA coefficients verified (stoichiometry + datasheets) (Q2)
+- ✅ Daily FC consumption assumption for projection defined (Q3)
+- ✅ Ideal-CYA vs unknown-range vs high-threshold reconciliation decided (Q4)
+- ❌ Research summary appended below and **approved by the user** — *(section 6 written; approval is the user's step, not this agent's)*
 
-*(Research summary will be appended here.)*
+*(See section 6 below for the full research summary, including Q5 — the salt-water CYA disclaimer verification — and Q6 — the chlorine-lock mechanism — which were also part of this Phase A pass.)*
 
 Phase B — Model:
 - ❌ Constants + types extended (cited)
@@ -95,9 +95,9 @@ Phase C — Tool:
 - Endpoint documented automatically in `/docs/api`; both locales complete; salt-water scope note present.
 - When done: archive this WIP to `changelog/YYYY-MM-DD_ChlorineMaintenanceTool.md`.
 
-## 6. Phase A Research (in progress)
+## 6. Phase A Research (complete, pending user approval)
 
-> Working notes. Each question is answered and committed individually, in order, so partial progress survives a session cutoff. All candidate numbers from section 2 are treated as unverified until a question below confirms or corrects them.
+> All six research questions (Q1-Q6) are answered below with cited sources. Every candidate number from section 2 was checked against at least one source; most against two or more independent sources. Confidence levels and open gaps are stated explicitly per question rather than smoothed over — see "Open questions for the owner" at the end. **This section is a research deliverable, not yet an approval**: per section 4's checklist, the final gate ("approved by the user") is still open.
 
 ### Q1 — Maintenance FC target as a function of CYA
 
@@ -244,4 +244,10 @@ The fact that the *cure* differs completely (dilution vs. shocking) is the clear
 
 ### Open questions for the owner
 
-*(pending — filled in after all questions above are answered)*
+1. **TFP's own site returned HTTP 403 to every direct fetch attempt in this session** (wiki pages and blog posts alike; `web.archive.org` was also unreachable from this tool). Every TFP citation above (which is most of them — TFP is the single most-cited source in this research) was read via search-engine-generated summaries of TFP pages, not a verbatim primary-source pull. The specific numbers converge tightly across independent secondary confirmations (Orenda, PHTA, CDC, manufacturer manuals) almost everywhere, which is reassuring, but **if any of this content ships as a public "sources" list, someone with a real browser should open the TFP wiki pages directly at least once** (a human, or an agent with browser tooling) to confirm the exact wording before quoting TFP verbatim on the info page.
+2. **Q1 — the exact "target" (not minimum) FC multiplier is unsettled.** The 7.5%-of-CYA *minimum* is solid, but the upper edge of a "target" band (candidates seen: ~12% to ~18% of CYA depending on source) was not pinned to one canonical formula. Needs a product decision for Phase B: does the tool show a single minimum-based floor, or a min-max "target band"? The research leans toward showing both (a hard floor + a comfort band), but the comfort-band multiplier itself isn't nailed down to a single cited number.
+3. **Q2 — which dichlor hydration form is typical in Italian retail (dihydrate ~56% vs. anhydrous ~62% available chlorine)?** Not verified — no Italian product datasheet was checked. Doesn't affect the CYA-per-ppm-FC ratio (0.9 either way) but does affect any future dose-conversion default strength if Phase B adds one. Also, the `pHEffect` bucket recommendations (`'down'` for trichlor, `'neutral'` for dichlor) are directionally solid but not confirmed against a single primary manufacturer SDS.
+4. **Q4 — PHTA/APSP-11's exact standard wording could not be extracted from the fact-sheet PDF** (tooling limitation, not a source-availability problem); the 30-50 ideal / 100 max figures are corroborated by several independent secondary citations of the standard, but if this needs to be quoted verbatim publicly, re-pull that PDF with better extraction (or read it as an image) first.
+5. **Q5 — the salt-water CYA disclaimer figure is a product/editorial decision, not just a fact gap.** Manufacturer guidance genuinely spans 0-50 ppm (Pentair's current manual) to 60-90 ppm (TFP/Hayward), a real, unresolved disagreement in the industry, not a research gap this session can close further. The owner needs to decide how hedged the disclaimer sentence should be — the proposed "50-80 ppm, depends on manufacturer, check your manual" replacement in Q5 is one reasonable resolution, but a narrower or differently-worded version might be preferred.
+6. **All sources found are US-centric** (TFP, CDC, PHTA, Hayward, Pentair, Orenda — all American organizations/companies). No Italian or EU standard, and no Italian product datasheet, was located or checked for any of the six questions, despite the tool being aimed at an Italian-language audience (`testo.md`, `it.json`). The chemistry itself is universal (stoichiometry doesn't care about geography), and the owner's own field notes independently match the US figures closely (30-50 ppm CYA, 1-3 ppm FC), which is reassuring — but if EU/Italian pool-industry guidance exists and differs, it wasn't found because it wasn't specifically searched for in Italian.
+7. **Q3's 3 ppm/day default is an explicit judgment call**, not a fact — flagged as such in Q3, but worth the owner's sign-off specifically since it directly drives the headline "N weeks until CYA leaves the ideal range" number the whole tool is built around.
