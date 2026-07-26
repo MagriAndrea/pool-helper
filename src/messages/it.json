@@ -144,18 +144,22 @@
             }
         }
     },
+    "Products": {
+        "calcium_hypochlorite": "Ipoclorito di calcio",
+        "sodium_hypochlorite": "Ipoclorito di sodio"
+    },
     "Tools": {
         "ChlorineComparison": {
             "title": "Confronto Ipocloriti",
             "description": "Scopri quale cloro conviene acquistare.",
             "reset": "Pulisci Campi",
             "Labels": {
-                "calciumTitle": "Ipoclorito di Calcio",
-                "calciumSubtitle": "Solido / Granulare (Kg)",
-                "sodiumTitle": "Ipoclorito di Sodio",
-                "sodiumSubtitle": "Liquido (Litri o Kg)",
-                "volumeOrWeight": "Volume o Peso",
-                "weightPkg": "Peso Confezione (Kg)",
+                "slotTitle": "Prodotto {slot}",
+                "product": "Quale prodotto",
+                "formSolid": "Solido / granulare, venduto a peso",
+                "formLiquid": "Liquido, venduto a volume o a peso",
+                "packageVolume": "Volume Confezione (L)",
+                "packageWeight": "Peso Confezione (Kg)",
                 "totalPrice": "Prezzo Totale (€)",
                 "concentration": "Concentrazione (%)",
                 "liters": "Litri (L)",
@@ -168,7 +172,7 @@
                 "weight": "Es. 5, 10, 25",
                 "price": "Es. 45.50",
                 "concentration": "Es. 65",
-                "sodiumQty": "Es. 20, 25",
+                "volume": "Es. 20, 25",
                 "density": "Es. 1.2"
             },
             "Verdict": {
@@ -176,12 +180,10 @@
                 "draw": "Pareggio!",
                 "drawDesc": "I due prodotti hanno lo stesso identico costo per principio attivo.",
                 "winner": "Vincitore",
+                "winnerSlot": "Prodotto {slot}",
                 "savings": "Risparmi",
                 "perActiveKg": "/ kg attivo",
-                "calciumReal": "Calcio (Reale)",
-                "sodiumReal": "Sodio (Reale)",
-                "calciumName": "Ipoclorito di Calcio",
-                "sodiumName": "Ipoclorito di Sodio"
+                "slotReal": "Prodotto {slot} (Reale)"
             },
             "Footer": {
                 "disclaimer": "I calcoli si basano sulla quantità di principio attivo (cloro) effettivamente disponibile.\nAssicurati di inserire i prezzi corretti comprensivi di IVA se applicabile."
@@ -193,24 +195,29 @@
                     "title": "Panoramica",
                     "p1": "Questo strumento non confronta il prezzo di vendita delle due confezioni, ma il costo reale per chilogrammo di cloro attivo, cioè il principio disinfettante effettivamente contenuto nel prodotto. È l'unico modo corretto per capire quale prodotto conviene davvero."
                 },
+                "slots": {
+                    "title": "Due posti liberi, non due prodotti fissi",
+                    "p1": "Ogni lato del confronto è un posto indipendente, Prodotto A e Prodotto B, e il prodotto lo scegli tu. Puoi quindi confrontare due prodotti diversi (un ipoclorito di calcio contro un ipoclorito di sodio) oppure due prodotti dello stesso tipo, per esempio due ipocloriti di sodio di negozi diversi, che è la domanda di tutti i giorni quando sei davanti allo scaffale.",
+                    "p2": "Il vincitore viene annunciato come \"Prodotto A\" o \"Prodotto B\", mai col nome del prodotto chimico: se i due posti contengono lo stesso prodotto, dire il nome non ti direbbe nulla su quale confezione comprare."
+                },
                 "activeChlorine": {
                     "title": "Perché contare il \"cloro attivo\"",
                     "p1": "Due prodotti con lo stesso prezzo a confezione possono avere concentrazioni di cloro molto diverse: un prodotto più economico al chilo può costare di più per la stessa quantità di disinfezione, se la sua concentrazione è più bassa. Per questo entrambi i prodotti vengono ricondotti alla stessa unità di misura, il costo per chilogrammo di cloro attivo.",
                     "formula": "costo / kg attivo = prezzo totale ÷ massa di cloro attivo"
                 },
-                "calcium": {
-                    "title": "Ipoclorito di calcio (solido)",
-                    "p1": "Per il prodotto solido basta il peso della confezione, la massa di cloro attivo è la percentuale di concentrazione applicata al peso lordo.",
+                "solid": {
+                    "title": "Prodotti solidi (ipoclorito di calcio)",
+                    "p1": "Un solido si vende a peso, quindi basta il peso della confezione: la massa di cloro attivo è la percentuale di concentrazione applicata al peso lordo. Per un solido i litri non vengono proposti, perché un prodotto granulare non ha un prezzo a volume che abbia senso.",
                     "formula": "massa attiva = peso confezione (kg) × concentrazione ÷ 100"
                 },
-                "sodium": {
-                    "title": "Ipoclorito di sodio (liquido)",
-                    "p1": "Per il prodotto liquido puoi inserire la quantità in litri o in chilogrammi. Se inserisci i litri, vengono convertiti in peso usando la densità del prodotto (indicata in etichetta), se non la conosci viene usata una densità tipica di {density} kg/L per le soluzioni di ipoclorito di sodio.",
+                "liquid": {
+                    "title": "Prodotti liquidi (ipoclorito di sodio)",
+                    "p1": "Un liquido può essere venduto a volume o a peso, quindi l'unità la scegli tu. Se inserisci i litri, vengono convertiti in peso usando la densità del prodotto (indicata in etichetta), se non la conosci viene usata una densità tipica di {density} kg/L per le soluzioni di ipoclorito di sodio.",
                     "formula": "massa attiva = (litri × densità) × concentrazione ÷ 100"
                 },
                 "verdict": {
                     "title": "Come si stabilisce il vincitore",
-                    "p1": "Vince il prodotto con il costo per chilogrammo di cloro attivo più basso. Il risparmio mostrato è la differenza tra i due costi per chilogrammo attivo, ti dice quanto stai risparmiando (o perdendo) per ogni chilo di cloro realmente utile che acquisti."
+                    "p1": "Vince il posto con il costo per chilogrammo di cloro attivo più basso. Il risparmio mostrato è la differenza tra i due costi per chilogrammo attivo, ti dice quanto stai risparmiando (o perdendo) per ogni chilo di cloro realmente utile che acquisti."
                 },
                 "limits": {
                     "title": "Assunzioni e limiti",
@@ -314,9 +321,7 @@
                 "winnerNoteFloor": "Impostato al livello minimo efficace di shock per questa condizione dell'acqua.",
                 "productSection": "Che cloro hai a disposizione?",
                 "productSubtitle": "La tua scelta cambia quanto prodotto versare.",
-                "sodiumName": "Ipoclorito di sodio",
                 "sodiumDescription": "liquido · alza il pH · aggiunge sale",
-                "calciumName": "Ipoclorito di calcio",
                 "calciumDescription": "granulare · alza il pH · aggiunge durezza calcica",
                 "concentrationLabel": "Concentrazione (%)",
                 "densityLabel": "Densità (kg/L)",
@@ -519,8 +524,8 @@
             },
             "chlorine": {
                 "summary": "Confronta il costo reale di due prodotti a base di cloro",
-                "description": "Confronta l'ipoclorito di calcio (venduto a peso) con l'ipoclorito di sodio (venduto a volume o a peso) sul costo per chilogrammo di cloro ATTIVO, l'unica base di confronto corretta. I valori a zero sono accettati e segnalano semplicemente che quel lato è incompleto, non sono un errore.",
-                "responseDescription": "Le metriche per prodotto (massa lorda, massa di cloro attivo, costo per kg attivo) e il vincitore. Se uno dei due lati è incompleto, winner vale null."
+                "description": "Confronta due qualunque prodotti a base di cloro sul costo per chilogrammo di cloro ATTIVO, l'unica base di confronto corretta. Ognuno dei due posti (slotA, slotB) porta il proprio productId, quindi i due lati possono contenere prodotti diversi oppure lo stesso prodotto. I prodotti venduti a volume (unit 'l') vengono convertiti in peso tramite la densità, con ricaduta sulla densità tipica del prodotto se omessa; un prodotto solido con prezzo al litro viene riportato come isValid: false invece di essere rifiutato. I valori a zero sono accettati e segnalano semplicemente che quel posto è incompleto, non sono un errore.",
+                "responseDescription": "Le metriche per posto (massa lorda, massa di cloro attivo, costo per kg attivo) e il posto vincente, 'A' o 'B' (oppure 'DRAW'). Il vincitore è identificato dal posto, non dal prodotto, così si possono confrontare due prodotti dello stesso tipo. Se uno dei due posti è incompleto, winner vale null."
             }
         }
     },

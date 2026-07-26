@@ -2,21 +2,13 @@
 
 import { useTranslations } from 'next-intl';
 import { useChlorineComparison } from '@/hooks/use-chlorine-comparison';
-import { CalciumCard } from '@/components/tools/chlorine-comparison/CalciumCard';
-import { SodiumCard } from '@/components/tools/chlorine-comparison/SodiumCard';
+import { ProductCard } from '@/components/tools/chlorine-comparison/ProductCard';
 import { ComparisonVerdict } from '@/components/tools/chlorine-comparison/ComparisonVerdict';
 import { InfoButton } from '@/components/tools/shared/InfoButton';
 
 export default function ChlorineComparisonPage() {
   const t = useTranslations('Tools.ChlorineComparison');
-  const {
-    calciumInput,
-    setCalciumInput,
-    sodiumInput,
-    setSodiumInput,
-    comparison,
-    resetValues,
-  } = useChlorineComparison();
+  const { slots, setSlot, setSlotProduct, comparison, resetValues } = useChlorineComparison();
 
   return (
     <div className="container mx-auto max-w-4xl py-8 px-4 md:py-12">
@@ -34,15 +26,19 @@ export default function ChlorineComparisonPage() {
 
       <div className="grid gap-6 md:grid-cols-2 lg:gap-8">
         <div className="flex flex-col">
-          <CalciumCard 
-            input={calciumInput} 
-            onChange={setCalciumInput} 
+          <ProductCard
+            slot="A"
+            input={slots.slotA}
+            onChange={(input) => setSlot('A', input)}
+            onProductChange={(productId) => setSlotProduct('A', productId)}
           />
         </div>
         <div className="flex flex-col">
-          <SodiumCard 
-            input={sodiumInput} 
-            onChange={setSodiumInput} 
+          <ProductCard
+            slot="B"
+            input={slots.slotB}
+            onChange={(input) => setSlot('B', input)}
+            onProductChange={(productId) => setSlotProduct('B', productId)}
           />
         </div>
       </div>
@@ -59,7 +55,7 @@ export default function ChlorineComparisonPage() {
       <div className="mt-8 md:mt-12">
         <ComparisonVerdict result={comparison} />
       </div>
-      
+
       <div className="mt-12 text-center text-xs text-muted-foreground opacity-50">
         <p className="whitespace-pre-line">
           {t('Footer.disclaimer')}

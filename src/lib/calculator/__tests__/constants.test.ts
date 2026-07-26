@@ -14,6 +14,8 @@ import {
   LOW_DOSE_THRESHOLD,
   METERS_PER_FOOT,
   PRODUCT_COEFFICIENTS,
+  PRODUCT_IDS,
+  PRODUCT_RETAIL_FORMS,
   SLAM_CYA_RATIO,
 } from '../constants';
 
@@ -67,5 +69,38 @@ describe('constants: cited chemistry values stay pinned', () => {
       sodium_hypochlorite: { cyaPerPpm: 0, hardnessPerPpm: 0, saltPerPpm: 0.82, pHEffect: 'up' },
       calcium_hypochlorite: { cyaPerPpm: 0, hardnessPerPpm: 0.7, saltPerPpm: 0, pHEffect: 'up' },
     });
+  });
+
+  it('keeps the retail form of each product (drives the L/kg choice in the comparison tool)', () => {
+    expect(PRODUCT_RETAIL_FORMS).toEqual({
+      sodium_hypochlorite: {
+        form: 'liquid',
+        typicalConcentrationPct: 13,
+        typicalDensityKgL: 1.2,
+      },
+      calcium_hypochlorite: {
+        form: 'solid',
+        typicalConcentrationPct: 65,
+      },
+    });
+  });
+
+  it('lists every product in PRODUCT_IDS (the picker order the type system cannot check)', () => {
+    // Guards the one place adding a product can silently go unnoticed: a missing
+    // entry here hides the product from every picker without failing the build.
+    expect([...PRODUCT_IDS].sort()).toEqual(Object.keys(PRODUCT_RETAIL_FORMS).sort());
+    expect([...PRODUCT_IDS].sort()).toEqual(Object.keys(PRODUCT_COEFFICIENTS).sort());
+  });
+
+  it('derives the retail prefill hints from the cited product defaults, not from fresh numbers', () => {
+    expect(PRODUCT_RETAIL_FORMS.sodium_hypochlorite.typicalConcentrationPct).toBe(
+      DEFAULT_SODIUM_TRADE_PCT,
+    );
+    expect(PRODUCT_RETAIL_FORMS.calcium_hypochlorite.typicalConcentrationPct).toBe(
+      DEFAULT_CALCIUM_PCT,
+    );
+    const sodium = PRODUCT_RETAIL_FORMS.sodium_hypochlorite;
+    if (sodium.form !== 'liquid') throw new Error('sodium hypochlorite must stay a liquid');
+    expect(sodium.typicalDensityKgL).toBe(DEFAULT_SODIUM_DENSITY);
   });
 });

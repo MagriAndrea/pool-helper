@@ -49,8 +49,8 @@ The project follows a standard Next.js `src` directory pattern.
     shared-state.ts     # Shared localStorage key constants across tools.
 
   /hooks                # Custom React hooks (client-side).
-    use-local-storage.ts        # localStorage persistence with SSR-safe hydration.
-    use-tool-state.ts           # Per-tool state + bidirectional shared-key sync.
+    use-tool-state.ts           # THE persistence hook: per-tool key, bidirectional
+                                # shared-key sync, SSR-safe hydration, migrations.
     use-chlorine-comparison.ts  # State + debounced API for the comparison tool.
     use-shock-calculator.ts     # State + debounced API for the shock tool.
     use-pool-volume.ts          # State + debounced API for the pool volume tool.
@@ -86,23 +86,26 @@ Theming is handled via `next-themes` interacting with Tailwind CSS variables.
 ### 4.3 Client-Side Persistence
 To respect user privacy and allow offline usage without authentication:
 - **Storage**: Browser `localStorage` is used to persist calculator state.
-- **Implementation**: A custom React hook (`useLocalStorage`) handles hydration to prevent Server-Side Rendering (SSR) mismatches (hydration errors), ensuring data is only read after the component mounts on the client.
-- **Shared pool profile (cross-tool)**: `useToolState` (in `src/hooks`) layers a "per-tool key with bidirectional shared references" model on top. Each tool persists its full state under a `TOOL_KEYS` entry, while values that describe the pool itself (volume, CYA, FC, CC) are mirrored to `SHARED_KEYS` (`ph_pool_*`, defined in `src/lib/shared-state.ts`). Writing tool state updates both, so values entered in one tool are reused by another while you work. A tool's **reset is a full wipe** — it clears the tool key *and* the mapped shared keys — so every field is cleared and stays cleared after a reload.
+- **Implementation**: A single custom React hook, `useToolState` (in `src/hooks`), handles all of it. It reads storage inside `useEffect` to prevent Server-Side Rendering (SSR) mismatches (hydration errors), so data is only read after the component mounts on the client. Every tool goes through it, including tools that share nothing.
+- **Shared pool profile (cross-tool)**: the hook implements a "per-tool key with bidirectional shared references" model. Each tool persists its full state under a `TOOL_KEYS` entry, while values that describe the pool itself (volume, CYA, FC, CC) are mirrored to `SHARED_KEYS` (`ph_pool_*`, defined in `src/lib/shared-state.ts`). Writing tool state updates both, so values entered in one tool are reused by another while you work. A tool's **reset is a full wipe** — it clears the tool key *and* the mapped shared keys — so every field is cleared and stays cleared after a reload.
+- **Migrations**: when a tool's stored shape changes, `useToolState` takes an optional `migrate` callback that runs inside the hydration effect *before* anything is read — the only point where a rewrite can still be seen by the same render. Abandoned keys are listed in `LEGACY_KEYS` (`src/lib/shared-state.ts`) and deleted once converted; `use-chlorine-comparison.ts` is the worked example (it folded `ph_calcium_input` + `ph_sodium_input` into `ph_tool_comparison`).
 
 ### 4.4 Calculator Logic (Architecture)
 Calculation logic is decoupled from UI components and lives in `src/lib/calculator/` as a **module of pure functions** (see its `AGENTS.md`).
 - **Primitives**: `chlorine-target.ts` (target FC from CYA + water color + breakpoint), `chlorine-dose.ts` (pure chlorine grams from volume × gap), `product-conversion.ts` (product amount + side effects), `pool-volume.ts` (volume from shape + dimensions). Each is independently callable and exposed via its own API route.
 - **Orchestrator**: `shock.ts` composes the primitives into a single `computeShock` used by the Shock Calculator.
+- **Product comparison**: `chlorine-comparison.ts` is built on **two generic slots (A and B)**, each holding any `ProductId`. A single `calculateProductMetrics` serves every product — solids are weighed directly, liquids priced by the litre are converted via density — and `compareProducts` returns the winner as a *slot* (`'A' | 'B' | 'DRAW' | null`), never as a chemical. That is what makes comparing two products of the same type possible; naming the chemical would say nothing when both sides hold it. Which products are solid vs liquid, and their typical label values, live in `PRODUCT_RETAIL_FORMS` (`constants.ts`).
 - **Constants**: all chemistry numbers live in `constants.ts` with inline source citations (TFP / Orenda / PHTA). **Do not change them without consulting the source.**
 - **Ranges**: results use a `RangeOrValue` type (`range.ts`) so "I don't know" answers (CYA → 30–80 ppm, FC → 0–2 ppm) propagate as min–max ranges.
 - **i18n boundary**: the calculator returns numbers and codes only — never localized prose. The UI formats numbers via next-intl. This keeps all translations in one place.
-- **Backward compatibility**: `index.ts` re-exports everything, so `@/lib/calculator` keeps resolving for the existing Chlorine Comparison tool (`chlorine-comparison.ts`).
+- **Barrel**: `index.ts` re-exports everything, so every consumer imports from `@/lib/calculator`.
+- **Tests**: `__tests__/` holds a Vitest suite (`npx vitest run`) of characterization tests that pin current behaviour, so refactors can be *proven* behaviour-preserving. `constants.test.ts` additionally pins every cited chemistry number, so an unsourced edit fails the build.
 
 ### 4.5 Public Calculation API (Modular)
 Calculation endpoints live under `src/app/api/v1/calculate/`. Each primitive has a thin POST route that validates input and calls the matching pure function, so calculations are reusable by any client (and future tools):
 - `chlorine-target/`, `chlorine-dose/`, `product-conversion/`, `pool-volume/` — individual primitives.
 - `shock/` — a wrapper that orchestrates the primitives in one call (what the Shock Calculator UI uses).
-- `chlorine/` — the pre-existing Chlorine Comparison endpoint.
+- `chlorine/` — the Chlorine Comparison endpoint (body `{ slotA, slotB }`).
 
 **Validation & documentation share one source of truth** (`src/lib/api/`, see its `AGENTS.md`):
 - `schemas.ts` — a Zod schema per endpoint. Routes validate through `validate.ts`'s `validateBody`, returning `400 { error, details }` on failure.

@@ -8,6 +8,8 @@
 4.  **🌍 NO USER-FACING TEXT**: this layer returns **numbers and codes** (e.g. `WarningCode`, `winningStrategy`). It never returns localized prose. The UI formats numbers via next-intl. This keeps i18n in one place.
 5.  **📏 UNITS**: internally everything is metric (litres, grams, ppm). Liquid chlorine strength is stored as **g/L of available chlorine** to avoid the trade-% (w/v) vs weight-% (w/w) trap. Conversions live in `units.ts`.
 6.  **Composition**: `shock.ts` is the only orchestrator. New tools should reuse the primitives, not duplicate math.
+7.  **➕ ADDING A PRODUCT** means four edits, and TypeScript only catches three of them: `ProductId` in `types.ts`, then `PRODUCT_COEFFICIENTS` and `PRODUCT_RETAIL_FORMS` in `constants.ts` (both exhaustive `Record`s, so the compiler will demand them), and finally `PRODUCT_IDS` — the picker order, which the compiler **cannot** check. A test in `constants.test.ts` guards that last one; if it fails, you forgot the list, not the test.
+8.  **🎰 THE COMPARISON IS SLOT-KEYED, NOT PRODUCT-KEYED**: `chlorine-comparison.ts` compares slot A against slot B, each holding any product, and reports the winner as `'A' | 'B' | 'DRAW' | null`. Never reintroduce a winner identified by chemical — the whole point is that both slots may hold the *same* product, where a chemical name answers nothing.
 
 ## 2. 🧠 The model (quick reference)
 
@@ -35,5 +37,6 @@ current chlorine (→ FC 0–2 ppm). See `range.ts`.
 | `product-conversion.ts` | Product amount + side effects | Primitive #3 |
 | `pool-volume.ts` | Volume from shape + dimensions | Standalone primitive |
 | `shock.ts` | Orchestrator (target→dose→product) | **Entry point for the shock tool** |
-| `chlorine-comparison.ts` | Legacy price comparison (moved here) | **Do not break — chlorine-comparison tool depends on it** |
+| `chlorine-comparison.ts` | Cost per kg of active chlorine, two generic A/B slots | **See rule #8 — slot-keyed, never product-keyed** |
 | `index.ts` | Barrel re-export | **`@/lib/calculator` resolves here** |
+| `__tests__/` | Vitest characterization suite | **Run `npx vitest run` before AND after any change here** |

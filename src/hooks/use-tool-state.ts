@@ -52,16 +52,23 @@ export interface UseToolState<T> {
  *   restore defaults, so a reset clears all fields and stays cleared on reload.
  *
  * `defaultValue` and `mappings` must be stable (module-scope) references.
+ *
+ * `migrate` runs once, *inside* the hydration effect and before anything is
+ * read, which is the only place a storage-shape migration can safely live: run
+ * later and hydration would already have fallen back to the defaults.
  */
 export function useToolState<T>(
   toolKey: string,
   defaultValue: T,
   mappings: SharedMapping<T>[] = [],
+  migrate?: () => void,
 ): UseToolState<T> {
   const [state, setStateInternal] = useState<T>(defaultValue);
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
+    migrate?.();
+
     let base = readJSON<T>(toolKey) ?? defaultValue;
     for (const m of mappings) {
       if (!m.has(base)) {
