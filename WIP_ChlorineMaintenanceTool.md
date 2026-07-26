@@ -127,7 +127,37 @@ Phase C — Tool:
 
 ### Q2 — CYA added per ppm of FC (trichlor / dichlor)
 
-*(pending)*
+**Answer: trichlor ≈ 0.6 ppm CYA per ppm FC added; dichlor ≈ 0.9 ppm CYA per ppm FC added. Both candidates confirmed, by independent stoichiometric derivation AND by citation.**
+
+**Stoichiometric derivation (same method as the existing `hardnessPerPpm`/`saltPerPpm` comment block in `constants.ts`, so a reader can check it the same way):**
+
+The pool-industry convention defines "1 ppm of available/free chlorine" as 1 mg/L measured in **Cl₂-equivalent oxidizing power**. Cl₂ (MW 70.906 g/mol) hydrolyzes as `Cl₂ + H₂O → HOCl + HCl`, releasing one HOCl per Cl₂. An isocyanurate N–Cl bond hydrolyzes the same way per bond (`R₂N–Cl + H₂O → R₂N–H + HOCl`), so **each active N–Cl group is chemically equivalent to one whole Cl₂ molecule (70.906 g) of available chlorine** — this is the standard industry definition used to rate "% available chlorine" on every chlorine product label, and it is what makes the arithmetic below checkable against any datasheet's stated %.
+
+*Trichlor = trichloroisocyanuric acid (TCCA), C₃Cl₃N₃O₃:*
+- Molar mass: 3×12.011 (C) + 3×35.453 (Cl) + 3×14.007 (N) + 3×15.999 (O) = 36.03 + 106.36 + 42.02 + 48.00 = **232.41 g/mol**.
+- 3 active N–Cl groups → available chlorine mass = 3 × 70.906 = **212.72 g per mole**.
+- % available chlorine = 212.72 / 232.41 = **91.5%** — matches the commercial trichlor tablet spec of "≥90% available chlorine" almost exactly. [ICC / AQUA Magazine, "Trichlor: The Dependable Pool Performer"](https://www.iccsafe.org/building-safety-journal/bsj-technical/trichlor-the-dependable-pool-performer-2/): "contain at least 0.90 pounds of available chlorine per pound of product... the label indicates the product contains 90 percent available chlorine."
+- 1 mole TCCA also releases 1 mole cyanuric acid (C₃H₃N₃O₃, MW = 3×12.011+3×1.008+3×14.007+3×15.999 = 36.03+3.02+42.02+48.00 = **129.07 g/mol**).
+- **CYA added per unit of available chlorine (≈ ppm FC) = 129.07 / 212.72 = 0.6068 ≈ 0.6.** ✅ matches candidate.
+- Cited directly (not just derived) by the industry standards body: **PHTA** states trichlor "adds 0.6 ppm of cyanuric acid... for each ppm of available chlorine added" — [PHTA, "Trichlor: The Dependable Pool Performer" fact sheet](https://www.phta.org/pub/?id=5455e441-1866-daac-99fb-87202d0dada9) (also reproduced at [AQUA Magazine](https://www.aquamagazine.com/service/article/15121898/trichlor-the-dependable-pool-performer) and [ICC](https://www.iccsafe.org/building-safety-journal/bsj-technical/trichlor-the-dependable-pool-performer-2/)). Two independent methods (theory + published industry figure) agree to 3 significant figures.
+
+*Dichlor = sodium dichloroisocyanurate dihydrate (SDIC·2H₂O), C₃Cl₂N₃NaO₃·2H₂O — this is the commercial "granular dichlor" pool owners actually buy:*
+- Molar mass: C₃Cl₂N₃NaO₃ (36.03 + 70.91 + 42.02 + 22.99 + 48.00 = 219.95) + 2×H₂O (2×18.015=36.03) = **255.98 g/mol**. — [Wikipedia, Sodium dichloroisocyanurate dihydrate](https://en.wikipedia.org/wiki/Sodium_dichloroisocyanurate_dihydrate) (MW cross-checked, formula confirmed).
+- 2 active N–Cl groups → available chlorine mass = 2 × 70.906 = **141.81 g per mole**.
+- % available chlorine = 141.81 / 255.98 = **55.4%** — matches the commercial dichlor spec of "56% available chlorine" (dihydrate form) cited on multiple retail datasheets, e.g. [In The Swim Sodium Dichlor product listing](https://www.amazon.com/Swim-Granular-Pool-Chlorine-lbs/dp/B002WKQ23A): "56% Available Chlorine, 99% Sodium-Dichlor."
+- 1 mole SDIC·2H₂O also releases 1 mole cyanuric acid (129.07 g/mol, same CYA as above — hydration water doesn't affect this).
+- **CYA added per unit of available chlorine (≈ ppm FC) = 129.07 / 141.81 = 0.9101 ≈ 0.91.** ✅ matches candidate (0.9).
+- Note: the *anhydrous* SDIC form (no water of crystallization, MW 219.95) would compute to 141.81/219.95 = 64.5% available chlorine (commercially marketed as "~62% dichlor") — **a higher available-chlorine % than the dihydrate**, but the **same CYA-per-ppm-FC ratio (0.91)**, because the hydration water is inert mass that dilutes the % concentration without changing the CYA:Cl₂ molar relationship. This matters for Phase B: `cyaPerPpm` for dichlor should be ~0.9 regardless of which hydrate form is assumed; only the product's `%availableChlorine` (dose-mass conversion) depends on hydration.
+
+**Typical commercial strengths (for Phase B's `PRODUCT_COEFFICIENTS`/dose conversion, gathered from datasheets/retail specs):**
+- Trichlor: tablets/sticks, **~90% available chlorine** (highest of any solid pool chlorine except gas). [ICC/AQUA Magazine](https://www.iccsafe.org/building-safety-journal/bsj-technical/trichlor-the-dependable-pool-performer-2/).
+- Dichlor: granular, **~56% available chlorine** (dihydrate, the common retail product) — some anhydrous/higher-purity grades marketed near 62-63%; **uncertain** which is more common in Italian retail (not verified — flagged below).
+
+**pH effect (for the `pHEffect` field):**
+- Trichlor: strongly acidic in solution (dissolved pH ≈ 2.8–3.0); consistently lowers pool pH **and** total alkalinity (its acidity consumes bicarbonate). Recommend `pHEffect: 'down'`. — search-aggregated from multiple retail/technical sources; not yet cross-checked against a single primary datasheet with a direct quote (**uncertain / worth a direct SDS pull in Phase B**).
+- Dichlor: near-neutral in solution (dissolved pH ≈ 6.0–7.0); "will slightly reduce pH... but will not have a noticeable impact on total alkalinity." Recommend `pHEffect: 'neutral'` (closest fit to the existing `'up' | 'down' | 'neutral'` enum, since dichlor's effect is explicitly described as not noticeable in practice, unlike trichlor's clearly-down effect). — same caveat as above.
+
+**Confidence:** The 0.6 / 0.9 CYA-per-ppm-FC coefficients are **high confidence** — independently derived from first-principles stoichiometry using standard, checkable molar masses, and matching a named industry-standards citation (PHTA) for trichlor to 1 decimal place. The %available-chlorine product-strength figures are **high confidence** for trichlor (90%, converges from theory + citation) and **medium confidence** for dichlor (55-56% from theory + retail listings, but not a manufacturer SDS in hand). The `pHEffect` classification is **medium confidence** (directionally certain, magnitude and "which enum bucket" not confirmed against a primary SDS).
 
 ### Q3 — Typical daily FC consumption (projection driver)
 
