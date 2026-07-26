@@ -17,7 +17,7 @@
         "openMenu": "Apri menu",
         "menuTitle": "Menu di navigazione",
         "tools": "Strumenti",
-        "chlorineComparison": "Confronto Ipocloriti",
+        "chlorineComparison": "Confronto Clori",
         "chlorineComparisonDesc": "Confronta diversi tipi di cloro per trovare il miglior rapporto qualità/prezzo.",
         "shock": "Calcolatore Shock",
         "shockDesc": "Calcola esattamente quanto cloro serve per lo shock della tua piscina.",
@@ -146,11 +146,13 @@
     },
     "Products": {
         "calcium_hypochlorite": "Ipoclorito di calcio",
-        "sodium_hypochlorite": "Ipoclorito di sodio"
+        "sodium_hypochlorite": "Ipoclorito di sodio",
+        "trichlor": "Tricloro (pastiglie stabilizzate)",
+        "dichlor": "Dicloro (granuli stabilizzati)"
     },
     "Tools": {
         "ChlorineComparison": {
-            "title": "Confronto Ipocloriti",
+            "title": "Confronto Clori",
             "description": "Scopri quale cloro conviene acquistare.",
             "reset": "Pulisci Campi",
             "HowTo": {
@@ -171,7 +173,8 @@
                 "kilograms": "Chilogrammi (Kg)",
                 "density": "Densità (Kg/L) - Default 1.2",
                 "activeChlorine": "Cloro Attivo (Netto)",
-                "realCost": "Costo Reale"
+                "realCost": "Costo Reale",
+                "stabilizerWarning": "Attenzione: questo prodotto aggiunge anche {cya} ppm di stabilizzante (CYA) per ogni ppm di cloro. Al chilo sembra conveniente, ma lo stabilizzante si accumula nell'acqua e da solo non se ne va, e oltre una certa soglia il cloro smette di funzionare."
             },
             "Placeholders": {
                 "weight": "Es. 5, 10, 25",
@@ -210,19 +213,39 @@
                     "p1": "Due prodotti con lo stesso prezzo a confezione possono avere concentrazioni di cloro molto diverse: un prodotto più economico al chilo può costare di più per la stessa quantità di disinfezione, se la sua concentrazione è più bassa. Per questo entrambi i prodotti vengono ricondotti alla stessa unità di misura, il costo per chilogrammo di cloro attivo.",
                     "formula": "costo / kg attivo = prezzo totale ÷ massa di cloro attivo"
                 },
+                "table": {
+                    "title": "I prodotti che puoi confrontare",
+                    "p1": "Quattro prodotti, e non sono intercambiabili. Le concentrazioni indicate sono valori tipici da negozio, usati per precompilare i campi: leggi sempre la tua etichetta, perché lo stesso prodotto si vende a concentrazioni diverse.",
+                    "p2": "L'ultima colonna è quella che quasi tutti ignorano. Due di questi prodotti portano acido cianurico (lo stabilizzante) nell'acqua a ogni dose, e questo cambia il significato della parola \"conveniente\".",
+                    "headerProduct": "Prodotto",
+                    "headerForm": "Forma",
+                    "headerStrength": "Concentrazione tipica",
+                    "headerCya": "Stabilizzante aggiunto",
+                    "solid": "Solido",
+                    "liquid": "Liquido",
+                    "cyaNone": "nessuno",
+                    "cyaAdded": "{cya} ppm per ppm di cloro"
+                },
                 "solid": {
-                    "title": "Prodotti solidi (ipoclorito di calcio)",
+                    "title": "Prodotti solidi (venduti a peso)",
                     "p1": "Un solido si vende a peso, quindi basta il peso della confezione: la massa di cloro attivo è la percentuale di concentrazione applicata al peso lordo. Per un solido i litri non vengono proposti, perché un prodotto granulare non ha un prezzo a volume che abbia senso.",
                     "formula": "massa attiva = peso confezione (kg) × concentrazione ÷ 100"
                 },
                 "liquid": {
-                    "title": "Prodotti liquidi (ipoclorito di sodio)",
+                    "title": "Prodotti liquidi (venduti a volume o a peso)",
                     "p1": "Un liquido può essere venduto a volume o a peso, quindi l'unità la scegli tu. Se inserisci i litri, vengono convertiti in peso usando la densità del prodotto (indicata in etichetta), se non la conosci viene usata una densità tipica di {density} kg/L per le soluzioni di ipoclorito di sodio.",
                     "formula": "massa attiva = (litri × densità) × concentrazione ÷ 100"
                 },
+                "stabilized": {
+                    "title": "Prodotti stabilizzati: il prezzo che non vedi",
+                    "p1": "Tricloro e dicloro contengono cloro e acido cianurico insieme. Sono i prodotti più concentrati che trovi sullo scaffale, quindi sul costo per chilogrammo di cloro attivo spesso vincono questo confronto senza discussione. Il verdetto è vero, ed è solo metà della storia.",
+                    "p2": "Il tricloro porta {trichlor} ppm di stabilizzante per ogni ppm di cloro che rilascia, il dicloro {dichlor} ppm. Lo stabilizzante resta nell'acqua: non viene consumato come il cloro e l'evaporazione non lo porta via. Oltre i {idealMax} ppm circa serve sempre più cloro per ottenere la stessa disinfezione, e oltre i {cyaHigh} ppm l'indicazione standard è diluire la piscina con acqua fresca, l'unico modo pratico per farlo scendere.",
+                    "p3": "Non è un motivo per non usarli mai: sono comodi, e un uso occasionale va benissimo. È un motivo per sapere a che livello di stabilizzante sei prima di farne un'abitudine. Ed è anche il motivo per cui il calcolatore shock non li propone affatto: una dose da shock di cloro stabilizzato scarica decine di ppm di acido cianurico in un solo pomeriggio."
+                },
                 "verdict": {
                     "title": "Come si stabilisce il vincitore",
-                    "p1": "Vince il posto con il costo per chilogrammo di cloro attivo più basso. Il risparmio mostrato è la differenza tra i due costi per chilogrammo attivo, ti dice quanto stai risparmiando (o perdendo) per ogni chilo di cloro realmente utile che acquisti."
+                    "p1": "Vince il posto con il costo per chilogrammo di cloro attivo più basso. Il risparmio mostrato è la differenza tra i due costi per chilogrammo attivo, ti dice quanto stai risparmiando (o perdendo) per ogni chilo di cloro realmente utile che acquisti.",
+                    "p2": "Il verdetto confronta solo il prezzo. Se uno dei due posti contiene un prodotto stabilizzato, leggilo insieme all'avviso mostrato su quella scheda: il prodotto che costa meno al chilo può comunque essere la scelta più cara per la piscina."
                 },
                 "limits": {
                     "title": "Assunzioni e limiti",

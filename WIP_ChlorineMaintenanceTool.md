@@ -80,10 +80,20 @@ Phase A — Research (gate):
 2. **Daily FC consumption: 3 ppm/day as the default, but the field is user-editable** — because the user can measure their own (test FC, add nothing, retest 24 h later; the difference is the real consumption). Phase B should say exactly that next to the field, so the number can graduate from a generic assumption to the user's own measurement. Pending final confirmation from the user, who asked what this parameter meant before deciding.
 3. **The salt-water disclaimer stays as it is** (70-80 ppm), per section 7: it is TFP-sourced and correct. Section 6's proposed "50-80" rewrite is rejected — no `it.json`/`en.json` change needed.
 
-Phase B — Model:
-- ❌ Constants + types extended (cited)
-- ❌ `maintenance-target` primitive + tests
-- ❌ CYA projection function + tests
+Phase B — Model: ✅ **COMPLETE**
+- ✅ Constants + types extended, every number cited: trichlor/dichlor coefficients (0.6 / 0.9), strengths (90% / 56%), `MAINTENANCE_FC_MIN_RATIO` 0.075, `MAINTENANCE_FC_TARGET_RATIO` 0.115, `MAINTENANCE_FC_ABSOLUTE_MIN` 2, `CYA_IDEAL_RANGE` 30-50, `CYA_DEGRADATION_RANGE_PPM_PER_MONTH` 2-10, `DEFAULT_DAILY_FC_PPM` 3
+- ✅ `maintenance-target.ts` + tests, including TFP's published table row by row
+- ✅ `cya-projection.ts` + tests, including the null-not-Infinity case
+- ✅ **Net proven by mutation testing: 9 mutations, 9 caught** — dichlor 0.9→0.6 (6 failures), trichlor made unstabilized (5), min ratio 7.5%→5% (13), target 11.5%→15% (10), floor removed (2), ideal ceiling 50→100 (6), degradation no longer subtracted (4), falling CYA still projecting a date (2), shock product list drifting (1)
+- ✅ `tsc` clean, 150 tests, lint unchanged, en/it parity at 404 keys, zero em dashes
+
+**A test premise of mine was wrong, and was corrected rather than deleted.** I asserted that the ratios reproduce TFP's published table exactly. They do not, and TFP says so itself ("a reasonable approximation to the table"), because the table is integer-rounded from HOCl equivalence. The *minimum* column does come out exactly; the *target* column lands within 1 ppm, differing at CYA 20, 30 and 100. Both are now tested at their real strength, plus a check that the 1 ppm tolerance is still tight enough to catch a wrong ratio.
+
+**Consequences of widening `ProductId` that Phase C inherits:**
+- `ShockProductId = Exclude<ProductId, StabilizedProductId>` guards the shock calculator at the type level, `shockProductIdSchema` at the API boundary, and a test guards the list itself. Three layers, none redundant.
+- `product-conversion` branched on `id === 'sodium_hypochlorite'` and let everything else fall through to the solid path — correct for the new products by luck. It now branches on the product's form, by decision.
+- **The comparison tool now offers trichlor and dichlor, and warns about them.** On cost per kilo of active chlorine trichlor at 90% wins almost every comparison; offering it without saying what it does to CYA would have made the tool actively harmful. The warning reads the coefficient straight from `PRODUCT_COEFFICIENTS`, so it cannot drift from the model.
+- Phase C should reuse `product-conversion` for the maintenance dose rather than writing a second conversion — it already handles all four products.
 
 Phase C — Tool:
 - ❌ `add-pool-tool` skill invoked, recipe followed end to end

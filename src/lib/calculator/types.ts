@@ -16,8 +16,27 @@ export type LengthUnit = 'm' | 'ft';
 /** Water condition tiers (Step 2). `perfect` means no algae shock is needed. */
 export type ColorLevel = 'perfect' | 'light_green' | 'green_brown' | 'dark_green';
 
-/** Shock products. Stabilized chlorine (trichlor/dichlor) is intentionally excluded. */
-export type ProductId = 'sodium_hypochlorite' | 'calcium_hypochlorite';
+/** Every chlorine product the calculator knows about. */
+export type ProductId =
+  | 'sodium_hypochlorite'
+  | 'calcium_hypochlorite'
+  | 'trichlor'
+  | 'dichlor';
+
+/**
+ * Products that carry cyanuric acid into the water with every dose. They are the
+ * reason the maintenance tool exists, and the reason they must never reach the
+ * shock calculator: shock doses are large enough to wreck a pool's CYA in one
+ * afternoon.
+ */
+export type StabilizedProductId = 'trichlor' | 'dichlor';
+
+/**
+ * Products the shock calculator accepts. Derived by exclusion rather than listed,
+ * so a future stabilized product is locked out of shocking the moment it joins
+ * `StabilizedProductId` — no second edit to remember, no way to forget.
+ */
+export type ShockProductId = Exclude<ProductId, StabilizedProductId>;
 
 /** Physical form a product is sold in. Liquids need a density to be weighed. */
 export type ProductForm = 'solid' | 'liquid';
@@ -62,7 +81,10 @@ export type WarningCode =
   | 'CYA_HIGH' // CYA > threshold: dilution recommended before shocking
   | 'FC_ALREADY_SUFFICIENT' // current FC already >= target, no shock needed
   | 'CC_HIGH' // combined chlorine > 0.5 ppm: breakpoint reasoning surfaced
-  | 'LOW_DOSE'; // computed product amount impractically small
+  | 'LOW_DOSE' // computed product amount impractically small
+  | 'CYA_ABOVE_IDEAL' // CYA past the ideal ceiling but below CYA_HIGH_THRESHOLD
+  | 'CYA_LOCK_RISK' // a stabilized product is in use while CYA is already too high
+  | 'CYA_UNKNOWN_ASSUMED'; // the maintenance target was computed from the fallback range
 
 // ---------------------------------------------------------------------------
 // chlorine-target
@@ -171,7 +193,8 @@ export interface ShockInput {
   cya: CyaInput;
   chlorine: ChlorineInput;
   product: {
-    id: ProductId;
+    /** Unstabilized only — see `ShockProductId`. */
+    id: ShockProductId;
     concentrationPct: number;
     densityKgL?: number;
   };
@@ -207,6 +230,75 @@ export interface ShockResult {
   dose: ChlorineDoseResult | null;
   product: ProductConversionResult | null;
   breakdown: ShockBreakdown;
+  warnings: WarningCode[];
+}
+
+// ---------------------------------------------------------------------------
+// maintenance-target
+// ---------------------------------------------------------------------------
+
+export interface MaintenanceTargetInput {
+  cya: CyaInput;
+}
+
+/**
+ * Routine (non-shock) chlorine levels for a given CYA. Two numbers, not one:
+ * `minFC` is where chlorine starts losing to algae, `targetFC` is where you aim
+ * so that a hot day or a pool party does not push you under it.
+ */
+export interface MaintenanceTargetResult {
+  /** Never go below this. `max(ratio × CYA, absolute floor)`. */
+  minFC: RangeOrValue<'ppm'>;
+  /** What to actually aim for day to day. Always >= `minFC`. */
+  targetFC: RangeOrValue<'ppm'>;
+  /** True when the absolute floor decided `minFC`, not the CYA ratio. */
+  floorApplied: boolean;
+  /** CYA actually used; null when the user did not know it. */
+  cyaUsed: number | null;
+  warnings: WarningCode[];
+}
+
+// ---------------------------------------------------------------------------
+// cya-projection
+// ---------------------------------------------------------------------------
+
+/** Which way CYA is heading under the current habits. */
+export type CyaTrend = 'rising' | 'stable' | 'falling';
+
+export interface CyaProjectionInput {
+  /** Where CYA is today (ppm). */
+  currentCyaPpm: number;
+  /** The product used for routine chlorination. */
+  productId: ProductId;
+  /** Free chlorine the pool consumes per day (ppm). */
+  dailyFcPpm: number;
+  /** Sunlight-driven CYA loss (ppm/month). Defaults to the cited conservative value. */
+  degradationPpmPerMonth?: number;
+  /** How far ahead to project. */
+  weeks: number;
+  /** Level treated as "out of range". Defaults to the ideal band's ceiling. */
+  ceilingPpm?: number;
+}
+
+export interface CyaProjectionPoint {
+  week: number;
+  cyaPpm: number;
+}
+
+export interface CyaProjectionResult {
+  /** Net change per week: accumulation minus degradation. Can be negative. */
+  netPpmPerWeek: number;
+  /** CYA gained per week from the product alone, before degradation. */
+  addedPpmPerWeek: number;
+  /** CYA lost per week to sunlight. */
+  degradedPpmPerWeek: number;
+  points: CyaProjectionPoint[];
+  /**
+   * Weeks until `ceilingPpm` is crossed. `null` when CYA is stable or falling —
+   * an unstabilized product adds none, so there is no date to project.
+   */
+  weeksToCeiling: number | null;
+  trend: CyaTrend;
   warnings: WarningCode[];
 }
 

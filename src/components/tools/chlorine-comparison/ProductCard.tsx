@@ -1,7 +1,10 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
+import { AlertTriangle } from 'lucide-react';
 import {
   calculateProductMetrics,
+  isStabilizedProduct,
+  PRODUCT_COEFFICIENTS,
   PRODUCT_IDS,
   PRODUCT_RETAIL_FORMS,
   type ComparisonProductInput,
@@ -116,6 +119,23 @@ export function ProductCard({ slot, input, onChange, onProductChange }: ProductC
           <CardDescription>
             {isLiquid ? t('Labels.formLiquid') : t('Labels.formSolid')}
           </CardDescription>
+
+          {/*
+            Without this, the tool would be actively harmful: judged purely on
+            cost per kilo of active chlorine, trichlor at 90% wins almost every
+            comparison — and quietly buries the pool in cyanuric acid. The price
+            verdict is only half the truth for a stabilized product.
+          */}
+          {isStabilizedProduct(input.productId) && (
+            <p className="flex items-start gap-1.5 rounded-md border border-warning bg-warning/10 p-2 text-xs text-foreground">
+              <AlertTriangle className="mt-0.5 size-3.5 shrink-0 text-warning" />
+              <span>
+                {t('Labels.stabilizerWarning', {
+                  cya: PRODUCT_COEFFICIENTS[input.productId].cyaPerPpm,
+                })}
+              </span>
+            </p>
+          )}
         </div>
       </CardHeader>
       <CardContent className="space-y-4">

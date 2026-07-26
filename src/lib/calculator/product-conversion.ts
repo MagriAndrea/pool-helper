@@ -16,7 +16,7 @@
  * Side effects scale linearly with ΔFC (ppm added), independent of product mass.
  */
 
-import { PRODUCT_COEFFICIENTS } from './constants';
+import { PRODUCT_COEFFICIENTS, PRODUCT_RETAIL_FORMS } from './constants';
 import { hi, makeRange, makeValue, round0, round2 } from './range';
 import type {
   ProductConversionInput,
@@ -34,14 +34,20 @@ function gramsPerLiter(concentrationPct: number, densityKgL?: number): number {
     : concentrationPct * 10; // trade-% (w/v) path
 }
 
-/** Convert pure chlorine grams to the product's BASE amount (mL or g). */
+/**
+ * Convert pure chlorine grams to the product's BASE amount (mL or g).
+ *
+ * Branches on the product's physical form, not on its id: with trichlor and
+ * dichlor in the model, an `id === 'sodium_hypochlorite'` test would send every
+ * other product down the solid path by accident rather than by decision.
+ */
 function toBaseAmount(
   pureG: number,
   productId: ProductId,
   concentrationPct: number,
   densityKgL?: number,
 ): { base: number; baseUnit: ProductUnit } {
-  if (productId === 'sodium_hypochlorite') {
+  if (PRODUCT_RETAIL_FORMS[productId].form === 'liquid') {
     const gPerL = gramsPerLiter(concentrationPct, densityKgL);
     const mL = gPerL > 0 ? (pureG / gPerL) * 1000 : 0;
     return { base: mL, baseUnit: 'mL' };
