@@ -3,19 +3,31 @@ import {
   BREAKPOINT_MULTIPLIER,
   CC_HIGH_THRESHOLD,
   COLOR_LEVELS,
+  CYA_DEGRADATION_RANGE_PPM_PER_MONTH,
   CYA_HIGH_THRESHOLD,
+  CYA_IDEAL_RANGE,
   CYA_UNKNOWN_RANGE,
+  DAILY_FC_DEMAND_RANGE_PPM,
   DEFAULT_CALCIUM_PCT,
+  DEFAULT_CYA_DEGRADATION_PPM_PER_MONTH,
+  DEFAULT_DAILY_FC_PPM,
+  DEFAULT_DICHLOR_PCT,
   DEFAULT_SODIUM_DENSITY,
   DEFAULT_SODIUM_TRADE_PCT,
+  DEFAULT_TRICHLOR_PCT,
   FC_UNKNOWN_RANGE,
+  isStabilizedProduct,
   LITERS_PER_CUBIC_FOOT,
   LITERS_PER_GALLON,
   LOW_DOSE_THRESHOLD,
+  MAINTENANCE_FC_ABSOLUTE_MIN,
+  MAINTENANCE_FC_MIN_RATIO,
+  MAINTENANCE_FC_TARGET_RATIO,
   METERS_PER_FOOT,
   PRODUCT_COEFFICIENTS,
   PRODUCT_IDS,
   PRODUCT_RETAIL_FORMS,
+  SHOCK_PRODUCT_IDS,
   SLAM_CYA_RATIO,
 } from '../constants';
 
@@ -68,7 +80,50 @@ describe('constants: cited chemistry values stay pinned', () => {
     expect(PRODUCT_COEFFICIENTS).toEqual({
       sodium_hypochlorite: { cyaPerPpm: 0, hardnessPerPpm: 0, saltPerPpm: 0.82, pHEffect: 'up' },
       calcium_hypochlorite: { cyaPerPpm: 0, hardnessPerPpm: 0.7, saltPerPpm: 0, pHEffect: 'up' },
+      trichlor: { cyaPerPpm: 0.6, hardnessPerPpm: 0, saltPerPpm: 0, pHEffect: 'down' },
+      dichlor: { cyaPerPpm: 0.9, hardnessPerPpm: 0, saltPerPpm: 0, pHEffect: 'neutral' },
     });
+  });
+
+  it('keeps the stabilized products stabilized, and the others not', () => {
+    // The whole maintenance tool hangs off this distinction: a cyaPerPpm that
+    // silently went to 0 would make a dichlor habit look harmless.
+    expect(isStabilizedProduct('trichlor')).toBe(true);
+    expect(isStabilizedProduct('dichlor')).toBe(true);
+    expect(isStabilizedProduct('sodium_hypochlorite')).toBe(false);
+    expect(isStabilizedProduct('calcium_hypochlorite')).toBe(false);
+  });
+
+  it('never offers a stabilized product for shocking', () => {
+    // A shock dose of trichlor or dichlor delivers tens of ppm of CYA at once.
+    // `ShockProductId` blocks it at compile time; this catches the LIST drifting.
+    expect(SHOCK_PRODUCT_IDS.some(isStabilizedProduct)).toBe(false);
+    expect([...SHOCK_PRODUCT_IDS].sort()).toEqual(
+      PRODUCT_IDS.filter((id) => !isStabilizedProduct(id)).sort(),
+    );
+  });
+
+  it('keeps the routine-chlorine ratios and the absolute floor (TFP / CDC)', () => {
+    expect(MAINTENANCE_FC_MIN_RATIO).toBe(0.075);
+    expect(MAINTENANCE_FC_TARGET_RATIO).toBe(0.115);
+    expect(MAINTENANCE_FC_ABSOLUTE_MIN).toBe(2);
+  });
+
+  it('keeps the ideal CYA band distinct from the unknown range and the high threshold', () => {
+    expect(CYA_IDEAL_RANGE).toEqual({ min: 30, max: 50 });
+    // Three different ideas that must never collapse into one another: where you
+    // want to be, what might already be in the water, and when to dilute.
+    expect(CYA_IDEAL_RANGE.max).toBeLessThan(CYA_UNKNOWN_RANGE.max);
+    expect(CYA_UNKNOWN_RANGE.max).toBeLessThan(CYA_HIGH_THRESHOLD);
+  });
+
+  it('keeps the CYA degradation and daily-demand figures', () => {
+    expect(CYA_DEGRADATION_RANGE_PPM_PER_MONTH).toEqual({ min: 2, max: 10 });
+    expect(DAILY_FC_DEMAND_RANGE_PPM).toEqual({ min: 2, max: 4 });
+    expect(DEFAULT_DAILY_FC_PPM).toBe(3);
+    // The default degradation is the LOW end on purpose: under-estimating how
+    // much CYA leaves makes the projection warn early rather than late.
+    expect(DEFAULT_CYA_DEGRADATION_PPM_PER_MONTH).toBe(CYA_DEGRADATION_RANGE_PPM_PER_MONTH.min);
   });
 
   it('keeps the retail form of each product (drives the L/kg choice in the comparison tool)', () => {
@@ -82,7 +137,22 @@ describe('constants: cited chemistry values stay pinned', () => {
         form: 'solid',
         typicalConcentrationPct: 65,
       },
+      trichlor: {
+        form: 'solid',
+        typicalConcentrationPct: 90,
+      },
+      dichlor: {
+        form: 'solid',
+        typicalConcentrationPct: 56,
+      },
     });
+  });
+
+  it('keeps the stabilized product strengths (theory agrees with the labels)', () => {
+    // Trichlor: 3 x 70.906 / 232.41 = 91.5%, sold as ">= 90%".
+    // Dichlor dihydrate: 2 x 70.906 / 255.98 = 55.4%, sold as "56%".
+    expect(DEFAULT_TRICHLOR_PCT).toBe(90);
+    expect(DEFAULT_DICHLOR_PCT).toBe(56);
   });
 
   it('lists every product in PRODUCT_IDS (the picker order the type system cannot check)', () => {

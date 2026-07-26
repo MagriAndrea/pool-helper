@@ -7,7 +7,7 @@ import type {
   ChlorineInput,
   ColorLevel,
   CyaInput,
-  ProductId,
+  ShockProductId,
   ShockInput,
   ShockResult,
   Unit,
@@ -37,7 +37,8 @@ export interface ShockState {
   freeFC: number | null;
   combinedCC: number | null;
   // Result — product choice
-  selectedProduct: ProductId | null;
+  /** Unstabilized only: `ShockProductId` keeps trichlor/dichlor out at compile time. */
+  selectedProduct: ShockProductId | null;
   sodiumConcentration: number;
   calciumConcentration: number;
 }

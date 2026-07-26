@@ -146,7 +146,9 @@
     },
     "Products": {
         "calcium_hypochlorite": "Ipoclorito di calcio",
-        "sodium_hypochlorite": "Ipoclorito di sodio"
+        "sodium_hypochlorite": "Ipoclorito di sodio",
+        "trichlor": "Tricloro (pastiglie stabilizzate)",
+        "dichlor": "Dicloro (granuli stabilizzati)"
     },
     "Tools": {
         "ChlorineComparison": {
@@ -171,7 +173,8 @@
                 "kilograms": "Chilogrammi (Kg)",
                 "density": "Densità (Kg/L) - Default 1.2",
                 "activeChlorine": "Cloro Attivo (Netto)",
-                "realCost": "Costo Reale"
+                "realCost": "Costo Reale",
+                "stabilizerWarning": "Attenzione: questo prodotto aggiunge anche {cya} ppm di stabilizzante (CYA) per ogni ppm di cloro. Al chilo sembra conveniente, ma lo stabilizzante si accumula nell'acqua e da solo non se ne va, e oltre una certa soglia il cloro smette di funzionare."
             },
             "Placeholders": {
                 "weight": "Es. 5, 10, 25",

@@ -16,9 +16,11 @@ export * from './chlorine-target';
 export * from './chlorine-dose';
 export * from './product-conversion';
 export * from './pool-volume';
+export * from './maintenance-target';
+export * from './cya-projection';
 
 // Orchestrator
 export * from './shock';
 
-// Existing tool (moved verbatim from the old calculator.ts)
+// Product cost comparison
 export * from './chlorine-comparison';

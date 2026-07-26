@@ -146,7 +146,9 @@
     },
     "Products": {
         "calcium_hypochlorite": "Calcium hypochlorite",
-        "sodium_hypochlorite": "Sodium hypochlorite"
+        "sodium_hypochlorite": "Sodium hypochlorite",
+        "trichlor": "Trichlor (stabilized tablets)",
+        "dichlor": "Dichlor (stabilized granules)"
     },
     "Tools": {
         "ChlorineComparison": {
@@ -171,7 +173,8 @@
                 "kilograms": "Kilograms (Kg)",
                 "density": "Density (Kg/L) - Default 1.2",
                 "activeChlorine": "Active Chlorine (Net)",
-                "realCost": "Real Cost"
+                "realCost": "Real Cost",
+                "stabilizerWarning": "Careful: this product also adds {cya} ppm of stabilizer (CYA) for every ppm of chlorine. It looks cheap per kilo, but the stabilizer builds up in the water and never leaves on its own, and past a certain point your chlorine stops working."
             },
             "Placeholders": {
                 "weight": "Ex. 5, 10, 25",

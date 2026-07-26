@@ -34,8 +34,23 @@ export const lengthUnitSchema = z.enum(['m', 'ft']);
 /** `ColorLevel` — Step 2 water-condition tiers. `perfect` needs no algae shock. */
 export const colorLevelSchema = z.enum(['perfect', 'light_green', 'green_brown', 'dark_green']);
 
-/** `ProductId` — supported shock products (stabilized chlorine excluded). */
-export const productIdSchema = z.enum(['sodium_hypochlorite', 'calcium_hypochlorite']);
+/** `ProductId` — every product the calculator knows, stabilized ones included. */
+export const productIdSchema = z.enum([
+  'sodium_hypochlorite',
+  'calcium_hypochlorite',
+  'trichlor',
+  'dichlor',
+]);
+
+/**
+ * `ShockProductId` — deliberately NARROWER than `productIdSchema`.
+ *
+ * 🛑 Do not "simplify" this into `productIdSchema`. A shock dose of trichlor or
+ * dichlor delivers tens of ppm of cyanuric acid in a single go, which is the
+ * exact failure this project exists to prevent. The `ShockProductId` type blocks
+ * it inside our code; this schema blocks it at the public API boundary.
+ */
+export const shockProductIdSchema = z.enum(['sodium_hypochlorite', 'calcium_hypochlorite']);
 
 /** `PoolShape`. */
 export const poolShapeSchema = z.enum(['rectangle', 'circle']);
@@ -204,7 +219,7 @@ export const shockInputSchema = z.object({
   cya: cyaInputSchema,
   chlorine: chlorineInputSchema,
   product: z.object({
-    id: productIdSchema,
+    id: shockProductIdSchema, // narrower than productIdSchema on purpose
     concentrationPct: z.number().positive().max(100),
     densityKgL: z.number().positive().optional(),
   }),

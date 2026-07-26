@@ -4,7 +4,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { AlertTriangle, CheckCircle2, Info, RotateCcw } from 'lucide-react';
 import type {
   ColorLevel,
-  ProductId,
+  ShockProductId,
   ProductUnit,
   RangeOrValue,
   ShockResult,
@@ -175,7 +175,7 @@ export function ResultStep({ result, state, update, onReset }: ResultStepProps) 
     state.selectedProduct === 'calcium_hypochlorite'
       ? state.calciumConcentration
       : state.sodiumConcentration;
-  const selectProduct = (id: ProductId) => update({ selectedProduct: id });
+  const selectProduct = (id: ShockProductId) => update({ selectedProduct: id });
   const setConcentration = (v: number | null) => {
     if (v == null) return;
     update(
@@ -184,7 +184,7 @@ export function ResultStep({ result, state, update, onReset }: ResultStepProps) 
         : { sodiumConcentration: v },
     );
   };
-  const productNameFor = (id: ProductId) => tProducts(id);
+  const productNameFor = (id: ShockProductId) => tProducts(id);
 
   // Final product amount — mean + range warning.
   const amountMean = product ? nf(meanOf(product.amount)) : '';
@@ -224,14 +224,16 @@ export function ResultStep({ result, state, update, onReset }: ResultStepProps) 
         </p>
         <p>{targetLine}</p>
         <p>{doseLine}</p>
-        {productSelected && product && (
+        {state.selectedProduct && product && (
           <p>
             {t('Result.breakdownProduct', {
               pure: pureBreakdownStr,
               concentration: nf(concentration),
               amount: amountMean,
               unit: amountUnitLabel,
-              product: productNameFor(state.selectedProduct as ProductId),
+              // Guarding on the value itself, not on `productSelected`, lets
+              // TypeScript narrow away the null without a cast.
+              product: productNameFor(state.selectedProduct),
             })}
           </p>
         )}
