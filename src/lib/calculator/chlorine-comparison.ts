@@ -1,3 +1,5 @@
+import { DEFAULT_SODIUM_DENSITY } from './constants';
+
 export type ChemicalType = 'CALCIUM' | 'SODIUM';
 
 export interface CalciumInput {
@@ -64,8 +66,8 @@ export function calculateCalciumMetrics(input: CalciumInput): ChemicalMetrics {
  */
 export function calculateSodiumMetrics(input: SodiumInput): ChemicalMetrics {
   const { price, quantity, unit, concentration } = input;
-  // Default density to 1.2 if not provided or invalid, but only relevant for 'l'
-  const density = input.density && input.density > 0 ? input.density : 1.2;
+  // Default density if not provided or invalid, but only relevant for 'l'
+  const density = input.density && input.density > 0 ? input.density : DEFAULT_SODIUM_DENSITY;
 
   if (price <= 0 || quantity <= 0 || concentration <= 0) {
     return {

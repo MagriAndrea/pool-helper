@@ -184,6 +184,37 @@
             },
             "Footer": {
                 "disclaimer": "Calculations are based on the amount of active ingredient (chlorine) effectively available.\nEnsure you enter correct prices including VAT if applicable."
+            },
+            "Info": {
+                "title": "How the comparison works",
+                "subtitle": "Why the sticker price alone isn't enough.",
+                "overview": {
+                    "title": "Overview",
+                    "p1": "This tool doesn't compare the sticker price of the two packages — it compares the real cost per kilogram of active chlorine, the disinfecting ingredient actually contained in the product. That's the only correct way to tell which product is really the better deal."
+                },
+                "activeChlorine": {
+                    "title": "Why count \"active chlorine\"",
+                    "p1": "Two products at the same package price can have very different chlorine concentrations: a cheaper product per kilogram can end up costing more for the same amount of disinfection if its concentration is lower. That's why both products are converted to the same unit — cost per kilogram of active chlorine.",
+                    "formula": "cost / active kg = total price ÷ active chlorine mass"
+                },
+                "calcium": {
+                    "title": "Calcium hypochlorite (solid)",
+                    "p1": "For the solid product, the package weight is all that's needed — the active chlorine mass is the concentration percentage applied to the gross weight.",
+                    "formula": "active mass = package weight (kg) × concentration ÷ 100"
+                },
+                "sodium": {
+                    "title": "Sodium hypochlorite (liquid)",
+                    "p1": "For the liquid product you can enter quantity in liters or kilograms. If you enter liters, it's converted to weight using the product's density (shown on the label) — if you don't know it, a typical density of {density} kg/L for sodium hypochlorite solutions is used.",
+                    "formula": "active mass = (liters × density) × concentration ÷ 100"
+                },
+                "verdict": {
+                    "title": "How the winner is decided",
+                    "p1": "The product with the lower cost per kilogram of active chlorine wins. The savings shown is the difference between the two active-kg costs — it tells you how much you're saving (or losing) for every kilogram of usable chlorine you buy."
+                },
+                "limits": {
+                    "title": "Assumptions & limits",
+                    "p1": "Enter the price including VAT if applicable, otherwise the comparison isn't accurate. Use the concentration shown on the label at the time of purchase — liquid sodium hypochlorite degrades over time (heat, light, package age), so an old or poorly stored product may contain less active chlorine than stated. This tool doesn't model that decay, so on non-fresh product the real cost could be higher than calculated."
+                }
             }
         },
         "Shock": {
@@ -403,7 +434,38 @@
             "resultKicker": "Your pool holds about",
             "litersUnit": "liters",
             "secondary": "= {m3} m³ · {gal} US gal",
-            "applyButton": "Use this volume"
+            "applyButton": "Use this volume",
+            "Info": {
+                "title": "How the volume calculation works",
+                "subtitle": "The formula behind your pool's liters.",
+                "overview": {
+                    "title": "Overview",
+                    "p1": "The volume calculated here is used by the other tools (like the Shock Calculator) to dose chemical products correctly — the more accurate the estimate, the more reliable the suggested doses."
+                },
+                "rectangle": {
+                    "title": "Rectangular pool",
+                    "p1": "The volume is the product of the three dimensions.",
+                    "formula": "volume = length × width × average depth"
+                },
+                "circle": {
+                    "title": "Round pool",
+                    "p1": "The volume is that of a cylinder: the area of the base circle multiplied by the depth.",
+                    "formula": "volume = π × (diameter ÷ 2)² × average depth"
+                },
+                "depth": {
+                    "title": "Why \"average depth\"",
+                    "p1": "If the pool floor isn't flat (for example it slopes toward a deeper end), use the average between the shallowest and deepest points, not the maximum depth — using the deepest point would overestimate the real volume."
+                },
+                "units": {
+                    "title": "Units",
+                    "p1": "You can enter dimensions in meters or feet — the result is always shown in liters, cubic meters and US gallons, for compatibility with the English-language sources cited in the other tools.",
+                    "formula": "1 foot = {meters} m · 1 m³ = 1000 L · 1 US gallon = {gal} L"
+                },
+                "limits": {
+                    "title": "Limits",
+                    "p1": "This tool only supports rectangular and round shapes. For freeform or irregular pools, the simplest estimate is to treat it as the smallest rectangle that contains it and adjust the result down, or ask a professional for an accurate measurement."
+                }
+            }
         },
         "Info": {
             "back": "Back to the tool",

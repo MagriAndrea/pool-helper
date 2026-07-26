@@ -74,12 +74,17 @@ Phase 1 — Legal & identity:
 - ✅ `about` entry added to `nav-items.ts` (nav menu, not just footer)
 - ✅ i18n keys (en + it) — JSON validated, key parity confirmed, no em/en dashes in `it.json`
 - ✅ `tsc --noEmit` and `npm run lint` clean (no new errors/warnings introduced)
-- ❌ Visual check in browser (dev server not started by the agent — AGENTS.md STRICT rule; user to verify live)
+- ✅ Content approved by the user; merged to `main` via [PR #6](https://github.com/MagriAndrea/pool-helper/pull/6) (Vercel preview build succeeded)
+
+**Phase 1 complete.**
 
 Phase 2 — Tool info pages:
-- ❌ chlorine-comparison info page + InfoButton
-- ❌ pool-volume info page + InfoButton
-- ❌ i18n keys (en + it)
+- ✅ chlorine-comparison info page + InfoButton (`src/app/[locale]/tools/chlorine-comparison/info/page.tsx`)
+- ✅ pool-volume info page + InfoButton (`src/app/[locale]/tools/pool-volume/info/page.tsx`)
+- ✅ i18n keys (en + it) — validated: JSON valid, key parity, no em/en dashes in Italian
+- ✅ Small DRY fix while grounding the comparison page in real constants: `chlorine-comparison.ts` now imports `DEFAULT_SODIUM_DENSITY` from `constants.ts` instead of a hardcoded `1.2`
+- ✅ `tsc --noEmit` and `npm run lint` clean (no new errors/warnings)
+- ❌ Pending user review of the technical content (formulas/assumptions) before merge
 
 Phase 3 — API docs & README:
 - ❌ Zod schemas per endpoint in `src/lib/api/`
