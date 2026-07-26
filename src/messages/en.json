@@ -213,19 +213,39 @@
                     "p1": "Two products at the same package price can have very different chlorine concentrations: a cheaper product per kilogram can end up costing more for the same amount of disinfection if its concentration is lower. That's why both products are converted to the same unit — cost per kilogram of active chlorine.",
                     "formula": "cost / active kg = total price ÷ active chlorine mass"
                 },
+                "table": {
+                    "title": "The products you can compare",
+                    "p1": "Four products, and they are not interchangeable. The strengths are typical retail values used to prefill the fields — always read your own label, because the same product is sold at different concentrations.",
+                    "p2": "The last column is the one people miss. Two of these products carry cyanuric acid (the stabilizer) into the water with every dose, and that changes what \"cheap\" means.",
+                    "headerProduct": "Product",
+                    "headerForm": "Form",
+                    "headerStrength": "Typical strength",
+                    "headerCya": "Stabilizer added",
+                    "solid": "Solid",
+                    "liquid": "Liquid",
+                    "cyaNone": "none",
+                    "cyaAdded": "{cya} ppm per ppm of chlorine"
+                },
                 "solid": {
-                    "title": "Solid products (calcium hypochlorite)",
+                    "title": "Solid products (sold by weight)",
                     "p1": "A solid is sold by weight, so the package weight is all that's needed — the active chlorine mass is the concentration percentage applied to the gross weight. Litres aren't offered for a solid, because a granular product has no meaningful volume price.",
                     "formula": "active mass = package weight (kg) × concentration ÷ 100"
                 },
                 "liquid": {
-                    "title": "Liquid products (sodium hypochlorite)",
+                    "title": "Liquid products (sold by volume or weight)",
                     "p1": "A liquid can be sold by volume or by weight, so you choose the unit. If you enter litres, it's converted to weight using the product's density (shown on the label) — if you don't know it, a typical density of {density} kg/L for sodium hypochlorite solutions is used.",
                     "formula": "active mass = (liters × density) × concentration ÷ 100"
                 },
+                "stabilized": {
+                    "title": "Stabilized products: the price you don't see",
+                    "p1": "Trichlor and dichlor contain chlorine and cyanuric acid together. They are the most concentrated products on the shelf, so on cost per kilogram of active chlorine they will often win this comparison outright. That verdict is true, and it is only half the story.",
+                    "p2": "Trichlor brings {trichlor} ppm of stabilizer for every ppm of chlorine it delivers, dichlor {dichlor} ppm. The stabilizer stays in the water: it isn't consumed like chlorine and evaporation doesn't remove it. Past roughly {idealMax} ppm you need progressively more chlorine to get the same disinfection, and past {cyaHigh} ppm the standard advice is to dilute the pool with fresh water — the only practical way to bring it back down.",
+                    "p3": "This is not a reason to never use them: they are convenient, and occasional use is fine. It's a reason to know what your stabilizer level is before making them a habit. This is also why the shock calculator doesn't offer them at all — a shock dose of stabilized chlorine delivers tens of ppm of cyanuric acid in a single afternoon."
+                },
                 "verdict": {
                     "title": "How the winner is decided",
-                    "p1": "The slot with the lower cost per kilogram of active chlorine wins. The savings shown is the difference between the two active-kg costs — it tells you how much you're saving (or losing) for every kilogram of usable chlorine you buy."
+                    "p1": "The slot with the lower cost per kilogram of active chlorine wins. The savings shown is the difference between the two active-kg costs — it tells you how much you're saving (or losing) for every kilogram of usable chlorine you buy.",
+                    "p2": "The verdict compares price only. If one of the two slots holds a stabilized product, read it together with the warning shown on that card: the cheaper product per kilogram can still be the more expensive choice for the pool."
                 },
                 "limits": {
                     "title": "Assumptions & limits",
