@@ -161,7 +161,21 @@ The pool-industry convention defines "1 ppm of available/free chlorine" as 1 mg/
 
 ### Q3 — Typical daily FC consumption (projection driver)
 
-*(pending)*
+**Answer: candidate 2-4 ppm/day is supported. Recommend a conservative single default of ~3 ppm/day for the projection (mid-range, summer/sunny assumption), but the tool MUST tell the user this is a rough planning estimate, not a substitute for testing — daily loss varies enormously by pool.**
+
+**What drives it, in rough order of importance for a typical outdoor residential pool:**
+1. **UV/sunlight** — the dominant factor. Unstabilized chlorine loses up to ~75-90% in 2 hours of direct sun; this is precisely why CYA exists. — [search-aggregated from TFP CYA wiki summaries](https://www.troublefreepool.com/wiki/index.php?title=CYA).
+2. **CYA level itself** — counterintuitively, *raising* CYA *reduces* daily UV-driven ppm loss (that's its entire purpose): "CYA keeps chlorine in the water roughly eight times longer... a pool with CYA of 60 will use less chlorine daily than a pool at CYA of 30" (search-aggregated, TFP). This means a single flat ppm/day default is an approximation that technically should decrease somewhat as CYA rises — **but** the CYA-maintenance tool's whole point is to flag CYA *rising toward/past the ideal ceiling*, at which point the pool is also losing the disinfection benefit (see Q1/Q6), so treating the daily-loss assumption as roughly CYA-independent within the 30-50 ppm "ideal" band is a reasonable simplification, and should be stated as such.
+3. **Temperature/heat** — heat accelerates both organic (algae/bacteria) growth, raising chlorine demand, and evaporation. `testo.md`'s own "Circolazione" section already notes summer needs roughly double the pump run-time of winter for the same reason (heat-driven demand).
+4. **Bather load** — real but secondary for a typical residential pool: roughly 4 g chlorine demand per bather-hour, which for a 10,000-gallon (~38,000 L) pool is about **0.1 ppm FC per bather-hour** — "very minor... unless you have a large pool party" (search-aggregated, TFP chlorine-loss-calculator blog). Only becomes significant with heavy/prolonged bather traffic.
+5. **Baseline organic demand** — TFP's own chlorine-loss calculator describes "1-1.5 ppm/day... typical for a clean pool's measured organic demand" as the idle/no-bather, non-peak-sun baseline; this is a *floor*, not the summer figure.
+6. **Combined summer estimate** — "the average pool in most areas will lose 2-4 ppm FC per day" in season, with "more sun and bather load resulting in higher usage." — [TFP "How Much Chlorine Does Your Pool Lose Per Day? FC Demand Calculator"](https://www.troublefreepool.com/blog/2026/07/06/chlorine-loss-calculator/) (title/summary via search; TFP's own site 403s to direct fetch, so this is read via search-engine summary, not independently re-verified against the primary page text).
+
+**Recommended default and required caveats:**
+- Use **3 ppm/day** as the single conservative default for the projection (middle of the cited 2-4 ppm/day summer range) — conservative in the sense of erring toward "CYA rises to the ceiling sooner than the user might expect," which matches the tool's prevention goal (better to warn early than late).
+- The tool **must** explicitly tell the user: (a) this is a rough planning assumption, not measured from their pool; (b) actual daily loss depends on sun exposure, bather load, temperature, and pool cover, and can reasonably range roughly 1-5+ ppm/day; (c) the projection is only meant to answer "roughly how many weeks/months until CYA leaves the ideal range if I keep dosing this product this way," not to replace regular FC/CYA testing; (d) users should re-run the projection after they actually test CYA, since the projection's chlorine-demand assumption compounds error over many weeks.
+
+**Confidence:** The 2-4 ppm/day summer range is **medium confidence** — cited consistently across TFP-derived sources, consistent with the separately-cited 1-1.5 ppm/day baseline + sun/heat/bather additions, but ultimately traceable to community/forum consensus rather than a single peer-reviewed figure; no CDC/PHTA numeric daily-loss figure was found (they set FC *minimums*, not consumption *rates*). Treat the 3 ppm/day default as a **defensible planning assumption**, explicitly disclosed as such, not a "fact."
 
 ### Q4 — CYA ranges reconciliation (ideal vs `CYA_UNKNOWN_RANGE` vs `CYA_HIGH_THRESHOLD`)
 
