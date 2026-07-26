@@ -179,7 +179,28 @@ The pool-industry convention defines "1 ppm of available/free chlorine" as 1 mg/
 
 ### Q4 — CYA ranges reconciliation (ideal vs `CYA_UNKNOWN_RANGE` vs `CYA_HIGH_THRESHOLD`)
 
-*(pending)*
+**Answer: add a NEW constant `CYA_IDEAL_RANGE = { min: 30, max: 50 }` (do not touch `CYA_UNKNOWN_RANGE` or `CYA_HIGH_THRESHOLD`). Key the maintenance tool's early/soft warning off the new ideal range's ceiling (50), and reuse the existing `CYA_HIGH_THRESHOLD` (100) / `CYA_HIGH` code for the severe/dilution-recommended warning — a two-tier system.**
+
+**Reasoning:**
+- **30-50 ppm is independently confirmed by three separate source types**, which is unusually strong agreement for pool chemistry:
+  1. The owner's own field notes (`testo.md`, "Stabilizzante"): "Il valore dell'acido cianurico deve stare tra 30 e 50 ppm" — exactly 30-50.
+  2. **PHTA/APSP-11** (ANSI-recognized industry standard, the closest thing pool chemistry has to a formal standard): "ideal range between 30-50 ppm," maximum 100 ppm — [PHTA APSP-11 Cyanuric Acid Fact Sheet, via search summary](https://www.phta.org/pub/?id=0838089d-1866-daac-99fb-d64ee07ea13f) (attempted a direct fetch of this PDF; the extraction tool could not reliably pull text from it, so this is via search-engine summary of the standard, not a verbatim primary quote — **flagged as not fully independently verified**, though the 30-50/100 figures recur consistently across multiple secondary citations of APSP-11).
+  3. TFP's practical range for liquid/tablet-chlorinated pools is usually cited as "30-50" or sometimes "30-60" depending on the specific TFP page (see disagreement note below).
+  - This convergence is exactly why **100** is already `CYA_HIGH_THRESHOLD` in the codebase (it equals PHTA's hard max) — Q4 doesn't change that, it just adds the *lower*, "where you want to be" band underneath it.
+- **Sources disagree on the exact ceiling** — reported honestly rather than picked silently:
+  - TFP: some pages say up to 40-50 ppm for tablets/liquid, others extend the "practical target range" to 60 ppm.
+  - **Orenda is more conservative than everyone else**: recommends "30 ppm and below" as ideal, and "not exceeding 50 ppm" as a hard residential ceiling — i.e., Orenda's *ceiling* (50) matches the consensus ideal-range ceiling, but Orenda's *ideal target* is the *bottom* of what TFP/PHTA/the owner call the ideal band. Orenda's philosophy is explicitly "minimal CYA" (title of their own article: "Minimal CYA | Pillar 4").
+  - Given this spread, **30-50 ppm as the constant's range is the safe, well-corroborated choice**: it's the owner's own number, matches the ANSI-adjacent standard, sits within every TFP citation found, and its ceiling matches Orenda's hard cap. It intentionally does *not* adopt TFP's looser "up to 60" reading, since that isn't independently corroborated and 50 is the figure with the broadest agreement.
+- **Relationship between the three constants (recommended, none of the existing two change value):**
+  - `CYA_UNKNOWN_RANGE = { min: 30, max: 80 }` — unchanged. This describes what's *plausibly already in the water* when the user doesn't know their CYA (a distribution/prior, used as a fallback input), not a target. Correctly stays wider than "ideal" since real pools — including, demonstrably, the owner's own — drift above 50 for years via repeated dichlor shocking.
+  - **NEW** `CYA_IDEAL_RANGE = { min: 30, max: 50 }` — where the maintenance tool tells the user they *want* to be. Used only by the new `maintenance-target` primitive, not by the existing shock calculator.
+  - `CYA_HIGH_THRESHOLD = 100` — unchanged. Stays the hard "TFP recommends dilution" ceiling shared with the existing shock tool, and happens to equal PHTA's own stated maximum, which is a nice independent cross-check that the existing constant was already right.
+- **Should trichlor/dichlor warnings key off `CYA_HIGH_THRESHOLD` (100) or the ideal range's ceiling (50)? Recommend both, as two tiers, not an either/or:**
+  - **Soft/early warning** (new code, e.g. `CYA_ABOVE_IDEAL`) fires once CYA > `CYA_IDEAL_RANGE.max` (50). This is the tool's *entire reason to exist* — the owner's dichlor problem was invisible for years precisely because nothing flagged CYA climbing past 50 while it was still well under the old shock-tool's 100 threshold. A tool that only warns at 100 would reproduce the exact failure mode `testo.md` describes.
+  - **Severe warning** (reuse existing `CYA_HIGH` code) fires at `CYA_HIGH_THRESHOLD` (100), same semantics as today's shock tool: dilution strongly recommended, stabilized products should stop entirely. Reusing the code (rather than inventing a second "high" concept) keeps the two tools' vocabulary consistent, per `AGENTS.md`'s general preference for not introducing parallel naming for the same underlying idea.
+  - A third, narrower warning code the WIP already anticipated, `CYA_LOCK_RISK`, is a reasonable name for "you are using a stabilized product (trichlor/dichlor) AND CYA is already above ideal" — i.e., a *product-choice*-aware warning distinct from a pure CYA-level warning. Recommend keeping it as a separate code from `CYA_ABOVE_IDEAL` (which could equally apply to a pool that got there via imported tap-water CYA or over-shocking with dichlor even once), since `CYA_LOCK_RISK` is specifically actionable ("switch products"), whereas `CYA_ABOVE_IDEAL` is not necessarily.
+
+**Confidence:** High confidence that 30-50 is the right ideal-range constant (three independent-ish sources converge). Medium confidence on the exact PHTA maximum text (search-summary only, PDF text extraction failed — worth a follow-up direct read in Phase B if the exact standard wording needs to be quoted publicly). High confidence on the two-tier warning design as sound *product* reasoning, though it is a recommendation for Phase B to implement, not a fact to verify.
 
 ### Q5 — Verify live disclaimer claim: salt-water CYA "70-80 ppm"
 
