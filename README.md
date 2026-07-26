@@ -1,6 +1,6 @@
 # Pool Helper
 
-**[pool-helper-mu.vercel.app](https://pool-helper-mu.vercel.app)**
+**[pool-helper-me.vercel.app](https://pool-helper-me.vercel.app)**
 
 Calculators and a maintenance guide for swimming pool owners — how much chlorine to add, which product is actually cheaper, and how many liters your pool really holds.
 
@@ -87,7 +87,7 @@ Requests are validated with Zod schemas that double as the source for the OpenAP
 
 Pool Helper is an educational project, not professional advice. The guidance targets **manually chlorinated pools** — saltwater pools (salt chlorine generators) are out of scope. Always follow the instructions on your chemical products' labels, and never mix different chlorine products.
 
-Full text: [`/disclaimer`](https://pool-helper-mu.vercel.app/it/disclaimer) · Project story: [`/about`](https://pool-helper-mu.vercel.app/it/about)
+Full text: [`/disclaimer`](https://pool-helper-me.vercel.app/it/disclaimer) · Project story: [`/about`](https://pool-helper-me.vercel.app/it/about)
 
 ## License
 

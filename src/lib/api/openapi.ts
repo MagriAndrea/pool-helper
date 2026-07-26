@@ -15,9 +15,16 @@
  * in `src/lib/calculator/types.ts`; restating them as Zod here would duplicate
  * the definition without buying any validation (we never validate our own
  * output), which is exactly the drift this module exists to prevent.
+ *
+ * Note on prose: the human-readable summaries and descriptions are NOT stored
+ * here — they live in the `ApiDocs.endpoints.<slug>` i18n namespace, so the
+ * `/docs/api` page can render them in the reader's language. This module reads
+ * the English ones from `en.json` (an OpenAPI document is English by
+ * convention), which keeps a single source for both.
  */
 
 import { z } from 'zod';
+import enMessages from '@/messages/en.json';
 import {
   chlorineComparisonInputSchema,
   chlorineDoseInputSchema,
@@ -29,15 +36,17 @@ import {
 
 /** A documented POST endpoint, wired to the Zod schema that validates it. */
 export interface ApiEndpoint {
-  /** Path segment under `/api/v1/calculate/`. */
-  slug: string;
+  /** Path segment under `/api/v1/calculate/`, and the i18n key for its prose. */
+  slug: keyof typeof enMessages.ApiDocs.endpoints;
   operationId: string;
-  summary: string;
-  description: string;
   schema: z.ZodType;
   requestExample: unknown;
-  responseDescription: string;
   responseExample: unknown;
+}
+
+/** English prose for an endpoint, read from the i18n catalogue. */
+function prose(slug: ApiEndpoint['slug']) {
+  return enMessages.ApiDocs.endpoints[slug];
 }
 
 /** Full request path for an endpoint. */
@@ -53,17 +62,12 @@ export const API_ENDPOINTS: ApiEndpoint[] = [
   {
     slug: 'chlorine-target',
     operationId: 'calculateChlorineTarget',
-    summary: 'Target free chlorine for a shock',
-    description:
-      'Computes the free chlorine (FC) level to aim for, taking the highest of three candidates: the SLAM target (a ratio of the CYA level, scaled by how bad the water looks), breakpoint chlorination (a multiple of combined chlorine), and a per-water-condition floor. When CYA is unknown the target is returned as a min-max range instead of a single value.',
     schema: chlorineTargetInputSchema,
     requestExample: {
       cya: { known: true, ppm: 40 },
       colorLevel: 'light_green',
       combinedCC: 0.8,
     },
-    responseDescription:
-      'The winning target plus each candidate that was considered, and any warnings raised (for example a CYA level high enough that dilution is advised).',
     responseExample: {
       slamTarget: 16,
       breakpointTarget: 8,
@@ -76,16 +80,12 @@ export const API_ENDPOINTS: ApiEndpoint[] = [
   {
     slug: 'chlorine-dose',
     operationId: 'calculateChlorineDose',
-    summary: 'Grams of pure chlorine needed',
-    description:
-      'Converts the gap between the target and current free chlorine into grams of pure available chlorine for a given water volume. Ranges propagate: an unknown current FC produces a range instead of a single figure.',
     schema: chlorineDoseInputSchema,
     requestExample: {
       volume: { value: 32000, unit: 'L' },
       targetFC: { isRange: false, value: 16, unit: 'ppm' },
       currentFC: { known: true, freeFC: 2 },
     },
-    responseDescription: 'The FC gap to close and the corresponding mass of pure available chlorine.',
     responseExample: {
       gap: { isRange: false, value: 14, unit: 'ppm' },
       pureChlorine: { isRange: false, value: 448, unit: 'g' },
@@ -95,9 +95,6 @@ export const API_ENDPOINTS: ApiEndpoint[] = [
   {
     slug: 'product-conversion',
     operationId: 'calculateProductConversion',
-    summary: 'Convert pure chlorine into a real product amount',
-    description:
-      'Turns a mass of pure available chlorine into how much of an actual product to add, given its concentration, and reports the side effects that product has on the water (calcium hardness, salt, pH direction).',
     schema: productConversionInputSchema,
     requestExample: {
       pureChlorineG: { isRange: false, value: 448, unit: 'g' },
@@ -105,7 +102,6 @@ export const API_ENDPOINTS: ApiEndpoint[] = [
       concentrationPct: 65,
       deltaFC: { isRange: false, value: 14, unit: 'ppm' },
     },
-    responseDescription: 'The amount of product to add, in the unit appropriate to its physical form, plus its side effects.',
     responseExample: {
       amount: { isRange: false, value: 689, unit: 'g' },
       sideEffects: { cyaAddedPpm: 0, hardnessAddedPpm: 9.8, saltAddedPpm: 0, pHEffect: 'up' },
@@ -114,23 +110,16 @@ export const API_ENDPOINTS: ApiEndpoint[] = [
   {
     slug: 'pool-volume',
     operationId: 'calculatePoolVolume',
-    summary: 'Pool water volume from shape and dimensions',
-    description:
-      'Computes water volume for a rectangular or round pool. The accepted dimensions depend on the shape: a rectangle takes length, width and depth, a circle takes diameter and depth. Use the average depth, not the maximum, or the volume will be overestimated.',
     schema: poolVolumeInputSchema,
     requestExample: {
       shape: 'rectangle',
       dimensions: { length: 8, width: 4, depth: 1.5, unit: 'm' },
     },
-    responseDescription: 'The same volume expressed in liters, cubic meters and US gallons.',
     responseExample: { volumeL: 48000, volumeM3: 48, volumeGal: 12681 },
   },
   {
     slug: 'shock',
     operationId: 'calculateShock',
-    summary: 'Full shock calculation (orchestrator)',
-    description:
-      'Runs chlorine-target, chlorine-dose and product-conversion in a single call and returns a numeric breakdown of every intermediate step. This is what the Shock Calculator UI uses. Answering "unknown" for CYA or current chlorine is supported and turns the result into a range.',
     schema: shockInputSchema,
     requestExample: {
       volume: { value: 32000, unit: 'L' },
@@ -139,8 +128,6 @@ export const API_ENDPOINTS: ApiEndpoint[] = [
       chlorine: { known: true, freeFC: 2, combinedCC: 0.8 },
       product: { id: 'calcium_hypochlorite', concentrationPct: 65 },
     },
-    responseDescription:
-      'The target, dose and product results together, plus a breakdown of every value used to reach them and any warnings. When the water needs no shock, isNoShockNeeded is true and the dose and product fields are null.',
     responseExample: {
       isNoShockNeeded: false,
       target: { winningStrategy: 'slam', targetFC: { isRange: false, value: 16, unit: 'ppm' } },
@@ -152,16 +139,11 @@ export const API_ENDPOINTS: ApiEndpoint[] = [
   {
     slug: 'chlorine',
     operationId: 'compareChlorineProducts',
-    summary: 'Compare the real cost of two chlorine products',
-    description:
-      'Compares calcium hypochlorite (sold by weight) against sodium hypochlorite (sold by volume or weight) on cost per kilogram of ACTIVE chlorine, which is the only fair basis for comparison. Zero values are accepted and simply mark that side as incomplete rather than being an error.',
     schema: chlorineComparisonInputSchema,
     requestExample: {
       calciumInput: { price: 50, weight: 10, concentration: 65 },
       sodiumInput: { price: 20, quantity: 20, unit: 'l', density: 1.2, concentration: 14 },
     },
-    responseDescription:
-      'Per-product metrics (gross mass, active chlorine mass, cost per active kg) and the winner. When either side is incomplete, winner is null.',
     responseExample: {
       winner: 'SODIUM',
       savingsPerKg: 1.75,
@@ -187,11 +169,13 @@ export function buildOpenApiDocument(): OpenApiDocument {
   const paths: Record<string, unknown> = {};
 
   for (const endpoint of API_ENDPOINTS) {
+    const { summary, description, responseDescription } = prose(endpoint.slug);
+
     paths[endpointPath(endpoint)] = {
       post: {
         operationId: endpoint.operationId,
-        summary: endpoint.summary,
-        description: endpoint.description,
+        summary,
+        description,
         tags: ['calculate'],
         requestBody: {
           required: true,
@@ -204,7 +188,7 @@ export function buildOpenApiDocument(): OpenApiDocument {
         },
         responses: {
           '200': {
-            description: endpoint.responseDescription,
+            description: responseDescription,
             content: { 'application/json': { example: endpoint.responseExample } },
           },
           '400': {
@@ -243,7 +227,7 @@ export function buildOpenApiDocument(): OpenApiDocument {
       license: { name: 'Source available', url: 'https://github.com/MagriAndrea/pool-helper' },
     },
     servers: [
-      { url: 'https://pool-helper-mu.vercel.app', description: 'Production' },
+      { url: 'https://pool-helper-me.vercel.app', description: 'Production' },
       { url: 'http://localhost:3000', description: 'Local development' },
     ],
     tags: [

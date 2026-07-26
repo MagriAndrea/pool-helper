@@ -7,7 +7,7 @@ const CLEANING_BASE = 'sections.cleaning';
 const ACTIONS_BASE = 'sections.actions';
 
 const chemistrySubsections = [
-  { key: 'alkalinity', paragraphs: ['p1'] },
+  { key: 'alkalinity', paragraphs: ['p1', 'p2'] },
   { key: 'ph', paragraphs: ['p1', 'p2'] },
   { key: 'chlorine', paragraphs: ['p1'] },
   { key: 'chlorineStabilized', paragraphs: ['p1'] },
