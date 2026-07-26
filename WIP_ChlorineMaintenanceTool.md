@@ -94,3 +94,35 @@ Phase C — Tool:
 - All new numbers live in `constants.ts` with inline citations; calculator stays i18n-free; tests green.
 - Endpoint documented automatically in `/docs/api`; both locales complete; salt-water scope note present.
 - When done: archive this WIP to `changelog/YYYY-MM-DD_ChlorineMaintenanceTool.md`.
+
+## 6. Phase A Research (in progress)
+
+> Working notes. Each question is answered and committed individually, in order, so partial progress survives a session cutoff. All candidate numbers from section 2 are treated as unverified until a question below confirms or corrects them.
+
+### Q1 — Maintenance FC target as a function of CYA
+
+*(pending)*
+
+### Q2 — CYA added per ppm of FC (trichlor / dichlor)
+
+*(pending)*
+
+### Q3 — Typical daily FC consumption (projection driver)
+
+*(pending)*
+
+### Q4 — CYA ranges reconciliation (ideal vs `CYA_UNKNOWN_RANGE` vs `CYA_HIGH_THRESHOLD`)
+
+*(pending)*
+
+### Q5 — Verify live disclaimer claim: salt-water CYA "70-80 ppm"
+
+*(pending)*
+
+### Q6 — Chlorine lock: real mechanism or misnomer?
+
+*(pending)*
+
+### Open questions for the owner
+
+*(pending — filled in after all questions above are answered)*
