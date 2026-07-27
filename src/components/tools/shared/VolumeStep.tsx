@@ -6,18 +6,25 @@ import { convertVolume } from '@/lib/calculator';
 import type { Unit } from '@/lib/calculator';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { StepCard } from './shared/StepCard';
-import { NumberInput } from './shared/NumberInput';
-import type { ShockVolume } from '@/hooks/use-shock-calculator';
+import { StepCard } from '../shock/shared/StepCard';
+import { NumberInput } from '../shock/shared/NumberInput';
+import type { VolumeInput } from '@/lib/calculator';
 
 interface VolumeStepProps {
-  value: ShockVolume | null;
-  onChange: (value: ShockVolume | null) => void;
+  value: VolumeInput | null;
+  onChange: (value: VolumeInput | null) => void;
   onOpenModal: () => void;
+  /** Step number in the host tool's flow. */
+  num?: number;
 }
 
-export function VolumeStep({ value, onChange, onOpenModal }: VolumeStepProps) {
-  const t = useTranslations('Tools.Shock.Volume');
+/**
+ * "How much water is in the pool?" — shared by every tool that needs a volume,
+ * so the unit toggle, the conversion and the escape hatch to the volume
+ * calculator behave identically everywhere.
+ */
+export function VolumeStep({ value, onChange, onOpenModal, num = 1 }: VolumeStepProps) {
+  const t = useTranslations('Tools.Volume');
   const unit: Unit = value?.unit ?? 'L';
 
   const setUnit = (next: Unit) => {
@@ -34,11 +41,11 @@ export function VolumeStep({ value, onChange, onOpenModal }: VolumeStepProps) {
   };
 
   return (
-    <StepCard num={1} title={t('title')}>
+    <StepCard num={num} title={t('title')}>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
         <div className="flex-1">
           <NumberInput
-            id="shock-volume"
+            id="volume-step"
             label={t('label')}
             placeholder={t('placeholder')}
             value={value?.value ?? null}

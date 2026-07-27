@@ -18,7 +18,7 @@ interface VolumeModalProps {
  * the Shock Step 1 field and closes the modal. Closes via X, Esc and backdrop.
  */
 export function VolumeModal({ open, onOpenChange, onApply }: VolumeModalProps) {
-  const t = useTranslations('Tools.Shock.Volume');
+  const t = useTranslations('Tools.Volume');
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>

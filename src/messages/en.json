@@ -153,6 +153,20 @@
         "dichlor": "Dichlor (stabilized granules)"
     },
     "Tools": {
+        "Volume": {
+            "title": "How much water is in your pool?",
+            "label": "Water volume",
+            "placeholder": "e.g. 32000",
+            "unitLabel": "Unit",
+            "liters": "Liters",
+            "gallons": "Gallons",
+            "litersHint": "or m³ × 1000 (e.g. 32 m³ = 32,000 L)",
+            "helpText": "Don't know how many liters your pool holds?",
+            "calculateButton": "Calculate volume",
+            "modalTitle": "Calculate pool volume",
+            "modalPlaceholder": "Volume calculator — coming soon",
+            "modalClose": "Close"
+        },
         "ChlorineComparison": {
             "title": "Chlorine Comparison",
             "description": "Find out which chlorine is better value.",
@@ -267,20 +281,6 @@
                 "phLink": "Learn how to balance the pH",
                 "callToAction": "Fill in the fields below and we'll walk you through each step. 👇",
                 "revealHint": "— steps appear as you fill them in —"
-            },
-            "Volume": {
-                "title": "How much water is in your pool?",
-                "label": "Water volume",
-                "placeholder": "e.g. 32000",
-                "unitLabel": "Unit",
-                "liters": "Liters",
-                "gallons": "Gallons",
-                "litersHint": "or m³ × 1000 (e.g. 32 m³ = 32,000 L)",
-                "helpText": "Don't know how many liters your pool holds?",
-                "calculateButton": "Calculate volume",
-                "modalTitle": "Calculate pool volume",
-                "modalPlaceholder": "Volume calculator — coming soon",
-                "modalClose": "Close"
             },
             "Color": {
                 "title": "What does your water look like?",
@@ -513,11 +513,6 @@
             "reset": "Clear everything",
             "saltWaterNote": "These figures are for pools chlorinated by hand (tablets, granules, liquid). Salt-water pools with a chlorine generator work to a different stabilizer range and are outside the scope of this tool.",
             "Steps": {
-                "volume": {
-                    "title": "How much water is in the pool?",
-                    "subtitle": "If you already worked this out in another tool, it's filled in for you.",
-                    "placeholder": "Ex. 50000"
-                },
                 "cya": {
                     "title": "What is your stabilizer (CYA) level?",
                     "subtitle": "This single number decides how much chlorine your pool needs.",
@@ -544,17 +539,18 @@
                     "title": "How much chlorine does the pool use per day?",
                     "subtitle": "This drives the stabilizer projection.",
                     "unit": "ppm/day",
-                    "howTo": "Typical summer pools use {min} to {max} ppm a day, and you can measure yours: test free chlorine, add nothing for 24 hours, test again. The difference is your real daily demand, which beats any average."
+                    "howTo": "Typical summer pools use {min} to {max} ppm a day, and you can measure yours: test free chlorine, add nothing for 24 hours, test again. The difference is your real daily demand."
                 }
             },
             "Result": {
-                "prompt": "Fill in the pool volume and your stabilizer level to see your target.",
                 "kicker": "Keep free chlorine at",
-                "neverBelow": "Never let it drop below {min} ppm, that's where algae starts winning.",
+                "neverBelow": "Never let it drop below {min} ppm.",
                 "floorNote": "At your stabilizer level the ratio alone would ask for less than this, but a lower target is impractical to test and hold, so the floor applies.",
                 "atTarget": "Your chlorine is already at target. Add nothing today.",
                 "doseKicker": "Add today",
-                "doseAddsCya": "Careful: this dose also adds {cya} ppm of stabilizer."
+                "doseAddsCya": "Careful: this dose also adds {cya} ppm of stabilizer.",
+                "title": "What to do",
+                "doseLine": "Add {amount} {unit} of {product}"
             },
             "Warnings": {
                 "CYA_LOCK_RISK": "You are still dosing a stabilized product into a pool whose stabilizer is already too high. Every dose makes the problem worse. Switch to an unstabilized chlorine (liquid or calcium hypochlorite) until the level comes down.",
@@ -636,6 +632,24 @@
                     "title": "Sources",
                     "p1": "Every figure on this page comes from these, read directly rather than quoted second-hand:"
                 }
+            },
+            "revealHint": "One question at a time. The next appears when you answer.",
+            "Units": {
+                "g": "g",
+                "kg": "kg",
+                "mL": "mL",
+                "L": "L"
+            },
+            "Breakdown": {
+                "title": "How this was worked out",
+                "min": "minimum = {pct}% of {cya} ppm stabilizer, floored at {floor} ppm = {result} ppm",
+                "target": "target = {pct}% of {cya} ppm stabilizer = {result} ppm",
+                "cyaAssumed": "stabilizer unknown, so the target is a range across typical pools from {min} ppm upward = {target} ppm",
+                "gap": "gap = {target} target - {current} current = {gap} ppm",
+                "gapAssumed": "current chlorine unknown, so the gap is a range up to the {target} ppm target = {gap} ppm",
+                "pure": "pure chlorine = {volume} L x {gap} ppm / 1000 = {pure} g",
+                "product": "product = {pure} g / the concentration you entered = {amount} {unit}",
+                "note": "Every number above comes from the values you typed. Nothing here is hidden or rounded behind the scenes."
             }
         }
     },

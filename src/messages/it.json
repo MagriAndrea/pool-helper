@@ -153,6 +153,20 @@
         "dichlor": "Dicloro (granuli stabilizzati)"
     },
     "Tools": {
+        "Volume": {
+            "title": "Quanta acqua ha la tua piscina?",
+            "label": "Volume dell'acqua",
+            "placeholder": "es. 32000",
+            "unitLabel": "Unità",
+            "liters": "Litri",
+            "gallons": "Galloni",
+            "litersHint": "oppure m³ × 1000 (es. 32 m³ = 32.000 L)",
+            "helpText": "Non sai quanti litri ha la tua piscina?",
+            "calculateButton": "Calcola il volume",
+            "modalTitle": "Calcola il volume della piscina",
+            "modalPlaceholder": "Strumento calcolo volume, in arrivo",
+            "modalClose": "Chiudi"
+        },
         "ChlorineComparison": {
             "title": "Confronto Clori",
             "description": "Scopri quale cloro conviene acquistare.",
@@ -267,20 +281,6 @@
                 "phLink": "Scopri come bilanciare il pH",
                 "callToAction": "Inserisci i dati qui sotto e ti accompagniamo passo dopo passo. 👇",
                 "revealHint": "gli step si rivelano man mano che compili"
-            },
-            "Volume": {
-                "title": "Quanta acqua ha la tua piscina?",
-                "label": "Volume dell'acqua",
-                "placeholder": "es. 32000",
-                "unitLabel": "Unità",
-                "liters": "Litri",
-                "gallons": "Galloni",
-                "litersHint": "oppure m³ × 1000 (es. 32 m³ = 32.000 L)",
-                "helpText": "Non sai quanti litri ha la tua piscina?",
-                "calculateButton": "Calcola il volume",
-                "modalTitle": "Calcola il volume della piscina",
-                "modalPlaceholder": "Strumento calcolo volume, in arrivo",
-                "modalClose": "Chiudi"
             },
             "Color": {
                 "title": "Di che colore è la tua acqua?",
@@ -513,11 +513,6 @@
             "reset": "Pulisci tutto",
             "saltWaterNote": "Questi valori valgono per piscine clorate a mano (pastiglie, granuli, liquido). Le piscine con elettrolisi salina lavorano su un range di stabilizzante diverso e non rientrano in questo strumento.",
             "Steps": {
-                "volume": {
-                    "title": "Quanta acqua c'è nella piscina?",
-                    "subtitle": "Se lo hai già calcolato in un altro strumento, lo trovi qui compilato.",
-                    "placeholder": "Es. 50000"
-                },
                 "cya": {
                     "title": "Qual è il tuo livello di stabilizzante (CYA)?",
                     "subtitle": "È questo singolo numero a decidere quanto cloro serve alla tua piscina.",
@@ -544,17 +539,18 @@
                     "title": "Quanto cloro consuma la piscina al giorno?",
                     "subtitle": "È il dato che guida la proiezione dello stabilizzante.",
                     "unit": "ppm/giorno",
-                    "howTo": "Una piscina d'estate consuma tipicamente da {min} a {max} ppm al giorno, ma il tuo puoi misurarlo: misura il cloro libero, non aggiungere nulla per 24 ore, rimisura. La differenza è il tuo consumo reale, e vale più di qualunque media."
+                    "howTo": "Una piscina d'estate consuma tipicamente da {min} a {max} ppm al giorno, ma il tuo puoi misurarlo: misura il cloro libero, non aggiungere nulla per 24 ore, rimisura. La differenza è il tuo consumo reale."
                 }
             },
             "Result": {
-                "prompt": "Inserisci il volume della piscina e il livello di stabilizzante per vedere il tuo obiettivo.",
                 "kicker": "Tieni il cloro libero a",
-                "neverBelow": "Non farlo mai scendere sotto {min} ppm, è lì che le alghe cominciano a vincere.",
+                "neverBelow": "Non farlo mai scendere sotto {min} ppm.",
                 "floorNote": "Con il tuo livello di stabilizzante la percentuale da sola chiederebbe meno di così, ma un obiettivo più basso è difficile da misurare e da mantenere, quindi vale il minimo assoluto.",
                 "atTarget": "Il tuo cloro è già a livello. Oggi non aggiungere niente.",
                 "doseKicker": "Aggiungi oggi",
-                "doseAddsCya": "Attenzione: questa dose aggiunge anche {cya} ppm di stabilizzante."
+                "doseAddsCya": "Attenzione: questa dose aggiunge anche {cya} ppm di stabilizzante.",
+                "title": "Cosa fare",
+                "doseLine": "Aggiungi {amount} {unit} di {product}"
             },
             "Warnings": {
                 "CYA_LOCK_RISK": "Stai ancora dosando un prodotto stabilizzato in una piscina che di stabilizzante ne ha già troppo. Ogni dose peggiora la situazione. Passa a un cloro non stabilizzato (liquido o ipoclorito di calcio) finché il livello non scende.",
@@ -636,6 +632,24 @@
                     "title": "Fonti",
                     "p1": "Ogni valore di questa pagina viene da qui, letto direttamente e non citato di seconda mano:"
                 }
+            },
+            "revealHint": "Una domanda alla volta. La successiva compare quando rispondi.",
+            "Units": {
+                "g": "g",
+                "kg": "kg",
+                "mL": "mL",
+                "L": "L"
+            },
+            "Breakdown": {
+                "title": "Come è stato calcolato",
+                "min": "minimo = {pct}% di {cya} ppm di stabilizzante, non sotto {floor} ppm = {result} ppm",
+                "target": "obiettivo = {pct}% di {cya} ppm di stabilizzante = {result} ppm",
+                "cyaAssumed": "stabilizzante non noto, quindi l'obiettivo è una fascia sulle piscine tipiche da {min} ppm in su = {target} ppm",
+                "gap": "differenza = {target} obiettivo - {current} attuale = {gap} ppm",
+                "gapAssumed": "cloro attuale non noto, quindi la differenza è una fascia fino all'obiettivo di {target} ppm = {gap} ppm",
+                "pure": "cloro puro = {volume} L x {gap} ppm / 1000 = {pure} g",
+                "product": "prodotto = {pure} g / la concentrazione che hai inserito = {amount} {unit}",
+                "note": "Ogni numero qui sopra viene dai valori che hai inserito. Non c'è niente di nascosto o arrotondato dietro le quinte."
             }
         }
     },
