@@ -96,7 +96,7 @@ Phase 3 — API docs & README:
 - ✅ README rewrite
 - ✅ ARCHITECTURE.md (§4.5) + `src/lib/api/AGENTS.md` + `src/lib/AGENTS.md` updated
 - ✅ Verified: `tsc --noEmit` clean, lint adds nothing, i18n parity + no em/en dashes, 21 runtime schema cases and a generated-spec structural check all pass
-- ❌ Pending user review before merge
+- ✅ Reviewed and merged by the owner (PRs #6, #7, #8, #9, #10)
 
 **Design note for future work:** request bodies are documented with generated schemas; responses are documented with a description + realistic example rather than a hand-written schema. Restating the calculator's return types as Zod would duplicate `src/lib/calculator/types.ts` without buying validation (we never validate our own output) — i.e. it would reintroduce exactly the drift this module prevents. Revisit only if a real consumer needs machine-readable response contracts.
 
