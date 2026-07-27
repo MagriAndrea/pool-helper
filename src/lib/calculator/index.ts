@@ -19,8 +19,9 @@ export * from './pool-volume';
 export * from './maintenance-target';
 export * from './cya-projection';
 
-// Orchestrator
+// Orchestrators
 export * from './shock';
+export * from './chlorine-maintenance';
 
 // Product cost comparison
 export * from './chlorine-comparison';

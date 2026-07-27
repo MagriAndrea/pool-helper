@@ -1,5 +1,5 @@
 
-import { Beaker, BookOpen, FlaskConical, Droplets, ListChecks, Menu, Zap, Ruler, Info } from 'lucide-react';
+import { Beaker, BookOpen, FlaskConical, Droplets, Gauge, ListChecks, Menu, Zap, Ruler, Info } from 'lucide-react';
 
 export interface NavItem {
   href?: string;
@@ -26,6 +26,14 @@ export const navItems: NavItem[] = [
         descriptionKey: 'chlorineComparisonDesc',
         image: '/images/chlorine_comparison.png',
         icon: Beaker,
+      },
+      {
+        // No `image` on purpose: no asset exists for this tool yet, and a
+        // missing one renders as a broken background on the home grid.
+        href: '/tools/chlorine-maintenance',
+        labelKey: 'chlorineMaintenance',
+        descriptionKey: 'chlorineMaintenanceDesc',
+        icon: Gauge,
       },
       {
         href: '/tools/shock',

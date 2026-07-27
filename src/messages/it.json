@@ -30,7 +30,9 @@
         "cleaningDesc": "Filtri, detriti e igiene ordinaria della piscina.",
         "actions": "Azioni",
         "actionsDesc": "Shock, pulizia filtri e procedure stagionali.",
-        "about": "Progetto"
+        "about": "Progetto",
+        "chlorineMaintenance": "Mantenimento Cloro",
+        "chlorineMaintenanceDesc": "Tieni il cloro dove deve stare e scopri dove sta andando il tuo stabilizzante."
     },
     "Guide": {
         "eyebrow": "Manuale del proprietario",
@@ -504,6 +506,137 @@
         "Info": {
             "back": "Torna allo strumento",
             "buttonLabel": "Come funziona"
+        },
+        "ChlorineMaintenance": {
+            "title": "Mantenimento Cloro",
+            "description": "Quanto cloro tenere ogni giorno, e cosa sta facendo il tuo prodotto allo stabilizzante.",
+            "reset": "Pulisci tutto",
+            "saltWaterNote": "Questi valori valgono per piscine clorate a mano (pastiglie, granuli, liquido). Le piscine con elettrolisi salina lavorano su un range di stabilizzante diverso e non rientrano in questo strumento.",
+            "Steps": {
+                "volume": {
+                    "title": "Quanta acqua c'è nella piscina?",
+                    "subtitle": "Se lo hai già calcolato in un altro strumento, lo trovi qui compilato.",
+                    "placeholder": "Es. 50000"
+                },
+                "cya": {
+                    "title": "Qual è il tuo livello di stabilizzante (CYA)?",
+                    "subtitle": "È questo singolo numero a decidere quanto cloro serve alla tua piscina.",
+                    "known": "Lo conosco",
+                    "unknown": "Non lo so",
+                    "placeholder": "Es. 40",
+                    "unknownNote": "Nessun problema. Otterrai una fascia invece di un numero solo, calcolata sui livelli in cui si trova una piscina tipica. La proiezione dello stabilizzante però ha bisogno di un valore misurato, quindi resta spenta finché non ce l'hai."
+                },
+                "product": {
+                    "title": "Che prodotto usi tutti i giorni?",
+                    "subtitle": "Non quello con cui fai lo shock, quello che dosi di routine.",
+                    "concentration": "Concentrazione in etichetta",
+                    "density": "Densità (facoltativa)"
+                },
+                "fc": {
+                    "title": "Quanto cloro libero c'è adesso?",
+                    "subtitle": "Serve per dirti quanto aggiungere oggi.",
+                    "known": "Lo conosco",
+                    "unknown": "Non lo so",
+                    "placeholder": "Es. 2",
+                    "unknownNote": "Va bene lo stesso. La dose viene calcolata su una fascia di punti di partenza plausibili, quindi prendila come indicazione e misura appena puoi."
+                },
+                "demand": {
+                    "title": "Quanto cloro consuma la piscina al giorno?",
+                    "subtitle": "È il dato che guida la proiezione dello stabilizzante.",
+                    "unit": "ppm/giorno",
+                    "howTo": "Una piscina d'estate consuma tipicamente da {min} a {max} ppm al giorno, ma il tuo puoi misurarlo: misura il cloro libero, non aggiungere nulla per 24 ore, rimisura. La differenza è il tuo consumo reale, e vale più di qualunque media."
+                }
+            },
+            "Result": {
+                "prompt": "Inserisci il volume della piscina e il livello di stabilizzante per vedere il tuo obiettivo.",
+                "kicker": "Tieni il cloro libero a",
+                "neverBelow": "Non farlo mai scendere sotto {min} ppm, è lì che le alghe cominciano a vincere.",
+                "floorNote": "Con il tuo livello di stabilizzante la percentuale da sola chiederebbe meno di così, ma un obiettivo più basso è difficile da misurare e da mantenere, quindi vale il minimo assoluto.",
+                "atTarget": "Il tuo cloro è già a livello. Oggi non aggiungere niente.",
+                "doseKicker": "Aggiungi oggi",
+                "doseAddsCya": "Attenzione: questa dose aggiunge anche {cya} ppm di stabilizzante."
+            },
+            "Warnings": {
+                "CYA_LOCK_RISK": "Stai ancora dosando un prodotto stabilizzato in una piscina che di stabilizzante ne ha già troppo. Ogni dose peggiora la situazione. Passa a un cloro non stabilizzato (liquido o ipoclorito di calcio) finché il livello non scende.",
+                "CYA_HIGH": "Il tuo stabilizzante è pari o superiore a {cyaHigh} ppm. A questo livello il cloro fa fatica qualunque cosa tu faccia, e l'indicazione standard è sostituire una parte dell'acqua con acqua fresca, perché non c'è altro modo per abbassarlo.",
+                "CYA_ABOVE_IDEAL": "Il tuo stabilizzante ha superato il tetto ideale di {idealMax} ppm. Non è ancora rotto niente, ma da qui in avanti serve sempre più cloro per lo stesso risultato, e si scende solo diluendo.",
+                "CYA_UNKNOWN_ASSUMED": "Questi numeri danno per assunto un livello di stabilizzante, perché il tuo non lo conosci. Misuralo: è l'unica misura che decide tutto il resto di questa pagina.",
+                "LOW_DOSE": "La quantità è così piccola che è difficile pesarla con precisione. Valuta di dosare per due o tre giorni insieme."
+            },
+            "Projection": {
+                "title": "Dove sta andando il tuo stabilizzante",
+                "needsCya": "Questa proiezione ha bisogno di un livello di stabilizzante misurato da cui partire. Indovinare il punto di partenza trasformerebbe una stima in un conto alla rovescia, che sarebbe peggio che non dire niente.",
+                "trend": {
+                    "rising": "Il tuo stabilizzante sta salendo, perché il prodotto che usi lo porta dentro a ogni dose.",
+                    "stable": "Il tuo stabilizzante è fermo: quello che il prodotto aggiunge e quello che il sole distrugge si compensano.",
+                    "falling": "Il tuo stabilizzante sta scendendo lentamente. Il prodotto che usi non ne aggiunge, e il sole ne distrugge un po' ogni mese."
+                },
+                "weeksToCeiling": "A questo ritmo superi i {ceiling} ppm in circa {weeks} settimane.",
+                "noCeiling": "A questo ritmo non stai uscendo dal range, quindi non c'è nessuna data da darti.",
+                "breakdownTitle": "Come viene calcolato",
+                "breakdownAdded": "il prodotto aggiunge {added} ppm a settimana",
+                "breakdownDegraded": "il sole ne distrugge {degraded} ppm a settimana ({monthly} ppm/mese)",
+                "breakdownNet": "saldo {net} ppm a settimana",
+                "headerWeek": "Settimana",
+                "headerCya": "Stabilizzante",
+                "weekLabel": "Settimana {week}",
+                "assumption": "È una stima lineare basata sul consumo giornaliero che hai inserito. Non tiene conto del fatto che uno stabilizzante più alto riduce lentamente il consumo di cloro, quindi prendila come una direzione, non come una data da segnare sul calendario."
+            },
+            "Info": {
+                "title": "Come funzionano i numeri del mantenimento",
+                "subtitle": "Perché non esiste un livello di cloro giusto per tutti.",
+                "overview": {
+                    "title": "Panoramica",
+                    "p1": "Non esiste una quantità di cloro corretta in assoluto. Il livello giusto dipende interamente dal tuo stabilizzante (acido cianurico), perché lo stabilizzante tiene il cloro in riserva e ne lascia attiva solo una piccola parte in ogni istante. Più stabilizzante hai, più cloro totale ti serve per ritrovarti con la stessa quantità realmente al lavoro.",
+                    "p2": "Questo strumento risponde alla domanda di tutti i giorni. Il calcolatore shock ne risponde un'altra: quanto spingere il cloro una volta sola, per recuperare una piscina che è già andata storta."
+                },
+                "ratio": {
+                    "title": "I due numeri",
+                    "p1": "TroubleFreePool pubblica tutta la scala del cloro come percentuali del livello di stabilizzante. Questo strumento ne usa due: il minimo sotto cui non devi scendere e l'obiettivo a cui puntare, così una giornata di caldo o un weekend affollato non ti fanno finire sotto.",
+                    "formulaMin": "cloro minimo = {pct} dello stabilizzante, e mai sotto {floor} ppm",
+                    "formulaTarget": "cloro obiettivo = {pct} dello stabilizzante",
+                    "p2": "Il minimo di {floor} ppm conta quando lo stabilizzante è basso, dove la sola percentuale chiederebbe una quantità troppo piccola da misurare e da mantenere. Anche la tabella pubblicata smette di seguire la percentuale nello stesso punto."
+                },
+                "classicRule": {
+                    "title": "Perché \"1-3 ppm\" è sbagliato",
+                    "p1": "Quasi tutti i negozi e i volantini danno una fascia fissa di 1-3 ppm di cloro libero. Quel consiglio ignora completamente lo stabilizzante, ed è il motivo più comune per cui una piscina diventa verde mentre il test mostra ancora cloro.",
+                    "p2": "È all'incirca giusto per una piscina nella parte bassa del range ideale di stabilizzante, e diventa pericolosamente basso man mano che lo stabilizzante sale: a {cyaHigh} ppm di stabilizzante il minimo reale è il {pct} di quel valore, ben più del doppio del limite superiore del consiglio classico. Il numero sulla tua striscia non è cambiato. È cambiato cosa significa."
+                },
+                "lock": {
+                    "title": "\"Blocco del cloro\": un nome fuorviante per un problema vero",
+                    "p1": "Sentirai dire che troppo stabilizzante \"blocca\" il cloro, intrappolandolo e impedendogli di lavorare. Preso alla lettera è un mito, e vale la pena sapere perché, dato che il mito porta alla soluzione sbagliata.",
+                    "p2": "Cloro e stabilizzante stanno in un equilibrio continuo e reversibile. Lo stabilizzante funziona da serbatoio: tiene la maggior parte del cloro parcheggiata e la rilascia man mano che la parte attiva si consuma. Non c'è niente di intrappolato. Quello che cambia è la proporzione: più stabilizzante c'è nell'acqua, più piccola è la quota di cloro attiva in ogni istante. Il tuo test misura comunque il totale, quindi il valore sembra sano mentre la piscina è di fatto poco clorata.",
+                    "p3": "È anche una cosa diversa dalla \"richiesta di cloro\", dove alghe e materia organica consumano il cloro alla stessa velocità con cui lo aggiungi. I due problemi hanno lo stesso soprannome e cure opposte: l'eccesso di stabilizzante si risolve diluendo l'acqua, la richiesta di cloro aggiungendone di più. Confonderli fa perdere una stagione."
+                },
+                "stabilized": {
+                    "title": "Prodotti stabilizzati: comodi, e cumulativi",
+                    "p1": "Le pastiglie di tricloro e i granuli di dicloro contengono cloro e stabilizzante insieme. Ogni ppm di cloro dal tricloro porta con sé {trichlor} ppm di stabilizzante, dal dicloro {dichlor} ppm. Non è un difetto, è il loro scopo: lo stabilizzante protegge il cloro dal sole.",
+                    "p2": "Il problema è che il cloro si consuma e lo stabilizzante no. Si accumula. La fascia ideale è {idealMin}-{idealMax} ppm; oltre i {cyaHigh} ppm l'indicazione standard è sostituire una parte dell'acqua, perché diluire è l'unico modo pratico per farlo scendere.",
+                    "p3": "Quindi si possono usare, e vale la pena tenerli d'occhio. Quello che frega non è una dose, è l'abitudine ripetuta per una stagione intera senza mai misurare lo stabilizzante. Ed è esattamente quello che questo strumento serve a rendere visibile."
+                },
+                "projection": {
+                    "title": "La proiezione, e cosa dà per assunto",
+                    "p1": "Se il tuo prodotto porta stabilizzante, la proiezione lo segue settimana per settimana. È il saldo di due cose: quello che il prodotto aggiunge e quello che il sole distrugge.",
+                    "formula": "variazione settimanale = cloro giornaliero × stabilizzante per ppm × 7 − perdita mensile × 7 ÷ 30",
+                    "p2": "Lo stabilizzante non è eterno, ma è testardo. Non viene distrutto dal sole direttamente: il sole scompone il cloro, e i frammenti liberati attaccano lo stabilizzante. Questo vale da {degMin} a {degMax} ppm al mese a seconda di quanto la piscina è esposta. Questo strumento assume il valore basso, {degUsed} ppm al mese, così avvisa in anticipo invece che in ritardo.",
+                    "p3": "Non contare su quella perdita per salvarti. Con il consumo giornaliero di default, il dicloro aggiunge circa {perMonth} ppm di stabilizzante al mese, molte volte più in fretta di quanto il sole ne tolga. È per questo che un problema di stabilizzante si costruisce in una stagione e ci si mettono anni ad accorgersene.",
+                    "p4": "Quando il tuo prodotto non aggiunge stabilizzante, il saldo va in negativo e non c'è nessuna data da proiettare. Lo strumento ti dice che il livello è stabile o in lenta discesa, che è la risposta onesta invece di una rassicurazione."
+                },
+                "demand": {
+                    "title": "Il consumo giornaliero di cloro",
+                    "p1": "Tutta la proiezione è proporzionale a quanto cloro consuma la tua piscina in un giorno. Una piscina d'estate ne consuma tipicamente da {min} a {max} ppm, soprattutto per il sole, poi per il caldo e per quante persone fanno il bagno. Lo strumento parte da {def} ppm al giorno.",
+                    "p2": "È un'assunzione, non una misura, e puoi sostituirla con una vera: misura il cloro libero, non aggiungere niente per 24 ore, rimisura. La differenza è il consumo reale della tua piscina, e rende più onesto ogni numero che ne dipende."
+                },
+                "limits": {
+                    "title": "Assunzioni e limiti",
+                    "p1": "Questi valori valgono per piscine clorate a mano. Le piscine con elettrolisi salina lavorano su un range di stabilizzante diverso e non rientrano in questo strumento. La proiezione è una retta: non tiene conto del fatto che uno stabilizzante più alto riduce lentamente il consumo giornaliero di cloro, quindi la realtà è di solito un po' più lenta di quanto dice la proiezione.",
+                    "p2": "Niente di tutto questo sostituisce l'analisi della tua acqua. L'unica misura che vale la pena fare per bene è lo stabilizzante: decide ogni altro numero di questa pagina, cambia lentamente, e la maggior parte delle persone non l'ha misurato nemmeno una volta."
+                },
+                "sources": {
+                    "title": "Fonti",
+                    "p1": "Ogni valore di questa pagina viene da qui, letto direttamente e non citato di seconda mano:"
+                }
+            }
         }
     },
     "ApiDocs": {
@@ -554,6 +687,11 @@
                 "summary": "Confronta il costo reale di due prodotti a base di cloro",
                 "description": "Confronta due qualunque prodotti a base di cloro sul costo per chilogrammo di cloro ATTIVO, l'unica base di confronto corretta. Ognuno dei due posti (slotA, slotB) porta il proprio productId, quindi i due lati possono contenere prodotti diversi oppure lo stesso prodotto. I prodotti venduti a volume (unit 'l') vengono convertiti in peso tramite la densità, con ricaduta sulla densità tipica del prodotto se omessa; un prodotto solido con prezzo al litro viene riportato come isValid: false invece di essere rifiutato. I valori a zero sono accettati e segnalano semplicemente che quel posto è incompleto, non sono un errore.",
                 "responseDescription": "Le metriche per posto (massa lorda, massa di cloro attivo, costo per kg attivo) e il posto vincente, 'A' o 'B' (oppure 'DRAW'). Il vincitore è identificato dal posto, non dal prodotto, così si possono confrontare due prodotti dello stesso tipo. Se uno dei due posti è incompleto, winner vale null."
+            },
+            "chlorine-maintenance": {
+                "summary": "Cloro di mantenimento, dose e dove sta andando il tuo stabilizzante",
+                "description": "Risponde alla domanda di tutti i giorni invece che a quella del recupero: dato il CYA, quanto cloro libero deve avere la piscina, quanto prodotto serve per arrivarci e, se il prodotto è stabilizzato (tricloro, dicloro), a che velocità si sta accumulando l'acido cianurico. Il minimo di FC è max(7,5% del CYA, 2 ppm) e l'obiettivo è l'11,5% del CYA, entrambi dalla tabella Cloro/CYA pubblicata da TroubleFreePool. La proiezione sottrae la degradazione solare, quindi con un prodotto non stabilizzato restituisce weeksToCeiling: null e un andamento in calo invece di una data. A differenza di /shock, qui i prodotti stabilizzati sono accettati: il dosaggio ordinario è proprio quello che questo endpoint misura.",
+                "responseDescription": "La fascia di FC da tenere, la dose per arrivarci (null se sei già a target), la quantità di prodotto con i suoi effetti collaterali e la proiezione del CYA settimana per settimana. projection vale null se il CYA non è noto, perché proiettare dalla fascia di ripiego trasformerebbe una stima in un conto alla rovescia."
             }
         }
     },

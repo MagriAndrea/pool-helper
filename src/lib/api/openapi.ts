@@ -28,6 +28,7 @@ import enMessages from '@/messages/en.json';
 import {
   chlorineComparisonInputSchema,
   chlorineDoseInputSchema,
+  chlorineMaintenanceInputSchema,
   chlorineTargetInputSchema,
   poolVolumeInputSchema,
   productConversionInputSchema,
@@ -134,6 +135,56 @@ export const API_ENDPOINTS: ApiEndpoint[] = [
       dose: { gap: { isRange: false, value: 14, unit: 'ppm' } },
       product: { amount: { isRange: false, value: 689, unit: 'g' } },
       warnings: ['CC_HIGH'],
+    },
+  },
+  {
+    slug: 'chlorine-maintenance',
+    operationId: 'calculateChlorineMaintenance',
+    schema: chlorineMaintenanceInputSchema,
+    requestExample: {
+      volume: { value: 50000, unit: 'L' },
+      cya: { known: true, ppm: 45 },
+      currentFC: { known: true, freeFC: 2 },
+      product: { id: 'dichlor', concentrationPct: 56 },
+      dailyFcPpm: 3,
+      projectionWeeks: 12,
+    },
+    responseExample: {
+      target: {
+        minFC: { isRange: false, value: 3.4, unit: 'ppm' },
+        targetFC: { isRange: false, value: 5.2, unit: 'ppm' },
+        floorApplied: false,
+        cyaUsed: 45,
+        warnings: [],
+      },
+      dose: {
+        gap: { isRange: false, value: 3.2, unit: 'ppm' },
+        pureChlorine: { isRange: false, value: 160, unit: 'g' },
+        warnings: [],
+      },
+      product: {
+        amount: { isRange: false, value: 286, unit: 'g' },
+        sideEffects: {
+          cyaAddedPpm: 2.88,
+          hardnessAddedPpm: 0,
+          saltAddedPpm: 0,
+          pHEffect: 'neutral',
+        },
+      },
+      projection: {
+        netPpmPerWeek: 18.4,
+        addedPpmPerWeek: 18.9,
+        degradedPpmPerWeek: 0.5,
+        weeksToCeiling: 0.3,
+        trend: 'rising',
+        points: [
+          { week: 0, cyaPpm: 45 },
+          { week: 1, cyaPpm: 63.4 },
+        ],
+        warnings: [],
+      },
+      isAtTarget: false,
+      warnings: ['CYA_ABOVE_IDEAL'],
     },
   },
   {
