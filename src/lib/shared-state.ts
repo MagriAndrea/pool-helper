@@ -22,6 +22,7 @@ export const TOOL_KEYS = {
   shock: 'ph_tool_shock',
   volume: 'ph_tool_volume',
   comparison: 'ph_tool_comparison',
+  maintenance: 'ph_tool_maintenance',
 } as const;
 
 /**

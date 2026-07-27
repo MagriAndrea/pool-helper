@@ -5,12 +5,12 @@ import { useTranslations } from 'next-intl';
 import { useShockCalculator } from '@/hooks/use-shock-calculator';
 import type { ShockState } from '@/hooks/use-shock-calculator';
 import { IntroStep } from '@/components/tools/shock/IntroStep';
-import { VolumeStep } from '@/components/tools/shock/VolumeStep';
+import { VolumeStep } from '@/components/tools/shared/VolumeStep';
 import { ColorStep } from '@/components/tools/shock/ColorStep';
 import { CyaStep } from '@/components/tools/shock/CyaStep';
 import { ChlorineStep } from '@/components/tools/shock/ChlorineStep';
 import { ResultStep } from '@/components/tools/shock/ResultStep';
-import { VolumeModal } from '@/components/tools/shock/VolumeModal';
+import { VolumeModal } from '@/components/tools/shared/VolumeModal';
 import { InfoButton } from '@/components/tools/shared/InfoButton';
 
 export default function ShockCalculatorPage() {

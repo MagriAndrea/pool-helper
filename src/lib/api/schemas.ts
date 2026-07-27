@@ -226,6 +226,34 @@ export const shockInputSchema = z.object({
 });
 
 // ---------------------------------------------------------------------------
+// chlorine-maintenance
+// ---------------------------------------------------------------------------
+
+/**
+ * `ChlorineMaintenanceInput`.
+ *
+ * `product.id` is the FULL `productIdSchema`, unlike the shock endpoint: routine
+ * dosing with trichlor or dichlor is exactly the habit this tool is built to
+ * measure, so refusing it here would refuse the question.
+ *
+ * `dailyFcPpm` is `.positive()`: a pool consuming 0 ppm/day does not exist, and
+ * the projection divides by the resulting rate. `projectionWeeks` is capped so a
+ * caller cannot ask for a million-row response.
+ */
+export const chlorineMaintenanceInputSchema = z.object({
+  volume: volumeInputSchema,
+  cya: cyaInputSchema,
+  currentFC: chlorineInputSchema,
+  product: z.object({
+    id: productIdSchema,
+    concentrationPct: z.number().positive().max(100),
+    densityKgL: z.number().positive().optional(),
+  }),
+  dailyFcPpm: z.number().positive().max(20),
+  projectionWeeks: z.number().int().positive().max(104),
+});
+
+// ---------------------------------------------------------------------------
 // chlorine-comparison
 // ---------------------------------------------------------------------------
 

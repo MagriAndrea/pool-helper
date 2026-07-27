@@ -52,6 +52,7 @@ current chlorine (→ FC 0–2 ppm). See `range.ts`.
 | `maintenance-target.ts` | Routine FC from CYA (7.5% floor, 11.5% target) + the two-tier CYA warnings | Primitive #4 |
 | `cya-projection.ts` | Where CYA is heading: accumulation − degradation, week by week | **See rules #10 and #11** |
 | `shock.ts` | Orchestrator (target→dose→product) | **Entry point for the shock tool** |
+| `chlorine-maintenance.ts` | Orchestrator (maintenance-target→dose→product, + projection) | **Entry point for the maintenance tool** |
 | `chlorine-comparison.ts` | Cost per kg of active chlorine, two generic A/B slots | **See rule #8 — slot-keyed, never product-keyed** |
 | `index.ts` | Barrel re-export | **`@/lib/calculator` resolves here** |
 | `__tests__/` | Vitest characterization suite | **Run `npx vitest run` before AND after any change here** |

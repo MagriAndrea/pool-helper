@@ -303,6 +303,54 @@ export interface CyaProjectionResult {
 }
 
 // ---------------------------------------------------------------------------
+// chlorine-maintenance (orchestrator)
+// ---------------------------------------------------------------------------
+
+export interface ChlorineMaintenanceInput {
+  volume: VolumeInput;
+  cya: CyaInput;
+  currentFC: ChlorineInput;
+  product: {
+    /** Any product, stabilized included — routine dosing is where they belong. */
+    id: ProductId;
+    concentrationPct: number;
+    densityKgL?: number;
+  };
+  /** Free chlorine the pool consumes per day (ppm). Drives the projection. */
+  dailyFcPpm: number;
+  /** How far ahead to project CYA. */
+  projectionWeeks: number;
+}
+
+/** Numbers for the always-visible "how we got here" panel. */
+export interface MaintenanceBreakdown {
+  volumeL: number;
+  cyaUsed: number | null;
+  cyaAssumed: boolean;
+  currentFC: number | null;
+  currentFCAssumed: boolean;
+  gap: RangeOrValue<'ppm'> | null;
+  pureChlorine: RangeOrValue<'g'> | null;
+  dailyFcPpm: number;
+}
+
+export interface ChlorineMaintenanceResult {
+  target: MaintenanceTargetResult;
+  /** null when free chlorine is already at or above target. */
+  dose: ChlorineDoseResult | null;
+  product: ProductConversionResult | null;
+  /**
+   * null when CYA is unknown. A projection needs a measured starting point —
+   * running it on the fallback range would invent a countdown out of a guess.
+   */
+  projection: CyaProjectionResult | null;
+  /** True when current FC already clears the target: nothing to add today. */
+  isAtTarget: boolean;
+  breakdown: MaintenanceBreakdown;
+  warnings: WarningCode[];
+}
+
+// ---------------------------------------------------------------------------
 // chlorine-comparison
 // ---------------------------------------------------------------------------
 

@@ -95,13 +95,22 @@ Phase B — Model: ✅ **COMPLETE**
 - **The comparison tool now offers trichlor and dichlor, and warns about them.** On cost per kilo of active chlorine trichlor at 90% wins almost every comparison; offering it without saying what it does to CYA would have made the tool actively harmful. The warning reads the coefficient straight from `PRODUCT_COEFFICIENTS`, so it cannot drift from the model.
 - Phase C should reuse `product-conversion` for the maintenance dose rather than writing a second conversion — it already handles all four products.
 
-Phase C — Tool:
-- ❌ `add-pool-tool` skill invoked, recipe followed end to end
-- ❌ API route + Zod schema + OpenAPI regenerated
-- ❌ Tool UI (target, dose, warnings, projection) + shared-state wiring
-- ❌ Info page + sources
-- ❌ Nav + image + i18n (en + it)
-- ❌ ARCHITECTURE.md / AGENTS.md updates
+Phase C — Tool: ✅ **COMPLETE**
+- ✅ `add-pool-tool` skill invoked and followed end to end. ⚠️ **The skill loaded from a stale worktree copy**, whose rule #6 still recommended `useLocalStorage` — a hook deleted in PR #12. The current version (always `useToolState`) was followed instead. Worth knowing for the next agent: the skill content is only as current as the worktree the harness resolves it from.
+- ✅ `chlorine-maintenance.ts` orchestrator (`maintenance-target → chlorine-dose → product-conversion`, plus `cya-projection`), mirroring `shock.ts`
+- ✅ API route + Zod schema + `API_ENDPOINTS` entry; OpenAPI regenerates from the schema. **`product.id` is the FULL product enum here, unlike `/shock`** — routine dosing with a stabilized product is the very habit this tool measures, so refusing it would refuse the question
+- ✅ Tool UI: 5 steps (volume, CYA, product, current FC, daily demand) reusing the shock tool's `StepCard` / `NumberInput` / `DontKnowToggle` / `ReassureNote`; results show the target band, today's dose, ordered warnings and the projection
+- ✅ Shared-state wiring via `TOOL_KEYS.maintenance` + `SHARED_KEYS` for volume/CYA/FC, so a value entered in another tool arrives filled in
+- ✅ Info page with the full reasoning and four primary sources, every number pulled from `constants.ts` so the page cannot drift from the engine
+- ✅ Nav entry (`Gauge` icon, no `image` — no asset exists and a missing one breaks the home grid), i18n en + it at parity, zero em dashes
+- ✅ ARCHITECTURE.md + `src/lib/calculator/AGENTS.md` updated
+- ✅ 25 new tests (175 total), `tsc` clean, lint unchanged, every `t()` key verified to resolve
+
+**Two design decisions worth carrying forward:**
+- **The projection returns `null` when CYA is unknown**, and the UI says why instead of hiding the section. Projecting from the 30-80 fallback range would dress a guess as a countdown, which is worse than no answer.
+- **The daily-demand field is editable and tells the user how to measure it** (test FC, wait 24 h, retest). It is the one assumption the whole projection scales on, so the tool makes it replaceable rather than authoritative.
+
+**Not verified by me**: anything visual. The five step cards, the projection table, the warning boxes, dark mode and mobile all need a human look.
 
 ## 5. Success Criteria
 

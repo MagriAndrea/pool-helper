@@ -30,7 +30,9 @@
         "cleaningDesc": "Filters, debris and routine pool hygiene.",
         "actions": "Actions",
         "actionsDesc": "Shock, filter cleaning and seasonal procedures.",
-        "about": "About"
+        "about": "About",
+        "chlorineMaintenance": "Chlorine Maintenance",
+        "chlorineMaintenanceDesc": "Keep chlorine where it should be, and see where your stabilizer is heading."
     },
     "Guide": {
         "eyebrow": "Pool Owner's Handbook",
@@ -151,6 +153,20 @@
         "dichlor": "Dichlor (stabilized granules)"
     },
     "Tools": {
+        "Volume": {
+            "title": "How much water is in your pool?",
+            "label": "Water volume",
+            "placeholder": "e.g. 32000",
+            "unitLabel": "Unit",
+            "liters": "Liters",
+            "gallons": "Gallons",
+            "litersHint": "or m³ × 1000 (e.g. 32 m³ = 32,000 L)",
+            "helpText": "Don't know how many liters your pool holds?",
+            "calculateButton": "Calculate volume",
+            "modalTitle": "Calculate pool volume",
+            "modalPlaceholder": "Volume calculator — coming soon",
+            "modalClose": "Close"
+        },
         "ChlorineComparison": {
             "title": "Chlorine Comparison",
             "description": "Find out which chlorine is better value.",
@@ -265,20 +281,6 @@
                 "phLink": "Learn how to balance the pH",
                 "callToAction": "Fill in the fields below and we'll walk you through each step. 👇",
                 "revealHint": "— steps appear as you fill them in —"
-            },
-            "Volume": {
-                "title": "How much water is in your pool?",
-                "label": "Water volume",
-                "placeholder": "e.g. 32000",
-                "unitLabel": "Unit",
-                "liters": "Liters",
-                "gallons": "Gallons",
-                "litersHint": "or m³ × 1000 (e.g. 32 m³ = 32,000 L)",
-                "helpText": "Don't know how many liters your pool holds?",
-                "calculateButton": "Calculate volume",
-                "modalTitle": "Calculate pool volume",
-                "modalPlaceholder": "Volume calculator — coming soon",
-                "modalClose": "Close"
             },
             "Color": {
                 "title": "What does your water look like?",
@@ -504,6 +506,151 @@
         "Info": {
             "back": "Back to the tool",
             "buttonLabel": "How it works"
+        },
+        "ChlorineMaintenance": {
+            "title": "Chlorine Maintenance",
+            "description": "How much chlorine to keep every day, and what your product is doing to your stabilizer.",
+            "reset": "Clear everything",
+            "saltWaterNote": "These figures are for pools chlorinated by hand (tablets, granules, liquid). Salt-water pools with a chlorine generator work to a different stabilizer range and are outside the scope of this tool.",
+            "Steps": {
+                "cya": {
+                    "title": "What is your stabilizer (CYA) level?",
+                    "subtitle": "This single number decides how much chlorine your pool needs.",
+                    "known": "I know it",
+                    "unknown": "I don't know",
+                    "placeholder": "Ex. 40",
+                    "unknownNote": "No problem. You'll get a range instead of one number, calculated across the levels a typical pool sits at. The stabilizer projection needs a measured value though, so it stays off until you have one."
+                },
+                "product": {
+                    "title": "Which product do you use day to day?",
+                    "subtitle": "Not what you shock with, what you dose routinely.",
+                    "concentration": "Concentration on the label",
+                    "density": "Density (optional)"
+                },
+                "fc": {
+                    "title": "How much free chlorine is in there now?",
+                    "subtitle": "So the tool can tell you what to add today.",
+                    "known": "I know it",
+                    "unknown": "I don't know",
+                    "placeholder": "Ex. 2",
+                    "unknownNote": "Fine. The dose is worked out for a range of plausible starting points, so treat it as a guide and test when you can."
+                },
+                "demand": {
+                    "title": "How much chlorine does the pool use per day?",
+                    "subtitle": "This drives the stabilizer projection.",
+                    "unit": "ppm/day",
+                    "howTo": "Typical summer pools use {min} to {max} ppm a day, and you can measure yours: test free chlorine, add nothing for 24 hours, test again. The difference is your real daily demand."
+                }
+            },
+            "Result": {
+                "kicker": "Keep free chlorine at",
+                "neverBelow": "Never let it drop below {min} ppm.",
+                "floorNote": "At your stabilizer level the ratio alone would ask for less than this, but a lower target is impractical to test and hold, so the floor applies.",
+                "atTarget": "Your chlorine is already at target. Add nothing today.",
+                "doseKicker": "Add today",
+                "doseAddsCya": "Careful: this dose also adds {cya} ppm of stabilizer.",
+                "title": "What to do",
+                "doseLine": "Add {amount} {unit} of {product}"
+            },
+            "Warnings": {
+                "CYA_LOCK_RISK": "You are still dosing a stabilized product into a pool whose stabilizer is already too high. Every dose makes the problem worse. Switch to an unstabilized chlorine (liquid or calcium hypochlorite) until the level comes down.",
+                "CYA_HIGH": "Your stabilizer is at or above {cyaHigh} ppm. At this level chlorine struggles whatever you do, and the standard advice is to replace part of the water with fresh, because nothing else lowers it.",
+                "CYA_ABOVE_IDEAL": "Your stabilizer is above the ideal ceiling of {idealMax} ppm. Nothing is broken yet, but from here you need more and more chlorine for the same result, and it only goes down by diluting.",
+                "CYA_UNKNOWN_ASSUMED": "These numbers assume a stabilizer level, because you don't know yours. Test it: it is the single measurement that decides everything else on this page.",
+                "LOW_DOSE": "The amount is so small it's hard to measure accurately. Consider dosing for two or three days at once instead."
+            },
+            "Projection": {
+                "title": "Where your stabilizer is heading",
+                "needsCya": "This projection needs a measured stabilizer level to start from. Guessing the starting point would turn an estimate into a countdown, which would be worse than saying nothing.",
+                "trend": {
+                    "rising": "Your stabilizer is climbing, because the product you use carries it in with every dose.",
+                    "stable": "Your stabilizer is holding steady: what the product adds and what sunlight destroys cancel out.",
+                    "falling": "Your stabilizer is slowly falling. The product you use adds none, and sunlight destroys a little each month."
+                },
+                "weeksToCeiling": "At this rate you cross {ceiling} ppm in about {weeks} weeks.",
+                "noCeiling": "At this rate you are not heading out of range, so there is no date to give you.",
+                "breakdownTitle": "How this is worked out",
+                "breakdownAdded": "the product adds {added} ppm per week",
+                "breakdownDegraded": "sunlight destroys {degraded} ppm per week ({monthly} ppm/month)",
+                "breakdownNet": "net {net} ppm per week",
+                "headerWeek": "Week",
+                "headerCya": "Stabilizer",
+                "weekLabel": "Week {week}",
+                "assumption": "A straight-line estimate based on the daily chlorine demand you entered. It ignores the fact that a higher stabilizer level slowly reduces daily chlorine loss, so treat it as a direction, not a date in the diary."
+            },
+            "Info": {
+                "title": "How the maintenance numbers work",
+                "subtitle": "Why there is no single right chlorine level.",
+                "overview": {
+                    "title": "Overview",
+                    "p1": "There is no universal correct amount of chlorine. The right level depends entirely on your stabilizer (cyanuric acid), because the stabilizer holds chlorine in reserve and keeps most of it inactive at any moment. The more stabilizer you have, the more total chlorine you need to end up with the same working amount.",
+                    "p2": "This tool answers the daily question. The shock calculator answers a different one: how far to push chlorine once, to recover a pool that has already gone wrong."
+                },
+                "ratio": {
+                    "title": "The two numbers",
+                    "p1": "TroubleFreePool publishes the whole chlorine ladder as percentages of the stabilizer level. This tool uses two of them: the minimum you must not go below, and the target you should aim for so that a hot day or a busy weekend doesn't push you under it.",
+                    "formulaMin": "minimum chlorine = {pct} of stabilizer, and never below {floor} ppm",
+                    "formulaTarget": "target chlorine = {pct} of stabilizer",
+                    "p2": "The {floor} ppm floor matters at low stabilizer levels, where the percentage alone would ask for an amount too small to test or hold reliably. The published table stops following the percentage down at the same point."
+                },
+                "classicRule": {
+                    "title": "Why \"1 to 3 ppm\" is wrong",
+                    "p1": "Almost every shop and leaflet gives a fixed range of 1 to 3 ppm of free chlorine. That advice ignores the stabilizer entirely, and it is the single most common reason a pool goes green while its test kit still shows chlorine.",
+                    "p2": "It happens to be roughly right for a pool at the low end of the ideal stabilizer range, and it becomes dangerously low as the stabilizer climbs: at {cyaHigh} ppm of stabilizer the real minimum is {pct} of that, well over double the top of the classic advice. The number on your test strip has not changed. What that number means has."
+                },
+                "lock": {
+                    "title": "\"Chlorine lock\": a misleading name for a real problem",
+                    "p1": "You will hear that too much stabilizer \"locks\" your chlorine, trapping it so it cannot work. Taken literally that is a myth, and it is worth knowing why, because the myth leads people to the wrong fix.",
+                    "p2": "Chlorine and stabilizer sit in a continuous, reversible balance. The stabilizer acts as a reservoir: it keeps most of the chlorine parked and releases it as the active form gets used up. Nothing is trapped. What changes is the proportion: the more stabilizer in the water, the smaller the share of your chlorine that is active at any instant. Your test kit still reports the total, so the reading looks healthy while the pool is effectively under-chlorinated.",
+                    "p3": "This is also different from \"chlorine demand\", where algae and organic matter eat chlorine as fast as you add it. The two get the same nickname and have opposite cures: over-stabilization is fixed by diluting the water, chlorine demand by adding more chlorine. Getting them the wrong way round wastes a season."
+                },
+                "stabilized": {
+                    "title": "Stabilized products: convenient, and cumulative",
+                    "p1": "Trichlor tablets and dichlor granules contain chlorine and stabilizer together. Every ppm of chlorine from trichlor brings {trichlor} ppm of stabilizer with it; from dichlor, {dichlor} ppm. That is not a defect, it is what they are for: the stabilizer protects the chlorine from sunlight.",
+                    "p2": "The catch is that the chlorine gets used up and the stabilizer does not. It accumulates. The ideal band is {idealMin} to {idealMax} ppm; past {cyaHigh} ppm the standard advice is to replace part of the water, because diluting is the only practical way to bring it down.",
+                    "p3": "So they are fine to use, and worth keeping an eye on. What catches people out is not one dose, it is a habit repeated across a season without ever measuring the stabilizer. That is exactly what this tool is here to make visible."
+                },
+                "projection": {
+                    "title": "The projection, and what it assumes",
+                    "p1": "If your product carries stabilizer, the projection follows it week by week. It is a balance of two things: what the product adds, and what sunlight destroys.",
+                    "formula": "weekly change = daily chlorine × stabilizer per ppm × 7 − monthly loss × 7 ÷ 30",
+                    "p2": "Stabilizer is not permanent, but it is stubborn. It is not destroyed by the sun directly: sunlight breaks chlorine down, and the fragments released attack the stabilizer. That accounts for {degMin} to {degMax} ppm a month depending on how exposed your pool is. This tool assumes the low end, {degUsed} ppm a month, so it warns early rather than late.",
+                    "p3": "Do not count on that loss to save you. At the default daily demand, dichlor adds around {perMonth} ppm of stabilizer a month, which is many times faster than sunlight removes it. This is why a stabilizer problem builds up over one season and takes years to notice.",
+                    "p4": "When your product adds no stabilizer at all, the balance goes negative and there is no date to project. The tool says your level is stable or slowly falling, which is the honest answer rather than a reassuring one."
+                },
+                "demand": {
+                    "title": "The daily chlorine demand",
+                    "p1": "Everything in the projection scales with how much chlorine your pool gets through in a day. Typical summer pools use {min} to {max} ppm, driven mostly by sunlight, then heat and how many people swim. The tool starts from {def} ppm a day.",
+                    "p2": "That is an assumption, not a measurement, and you can replace it with a real one: test free chlorine, add nothing for 24 hours, test again. The difference is your pool's actual demand, and it makes every number below it more honest."
+                },
+                "limits": {
+                    "title": "Assumptions and limits",
+                    "p1": "These figures are for pools chlorinated by hand. Salt-water pools with a chlorine generator run to a different stabilizer range and are outside the scope of this tool. The projection is a straight line: it ignores the fact that a higher stabilizer level slowly reduces daily chlorine loss, which means reality is usually a little slower than the projection says.",
+                    "p2": "Nothing here replaces testing your own water. The one measurement worth doing properly is the stabilizer: it decides every other number on this page, it changes slowly, and most people have never measured it once."
+                },
+                "sources": {
+                    "title": "Sources",
+                    "p1": "Every figure on this page comes from these, read directly rather than quoted second-hand:"
+                }
+            },
+            "revealHint": "One question at a time. The next appears when you answer.",
+            "Units": {
+                "g": "g",
+                "kg": "kg",
+                "mL": "mL",
+                "L": "L"
+            },
+            "Breakdown": {
+                "title": "How this was worked out",
+                "min": "minimum = {pct}% of {cya} ppm stabilizer, floored at {floor} ppm = {result} ppm",
+                "target": "target = {pct}% of {cya} ppm stabilizer = {result} ppm",
+                "cyaAssumed": "stabilizer unknown, so the target is a range across typical pools from {min} ppm upward = {target} ppm",
+                "gap": "gap = {target} target - {current} current = {gap} ppm",
+                "gapAssumed": "current chlorine unknown, so the gap is a range up to the {target} ppm target = {gap} ppm",
+                "pure": "pure chlorine = {volume} L x {gap} ppm / 1000 = {pure} g",
+                "product": "product = {pure} g / the concentration you entered = {amount} {unit}",
+                "note": "Every number above comes from the values you typed. Nothing here is hidden or rounded behind the scenes."
+            }
         }
     },
     "ApiDocs": {
@@ -554,6 +701,11 @@
                 "summary": "Compare the real cost of two chlorine products",
                 "description": "Compares any two chlorine products on cost per kilogram of ACTIVE chlorine, which is the only fair basis for comparison. Each of the two slots (slotA, slotB) carries its own productId, so the two sides may hold different products or the same one. Products sold by volume (unit 'l') are converted to weight using density, falling back to the product's typical density when omitted; a solid product priced by the litre is reported isValid: false rather than rejected. Zero values are accepted and simply mark that slot as incomplete rather than being an error.",
                 "responseDescription": "Per-slot metrics (gross mass, active chlorine mass, cost per active kg) and the winning slot, 'A' or 'B' (or 'DRAW'). The winner is identified by slot, not by product, so that two products of the same type can be compared. When either slot is incomplete, winner is null."
+            },
+            "chlorine-maintenance": {
+                "summary": "Routine chlorine target, dose, and where your stabilizer is heading",
+                "description": "Answers the everyday question rather than the recovery one: given CYA, what free chlorine should the pool hold, how much product gets it there, and if the product is stabilized (trichlor, dichlor) how fast cyanuric acid is accumulating. Minimum FC is max(7.5% of CYA, 2 ppm) and target FC is 11.5% of CYA, both from TroubleFreePool's published Chlorine/CYA table. The projection subtracts sunlight degradation, so with an unstabilized product it returns weeksToCeiling: null and a falling trend rather than a date. Unlike /shock, stabilized products ARE accepted here: routine dosing is exactly what this endpoint measures.",
+                "responseDescription": "The FC target band, the dose to reach it (null when already at target), the product amount with its side effects, and the CYA projection week by week. projection is null when CYA is unknown, because projecting from the fallback range would turn a guess into a countdown."
             }
         }
     },
